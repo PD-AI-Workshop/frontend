@@ -1,0 +1,40 @@
+.rightLinks {
+    display: flex;
+    gap: 20px;
+}
+
+.writeLink {
+    display: flex;
+    gap: 2px;
+    background-color: #EFEFF5;
+    border-radius: 32px;
+    padding: 12px 24px;
+}
+
+.writeLink a {
+    color: #3941F9;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.figure {
+    height: 24px;
+    width: 24px;
+}
+
+.loginLink {
+    background-color: #3941F9;
+    border-radius: 32px;
+    padding: 12px 24px;
+}
+
+.loginLink a {
+    color:#E2E2E2;
+    font-weight: 600;
+    font-size: 18px;
+}
+img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}

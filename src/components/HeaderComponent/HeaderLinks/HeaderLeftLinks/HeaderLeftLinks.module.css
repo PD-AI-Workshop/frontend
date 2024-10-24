@@ -1,0 +1,15 @@
+.headerLinks {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.headerLinks ul {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+
+.headerLinks a {
+    font-weight: 500;
+}
