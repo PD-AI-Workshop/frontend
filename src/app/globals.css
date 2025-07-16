@@ -1,1 +1,21 @@
 @import "tailwindcss";
+
+@layer utilities {
+    .grid-areas-onTrendItem {
+        grid-template-areas:
+            "img cont"
+            "img info";
+    }
+
+    .grid-in-img {
+        grid-area: img;
+    }
+
+    .grid-in-cont {
+        grid-area: cont;
+    }
+
+    .grid-in-info {
+        grid-area: info;
+    }
+}
