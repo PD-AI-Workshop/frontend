@@ -1,9 +1,6 @@
-'use client'
-
 import { AuthApi } from "@/http/AuthApi";
 import { UserType } from "@/types/UserType";
 import { AxiosError } from "axios";
-import { log } from "console";
 import { makeAutoObservable } from "mobx";
 
 export class UserStore {
