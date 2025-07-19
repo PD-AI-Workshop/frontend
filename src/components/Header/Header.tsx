@@ -4,19 +4,25 @@ import Link from "next/link"
 import HeaderLeftLinks from "./HeaderLeftLinks"
 import SearchButton from "./SearchButton"
 import SearchBar from "./SearchBar"
-import { useEffect, useState } from "react"
-import { CircleUser } from 'lucide-react'
+import { useContext, useEffect, useState } from "react"
+import { CircleUser, UserRound } from 'lucide-react'
+import { Context } from "@/app/StoresProvider"
+import { StoresType } from "@/types/StoresType"
+import { observer } from "mobx-react-lite"
 
 const Header = () => {
+    const { userStore } = useContext(Context) as StoresType
     const [modalActive, setModalActive] = useState(false)
     const [isMobile, setIsMobile] = useState(false)
+    const [isClient, setIsClient] = useState(false)
 
     useEffect(() => {
+        setIsClient(true)
         const checkIsMobile = () => {
-            const isMobile = window.matchMedia("(max-width: 768px)").matches
-            setIsMobile(isMobile)
+            setIsMobile(window.matchMedia("(max-width: 768px)").matches)
         }
 
+        checkIsMobile()
         window.addEventListener("resize", checkIsMobile)
 
         return () => window.removeEventListener("resize", checkIsMobile)
@@ -34,19 +40,38 @@ const Header = () => {
             </div>
 
             <div className="flex items-center gap-3 h-full">
-                {isMobile
+                {!isClient
                     ?
-                    <SearchButton onClick={() => setModalActive(true)} />
+                    <SearchButton onMouseEnter={() => { }} />
                     :
-                    <SearchButton onMouseEnter={() => setModalActive(true)} />
+                    isMobile
+                        ?
+                        <SearchButton onClick={() => setModalActive(true)} />
+                        :
+                        <SearchButton onMouseEnter={() => setModalActive(true)} />
                 }
+
                 <SearchBar active={modalActive} setActive={setModalActive} />
-                <Link href='/login'>
-                    <CircleUser className="text-[rgb(70,74,249)]" />
-                </Link>
+
+                {!isClient
+                    ?
+                    <span>
+                        <CircleUser className="text-[rgb(70,74,249)]" />
+                    </span>
+                    :
+                    userStore.isAuth
+                        ?
+                        <Link className="flex justify-center items-center w-[60px] h-[60%] rounded-3xl bg-[rgb(70,74,249)]" href='/profile'>
+                            <UserRound className="text-white" />
+                        </Link>
+                        :
+                        <Link className="flex justify-center items-center w-[90px] h-[70%] rounded-3xl bg-[rgb(70,74,249)]" href="/login">
+                            <p className="text-white">Войти</p>
+                        </Link>
+                }
             </div>
         </header>
     )
 }
 
-export default Header
+export default observer(Header)

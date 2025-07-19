@@ -17,7 +17,7 @@ const SearchBar = ({ active, setActive }: SearchBarProps) => {
             onClick={() => setActive(false)}
         >
             <div
-                className="absolute top-[10%] flex flex-col items-end w-full px-40"
+                className="absolute top-[7%] flex flex-col items-end w-full px-40"
                 onClick={() => setActive(true)}
                 onMouseEnter={() => setActive(true)}
                 onMouseLeave={() => setActive(false)}

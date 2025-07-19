@@ -6,8 +6,12 @@ import { validationSchema } from "@/schemas/LoginValidationSchema"
 import { LoginFormType } from "@/types/LoginFormType"
 import { Form, Formik, FormikHelpers } from "formik"
 import Link from "next/link"
+import { useContext } from "react"
+import { Context } from "../StoresProvider"
+import { StoresType } from "@/types/StoresType"
 
 const Login = () => {
+    const { userStore } = useContext(Context) as StoresType
 
     const initialValues: LoginFormType = {
         email: '',
@@ -15,10 +19,9 @@ const Login = () => {
     }
 
     const handleSubmit = async (values: LoginFormType, actions: FormikHelpers<LoginFormType>) => {
-        const email = values.email
-        const password = values.password
+        const { email, password } = values
 
-        // TODO: сделать запрос на API
+        await userStore.login(email, password)
 
         actions.setSubmitting(false)
     }
