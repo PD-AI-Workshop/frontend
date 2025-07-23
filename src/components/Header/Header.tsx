@@ -24,6 +24,7 @@ const Header = () => {
 
         checkIsMobile()
         window.addEventListener("resize", checkIsMobile)
+        userStore.checkAuth()
 
         return () => window.removeEventListener("resize", checkIsMobile)
     }, [])

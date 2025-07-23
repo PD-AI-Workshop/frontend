@@ -80,7 +80,6 @@ export class UserStore {
 
         if (!token) {
             this.setAuth(false)
-            console.log(this.isAuth)
             this.setUser({} as UserType)
             return
         }
