@@ -9,18 +9,29 @@ const HorizontalVersionOfArticle = ({ article, categories, files }: HorizontalVe
 
     useEffect(() => {
         const fetchFileContent = async () => {
-            if (contentFile === undefined) {
-                return
+            if (!contentFile) return;
+
+            try {
+                const response = await fetch(contentFile.url);
+                const html = await response.text();
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, "text/html");
+                const textContent = doc.body.textContent || "";
+                console.log(textContent);
+                const cleanText = textContent
+                    .replace(/\s+/g, " ")
+                    .trim();
+
+                setFileContent(cleanText);
+            } catch (error) {
+                console.error("Error loading content:", error);
+                setFileContent("Не удалось загрузить содержимое");
             }
+        };
 
-            const response = await fetch(contentFile.url)
-            const text = await response.text()
-            setFileContent(text)
-        }
+        fetchFileContent();
+    }, [contentFile]);
 
-        fetchFileContent()
-    }, [contentFile])
-    
     return (
         <div className='flex w-7xl border border-gray-300/50 rounded-[12px] overflow-hidden'>
             <img

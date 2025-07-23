@@ -14,10 +14,6 @@ const Profile = () => {
     const [isLoading, setIsLoading] = useState(true)
     const role = user?.role
 
-    const handleWriteArticleButton = () => {
-
-    }
-
     const handleAdminButton = () => {
 
     }
@@ -73,7 +69,7 @@ const Profile = () => {
                     {(role === 'admin' || role === 'writer')
                         &&
                         <button
-                            onClick={handleWriteArticleButton}
+                            onClick={() => router.push('/editor')}
                             className="w-full mt-2 p-3 bg-indigo-600 text-white text-xl rounded-3xl cursor-pointer hover:bg-indigo-700"
                         >Написать статью</button>}
 

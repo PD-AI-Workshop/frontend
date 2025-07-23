@@ -40,9 +40,10 @@ export class FileStore {
         return file
     }
 
-    async create(file: FormData): Promise<void> {
+    async create(file: FormData): Promise<FileType> {
         const newFile = await this.fileApi.create(file)
         this.files.push(newFile)
+        return newFile
     }
 
     async update(id: number, file: FormData): Promise<void> {
