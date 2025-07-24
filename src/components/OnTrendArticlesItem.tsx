@@ -8,7 +8,7 @@ const OnTrendArticlesItem = ({ className, article, categories, files }: OnTrendA
             <img
                 src={article.main_image_url}
                 alt="article"
-                className="object-cover rounded-tr-[12px]"
+                className="object-cover rounded-tr-[12px] h-50 w-full"
             />
 
             <div className="p-3 flex flex-col">

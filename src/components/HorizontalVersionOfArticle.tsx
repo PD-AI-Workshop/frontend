@@ -9,7 +9,7 @@ const HorizontalVersionOfArticle = ({ article, categories, files }: HorizontalVe
 
     useEffect(() => {
         const fetchFileContent = async () => {
-            if (!contentFile) return;
+            if (!contentFile) return
 
             try {
                 const response = await fetch(contentFile.url);
@@ -17,7 +17,6 @@ const HorizontalVersionOfArticle = ({ article, categories, files }: HorizontalVe
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(html, "text/html");
                 const textContent = doc.body.textContent || "";
-                console.log(textContent);
                 const cleanText = textContent
                     .replace(/\s+/g, " ")
                     .trim();

@@ -1,12 +1,29 @@
 import { SearchBarProps } from "@/props/SearchBarProps";
 import SearchButton from "./SearchButton";
-import { useCallback, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { Context } from "@/app/StoresProvider";
+import { StoresType } from "@/types/StoresType";
+import SearchBarArticle from "./SearchBarArticle";
+import Link from "next/link";
+import { observer } from "mobx-react-lite";
 
 const SearchBar = ({ active, setActive }: SearchBarProps) => {
-    const [value, setValue] = useState("");
-    const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>): void => setValue(e.target.value), []);
-    const onSubmit = (e: React.FormEvent<HTMLFormElement>) => e.preventDefault();
-    const stopPropagation = useCallback((e: React.MouseEvent): void => e.stopPropagation(), []);
+    const [value, setValue] = useState("")
+    const { articleStore } = useContext(Context) as StoresType
+
+    useEffect(() => {
+        articleStore.fetch()
+    }, [articleStore])
+
+    const articles = articleStore.getArticles()
+    const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value), []);
+    const onSubmit = (e: React.FormEvent<HTMLFormElement>) => e.preventDefault()
+    const stopPropagation = useCallback((e: React.MouseEvent) => e.stopPropagation(), [])
+    const filteredArticles = useMemo(() =>
+        articles.filter(article =>
+            article.title.toLowerCase().includes(value.toLowerCase())
+        ), [articles, value]
+    )
 
     return (
         <div
@@ -42,15 +59,19 @@ const SearchBar = ({ active, setActive }: SearchBarProps) => {
 
                 <div
                     className={`mt-2.5 flex flex-col w-full max-w-[400px] bg-white rounded-[15px] 
-                        shadow-[17px_19px_24px_rgba(0,0,0,0.13)] overflow-y-auto max-h-[500px]
+                        shadow-[17px_19px_24px_rgba(0,0,0,0.13)] overflow-y-auto overflow-x-hidden max-h-[500px]
                         md:w-[440px] ${active ? "block" : "hidden"}`}
                     onMouseEnter={() => setActive(true)}
                 >
-                    {/* Результаты поиска будут здесь */}
+                    {filteredArticles.map((article) => (
+                        <Link href={`/article/${article.id}`} key={article.id}>
+                            <SearchBarArticle article={article} />
+                        </Link>
+                    ))}
                 </div>
             </div>
         </div>
     )
 }
 
-export default SearchBar;
+export default observer(SearchBar)
