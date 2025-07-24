@@ -123,9 +123,9 @@ const Register = () => {
 
                 <p className="text-center mt-4 text-gray-400 text-xs">
                   <span>Нажимая на кнопку, вы соглашаетесь с </span>
-                  <Link className="text-[rgb(141,146,252)] underline" href={'#'}>Правилами Использования</Link>
+                  <Link className="text-[rgb(141,146,252)] underline" href={'/userrules'}>Правилами Использования</Link>
                   <span> и нашей </span>
-                  <Link className="text-[rgb(141,146,252)] underline" href={'#'}>Политикой <br /> Конфиденциальности</Link>
+                  <Link className="text-[rgb(141,146,252)] underline" href={'/privacypolicy'}>Политикой <br /> Конфиденциальности</Link>
                 </p>
               </div>
             </Form>
