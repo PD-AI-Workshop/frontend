@@ -7,6 +7,7 @@ import { makeAutoObservable, runInAction } from "mobx";
 
 export class ArticleStore {
     private articles: ArticleType[] = []
+    currentArticle: ArticleType | null = null
     private readonly articleApi = new ArticleApi()
 
     constructor() {
@@ -17,7 +18,11 @@ export class ArticleStore {
         this.articles = articles
     }
 
-    public getArticle(): ArticleType[] {
+    public setCurrentArticle(article: ArticleType | null): void {
+        this.currentArticle = article
+    }
+
+    public getArticles(): ArticleType[] {
         return this.articles
     }
 
@@ -30,17 +35,9 @@ export class ArticleStore {
         }
     }
 
-    async getById(id: number): Promise<ArticleType> {
-        const existing = this.articles.find(a => a.id === id)
-        if (existing) return existing
-
+    async getById(id: number): Promise<void> {
         const article = await this.articleApi.getById(id)
-
-        runInAction(() => {
-            this.articles.push(article)
-        })
-
-        return article
+        this.setCurrentArticle(article)
     }
 
     async create(article: CreateArticleType): Promise<void> {

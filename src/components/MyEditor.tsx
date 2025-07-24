@@ -15,7 +15,8 @@ export interface MyEditorProps {
 }
 
 export interface MyEditorHandle {
-    getContent: () => string;
+    setContent: (html: string) => void
+    getContent: () => string
 }
 
 const MyEditor = forwardRef<MyEditorHandle, MyEditorProps>(({ onImageUploaded }, ref) => {
@@ -30,6 +31,11 @@ const MyEditor = forwardRef<MyEditorHandle, MyEditorProps>(({ onImageUploaded },
     useImperativeHandle(ref, () => ({
         getContent: () => {
             return editorRef.current ? editorRef.current.getContent() : ''
+        },
+        setContent: (content: string) => {
+            if (editorRef.current) {
+                editorRef.current.setContent(content)
+            }
         }
     }))
 
@@ -47,7 +53,7 @@ const MyEditor = forwardRef<MyEditorHandle, MyEditorProps>(({ onImageUploaded },
         }
 
         return createdFile.url
-    }    
+    }
 
     return (
         <div>
