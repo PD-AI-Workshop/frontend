@@ -2,19 +2,19 @@
 
 import Link from "next/link"
 import HeaderLeftLinks from "./HeaderLeftLinks"
-import SearchButton from "./SearchButton"
 import SearchBar from "./SearchBar"
 import { useContext, useEffect, useState } from "react"
-import { CircleUser, UserRound } from 'lucide-react'
+import { CircleUser, Search, UserRound } from 'lucide-react'
 import { Context } from "@/app/StoresProvider"
 import { StoresType } from "@/types/StoresType"
 import { observer } from "mobx-react-lite"
 
 const Header = () => {
-    const { userStore } = useContext(Context) as StoresType
+    const { userStore, themeStore } = useContext(Context) as StoresType
     const [modalActive, setModalActive] = useState(false)
     const [isMobile, setIsMobile] = useState(false)
     const [isClient, setIsClient] = useState(false)
+    const isDarkMode = themeStore.isDarkMode
 
     useEffect(() => {
         setIsClient(true)
@@ -25,49 +25,48 @@ const Header = () => {
         checkIsMobile()
         window.addEventListener("resize", checkIsMobile)
         userStore.checkAuth()
-
         return () => window.removeEventListener("resize", checkIsMobile)
     }, [])
 
     return (
-        <header className="flex bg-white justify-between gap-8 h-[104px] py-5 px-20 sticky top-0 border-b border-solid border-[#C4CDEE] z-10">
+        <header className={`flex justify-between gap-8 h-[104px] py-5 px-20 sticky top-0 border-b border-solid border-[#C4CDEE] z-10 ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
             <div className="flex gap-8 h-full">
                 <figure>
                     <Link href="/">
-                        <img src="/img/logo.svg" className="w-full h-full object-cover" alt="logotype" />
+                        <img src={isDarkMode ? '/img/logoDark.png' : '/img/logo.svg'} className="w-full h-full object-cover" alt="logotype" />
                     </Link>
                 </figure>
-                <HeaderLeftLinks />
+                <HeaderLeftLinks isDarkMode={isDarkMode} />
             </div>
 
             <div className="flex items-center gap-3 h-full">
                 {!isClient
                     ?
-                    <SearchButton onMouseEnter={() => { }} />
+                    <Search className={`mt-auto mb-auto ml-5 mr-5 ${isDarkMode ? 'bg-white' : 'text-[#040BB6]'} `} />
                     :
                     isMobile
                         ?
-                        <SearchButton onClick={() => setModalActive(true)} />
+                        <Search className={`mt-auto mb-auto ml-5 mr-5 ${isDarkMode ? 'text-white' : 'text-[#040BB6]'} `} onClick={() => setModalActive(true)} />
                         :
-                        <SearchButton onMouseEnter={() => setModalActive(true)} />
+                        <Search className={`mt-auto mb-auto ml-5 mr-5 ${isDarkMode ? 'text-white' : 'text-[#040BB6]'} `} onMouseEnter={() => setModalActive(true)} />
                 }
 
-                <SearchBar active={modalActive} setActive={setModalActive} />
+                <SearchBar isDarkMode={isDarkMode} active={modalActive} setActive={setModalActive} />
 
                 {!isClient
                     ?
                     <span>
-                        <CircleUser className="text-[rgb(70,74,249)]" />
+                        <CircleUser className={`${isDarkMode ? 'text-white' : 'text-[rgb(70,74,249)]'}`} />
                     </span>
                     :
                     userStore.isAuth
                         ?
-                        <Link className="flex justify-center items-center w-[60px] h-[60%] rounded-3xl bg-[rgb(70,74,249)]" href='/profile'>
-                            <UserRound className="text-white" />
+                        <Link className={`flex justify-center items-center w-[60px] h-[60%] rounded-3xl ${isDarkMode ? 'bg-white' : 'bg-[rgb(70,74,249)]'}`} href='/profile'>
+                            <UserRound className={isDarkMode ? 'text-black' : 'text-white'} />
                         </Link>
                         :
-                        <Link className="flex justify-center items-center w-[90px] h-[70%] rounded-3xl bg-[rgb(70,74,249)]" href="/login">
-                            <p className="text-white">Войти</p>
+                        <Link className={`flex justify-center items-center w-[90px] h-[70%] rounded-3xl ${isDarkMode ? 'bg-white' : 'bg-[rgb(70,74,249)]'}`} href="/login">
+                            <p className={isDarkMode ? 'text-black' : 'text-white'}>Войти</p>
                         </Link>
                 }
             </div>

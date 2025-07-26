@@ -9,9 +9,10 @@ export interface FeedVersionOfArticle {
     article: ArticleType
     categories: CategoryType[]
     files: FileType[]
+    isDarkMode: boolean
 }
 
-const FeedVersionOfArticle = ({ article, categories, files }: FeedVersionOfArticle) => {
+const FeedVersionOfArticle = ({ article, categories, files, isDarkMode }: FeedVersionOfArticle) => {
     const contentFile = files.find(file => file.id === article.text_id)
     const [fileContent, setFileContent] = useState<string | null>(null)
 
@@ -40,7 +41,7 @@ const FeedVersionOfArticle = ({ article, categories, files }: FeedVersionOfArtic
     }, [contentFile]);
 
     return (
-        <div className='flex w-7xl mb-4 border bg-white border-gray-300/50 rounded-[12px] overflow-hidden'>
+        <div className={`flex w-7xl mb-4 border border-gray-300/50 rounded-[12px] overflow-hidden ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
             <img
                 src={article.main_image_url}
                 alt="article"
@@ -50,15 +51,15 @@ const FeedVersionOfArticle = ({ article, categories, files }: FeedVersionOfArtic
                 <p className="text-3xl font-semibold line-clamp-3">{article.title}</p>
 
                 <div className="my-4 min-h-[60px]">
-                    {fileContent && <p className="text-gray-700 line-clamp-7">{fileContent}</p>}
+                    {fileContent && <p className={`line-clamp-7 ${isDarkMode ? 'text-white' : 'text-gray-700'}`}>{fileContent}</p>}
                 </div>
 
                 <div className="flex justify-start gap-[5px]">
                     {categories.map(category => <Tag name={category.name} key={category.id} />)}
                 </div>
                 <div className='mt-6 flex justify-between'>
-                    <p className="text-sm font-normal text-gray-600 font-inter">{formatTime(article.created_date)}</p>
-                    <p className="text-sm font-normal text-gray-600 font-inter">Советы</p>
+                    <p className={`text-sm font-normal font-inter ${isDarkMode ? 'text-white' : 'text-gray-600 '}`}>{formatTime(article.created_date)}</p>
+                    <p className={`text-sm font-normal text-gray-600 font-inter ${isDarkMode ? 'text-white' : 'text-gray-600 '}`}>Советы</p>
                 </div>
             </div>
         </div>

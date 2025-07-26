@@ -3,7 +3,7 @@ import Tag from './Tag'
 import { useEffect, useState } from 'react';
 import { formatTime } from '@/utils/formatTime';
 
-const HorizontalVersionOfArticle = ({ article, categories, files }: HorizontalVersionOfArticleProps) => {
+const HorizontalVersionOfArticle = ({ article, categories, files, isDarkMode }: HorizontalVersionOfArticleProps) => {
     const contentFile = files.find(file => file.id === article.text_id)
     const [fileContent, setFileContent] = useState<string | null>(null)
 
@@ -42,15 +42,15 @@ const HorizontalVersionOfArticle = ({ article, categories, files }: HorizontalVe
                 <p className="text-3xl font-semibold line-clamp-3">{article.title}</p>
 
                 <div className="my-4 min-h-[60px]">
-                    {fileContent && <p className="text-gray-700 line-clamp-7">{fileContent}</p>}
+                    {fileContent && <p className={`line-clamp-7 ${isDarkMode ? 'text-white' : 'text-gray-700 '}`}>{fileContent}</p>}
                 </div>
 
                 <div className="flex justify-start gap-[5px]">
                     {categories.map(category => <Tag name={category.name} key={category.id} />)}
                 </div>
                 <div className='mt-6 flex justify-between'>
-                    <p className="text-sm font-normal text-gray-600 font-inter">{formatTime(article.created_date)}</p>
-                    <p className="text-sm font-normal text-gray-600 font-inter">Советы</p>
+                    <p className={`text-sm font-normal font-inter ${isDarkMode ? 'text-white' : 'text-gray-600 '}`}>{formatTime(article.created_date)}</p>
+                    <p className={`text-sm font-normal font-inter ${isDarkMode ? 'text-white' : 'text-gray-600 '}`}>Советы</p>
                 </div>
             </div>
         </div>

@@ -1,18 +1,27 @@
+'use client'
+
 import Section from "@/components/Section"
+import { useContext } from "react"
+import { Context } from "../StoresProvider"
+import { StoresType } from "@/types/StoresType"
+import { observer } from "mobx-react-lite"
 
 const PrivacyPolicyPage = () => {
+    const { themeStore } = useContext(Context) as StoresType
+    const isDarkMode = themeStore.isDarkMode
+
     return (
-        <main className="min-h-[79vh] bg-[rgb(237,237,243)] py-12">
-            <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-md p-6 md:p-10">
-                <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">
+        <main className={`min-h-[79vh] py-12 ${isDarkMode ? 'bg-[rgb(38,38,38)]' : 'bg-[rgb(237,237,243)]'}`}>
+            <div className={`max-w-4xl mx-auto rounded-xl shadow-md p-6 md:p-10 ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
+                <h1 className={`text-3xl md:text-4xl font-bold mb-2 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
                     Политика конфиденциальности
                 </h1>
                 <p className="text-gray-600 mb-8">
                     Последнее обновление: {new Date().toLocaleDateString('ru-RU')}
                 </p>
 
-                <div className="space-y-8">
-                    <Section title="1. Введение">
+                <div className={`space-y-8 ${isDarkMode ? 'text-white' : 'text-black'}`}>
+                    <Section title="1. Введение" isDarkMode={isDarkMode}>
                         <p>
                             Наш сервис предоставляет платформу для создания и публикации статей.
                             Мы ценим ваше доверие и обязуемся защищать вашу личную информацию.
@@ -20,8 +29,8 @@ const PrivacyPolicyPage = () => {
                         </p>
                     </Section>
 
-                    <Section title="2. Собираемая информация">
-                        <ul className="list-disc pl-6 space-y-2">
+                    <Section title="2. Собираемая информация" isDarkMode={isDarkMode}>
+                        <ul className='list-disc pl-6 space-y-2'>
                             <li>
                                 <span className="font-medium">Данные аккаунта:</span> Имя, email,
                                 профильная фотография при регистрации
@@ -41,9 +50,9 @@ const PrivacyPolicyPage = () => {
                         </ul>
                     </Section>
 
-                    <Section title="3. Использование данных">
+                    <Section title="3. Использование данных" isDarkMode={isDarkMode}>
                         <p>Мы используем вашу информацию для:</p>
-                        <ul className="list-disc pl-6 space-y-2 mt-2">
+                        <ul className='list-disc pl-6 space-y-2 mt-2'>
                             <li>Предоставления и улучшения наших сервисов</li>
                             <li>Персонализации вашего опыта</li>
                             <li>Анализа использования платформы</li>
@@ -52,7 +61,7 @@ const PrivacyPolicyPage = () => {
                         </ul>
                     </Section>
 
-                    <Section title="4. Защита данных">
+                    <Section title="4. Защита данных" isDarkMode={isDarkMode}>
                         <p>
                             Мы применяем современные меры безопасности включая шифрование,
                             двухфакторную аутентификацию и регулярные аудиты безопасности.
@@ -60,7 +69,7 @@ const PrivacyPolicyPage = () => {
                         </p>
                     </Section>
 
-                    <Section title="5. Ваши права">
+                    <Section title="5. Ваши права" isDarkMode={isDarkMode}>
                         <p>Вы имеете право:</p>
                         <ul className="list-disc pl-6 space-y-2 mt-2">
                             <li>Запросить доступ к вашим данным</li>
@@ -71,7 +80,7 @@ const PrivacyPolicyPage = () => {
                         </ul>
                     </Section>
 
-                    <Section title="6. Контакты">
+                    <Section title="6. Контакты" isDarkMode={isDarkMode}>
                         <p>
                             По вопросам конфиденциальности обращайтесь:
                         </p>
@@ -95,4 +104,4 @@ const PrivacyPolicyPage = () => {
     )
 }
 
-export default PrivacyPolicyPage
+export default observer(PrivacyPolicyPage)

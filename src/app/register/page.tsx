@@ -11,10 +11,12 @@ import { Context } from "../StoresProvider"
 import { StoresType } from "@/types/StoresType"
 import { NotificationType } from "@/types/NotificationType"
 import Notification from "@/components/Notification"
+import { observer } from "mobx-react-lite"
 
 const Register = () => {
-  const { userStore } = useContext(Context) as StoresType
+  const { userStore, themeStore } = useContext(Context) as StoresType
   const [notification, setNotification] = useState<NotificationType | null>(null)
+  const isDarkMode = themeStore.isDarkMode
 
   const initialValues: RegisterFormType = {
     username: '',
@@ -59,7 +61,7 @@ const Register = () => {
   }
 
   return (
-    <main className="min-h-[79vh] flex justify-center items-center bg-[rgb(237,237,243)]">
+    <main className={`min-h-[79vh] flex justify-center items-center ${isDarkMode ? 'bg-[rgb(38,38,38)]' : 'bg-[rgb(237,237,243)]'}`}>
 
       {notification && <Notification
         notificationType={notification.type}
@@ -73,9 +75,9 @@ const Register = () => {
       >
         {
           ({ isSubmitting, errors, touched }) => (
-            <Form className="w-auto max-w-auto bg-white rounded-2xl overflow-hidden">
+            <Form className={`w-auto max-w-auto rounded-2xl overflow-hidden ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
               <div className="p-8">
-                <h1 className="text-center mb-4 mt-4 text-3xl font-bold text-gray-800">Регистрация</h1>
+                <h1 className={`text-center mb-4 mt-4 text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>Регистрация</h1>
                 <h1 className="text-center mb-4 text-gray-400 text-base">Создай бесплатный аккаунт — будь в курсе новых технологий</h1>
 
                 <div className="flex justify-center gap-5">
@@ -117,6 +119,7 @@ const Register = () => {
                 />
 
                 <MyButton
+                  isDarkMode={isDarkMode}
                   isSubmitting={isSubmitting}
                   text="Создать аккаунт"
                 />
@@ -136,4 +139,4 @@ const Register = () => {
   )
 }
 
-export default Register
+export default observer(Register)

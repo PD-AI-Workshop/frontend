@@ -83,8 +83,8 @@ const ArticlePage = observer(() => {
     if (!article) return <div>Статья не найдена</div>
 
     return (
-        <main className="min-h-[79vh] flex justify-center bg-[rgb(237,237,243)]">
-            <div className="w-[630px] mt-8 mr-auto ml-auto mb-8 border-solid border-[rgba(166,166,166,0.463)] rounded-xl bg-white">
+        <main className="min-h-[79vh] flex justify-center]">
+            <div className="w-[630px] mt-8 mr-auto ml-auto mb-8 border-1 border-solid border-[rgb(131,131,131)] rounded-xl">
                 <img className="rounded-t-xl" src={article?.main_image_url} />
 
                 <div className="p-4">

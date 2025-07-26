@@ -12,6 +12,7 @@ declare global {
 
 export interface MyEditorProps {
     onImageUploaded?: (id: number) => void
+    isDarkMode: boolean
 }
 
 export interface MyEditorHandle {
@@ -19,7 +20,7 @@ export interface MyEditorHandle {
     getContent: () => string
 }
 
-const MyEditor = forwardRef<MyEditorHandle, MyEditorProps>(({ onImageUploaded }, ref) => {
+const MyEditor = forwardRef<MyEditorHandle, MyEditorProps>(({ onImageUploaded, isDarkMode }, ref) => {
     const { fileStore } = useContext(Context) as StoresType
     const [isClient, setIsClient] = useState(false)
     const editorRef = useRef<any>(null)
@@ -62,6 +63,8 @@ const MyEditor = forwardRef<MyEditorHandle, MyEditorProps>(({ onImageUploaded },
                     tinymceScriptSrc="/tinymce/tinymce.min.js"
                     onInit={(_, editor) => editorRef.current = editor}
                     init={{
+                        skin: `${isDarkMode ? 'oxide-dark' : 'oxide'}`,
+                        content_css: `${isDarkMode ? 'dark' : 'default'}`,
                         height: 600,
                         width: 900,
                         highlight_on_focus: false,

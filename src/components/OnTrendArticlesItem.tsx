@@ -2,7 +2,7 @@ import { OnTrendArticleItemProps } from "@/props/OnTrendArticleItemProps"
 import Tag from "./Tag"
 import { formatTime } from "@/utils/formatTime"
 
-const OnTrendArticlesItem = ({ className, article, categories, files }: OnTrendArticleItemProps) => {
+const OnTrendArticlesItem = ({ className, article, categories, isDarkMode }: OnTrendArticleItemProps) => {
     return (
         <div className={`border border-gray-300/50 rounded-[12px] overflow-hidden ${className}`}>
             <img
@@ -21,8 +21,8 @@ const OnTrendArticlesItem = ({ className, article, categories, files }: OnTrendA
             </div>
 
             <div className="px-4 py-2.5 flex justify-between border-t border-gray-200">
-                <p className="text-sm font-normal text-gray-600 font-inter">{formatTime(article.created_date)}</p>
-                <p className="text-sm font-normal text-gray-600 font-inter">Советы</p>
+                <p className={`text-sm font-normal font-inter ${isDarkMode ? 'text-white' : 'text-gray-600'}`}>{formatTime(article.created_date)}</p>
+                <p className={`text-sm font-normal font-inter ${isDarkMode ? 'text-white' : 'text-gray-600'}`}>Советы</p>
             </div>
         </div>
     )

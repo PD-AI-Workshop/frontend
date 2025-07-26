@@ -2,11 +2,17 @@
 
 import { motion } from "framer-motion"
 import Link from "next/link"
+import { useContext } from "react";
+import { Context } from "./StoresProvider";
+import { StoresType } from "@/types/StoresType";
+import { observer } from "mobx-react-lite";
 
 const NotFoundPage = () => {
+    const { themeStore } = useContext(Context) as StoresType
+    const isDarkMode = themeStore.isDarkMode
 
     return (
-        <main className="min-h-[79vh] flex items-center justify-center bg-[rgb(237,237,243)] px-4 py-12">
+        <main className={`min-h-[79vh] flex items-center justify-center px-4 py-12 ${isDarkMode ? 'bg-[rgb(38,38,38)]' : 'bg-[rgb(237,237,243)]'}`}>
             <motion.div 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -24,7 +30,7 @@ const NotFoundPage = () => {
                             repeat: Infinity,
                             repeatType: "reverse" 
                         }}
-                        className="text-9xl font-bold text-indigo-600 tracking-tighter"
+                        className={`text-9xl font-bold tracking-tighter ${isDarkMode ? 'text-white' : 'text-indigo-600'}`}
                     >
                         404
                     </motion.div>
@@ -32,16 +38,16 @@ const NotFoundPage = () => {
                     <motion.div 
                         animate={{ scale: [1, 1.2, 1] }}
                         transition={{ duration: 3, repeat: Infinity }}
-                        className="absolute -top-4 -right-6 w-12 h-12 bg-cyan-400 rounded-full opacity-40"
+                        className={`absolute -top-4 -right-6 w-12 h-12 rounded-full opacity-40 ${isDarkMode ? 'bg-gray-600' : 'bg-cyan-400'}`}
                     />
                     <motion.div 
                         animate={{ scale: [1, 0.8, 1] }}
                         transition={{ duration: 4, repeat: Infinity }}
-                        className="absolute -bottom-2 -left-8 w-16 h-16 bg-blue-400 rounded-full opacity-30"
+                        className={`absolute -bottom-2 -left-8 w-16 h-16 rounded-full opacity-30 ${isDarkMode ? 'bg-white' : 'bg-blue-400'}`}
                     />
                 </div>
 
-                <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-3">
+                <h1 className={`text-2xl md:text-3xl font-bold mb-3 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
                     Ой! Страница потерялась
                 </h1>
                 
@@ -86,4 +92,4 @@ const NotFoundPage = () => {
     )
 }
 
-export default NotFoundPage
+export default observer(NotFoundPage)

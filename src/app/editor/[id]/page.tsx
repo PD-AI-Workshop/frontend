@@ -11,7 +11,7 @@ import { useParams, useRouter } from "next/navigation"
 import { useContext, useEffect, useRef, useState } from "react"
 
 const EditArticlePage = () => {
-    const { categoryStore, fileStore, articleStore } = useContext(Context) as StoresType
+    const { categoryStore, fileStore, articleStore, themeStore } = useContext(Context) as StoresType
     const [imageUrl, setImageUrl] = useState<string | null>(null)
     const [loading, setLoading] = useState<boolean>(false)
     const [title, setTitle] = useState<string>('')
@@ -22,6 +22,7 @@ const EditArticlePage = () => {
     const router = useRouter()
     const params = useParams()
     const id = Array.isArray(params.id) ? params.id[0] : params.id
+    const isDarkMode = themeStore.isDarkMode
 
     useEffect(() => {
         const loadArticle = async () => {
@@ -126,7 +127,7 @@ const EditArticlePage = () => {
     }
 
     return (
-        <main className="min-h-[79vh] flex items-center flex-col bg-[rgb(237,237,243)]">
+        <main className={`min-h-[79vh] flex items-center flex-col ${isDarkMode ? 'bg-[rgb(38,38,38)]' : 'bg-[rgb(237,237,243)]'}`}>
             <h1 className="mt-5 text-2xl font-bold mb-5">Редактор статьи</h1>
 
             <Upload
@@ -159,7 +160,7 @@ const EditArticlePage = () => {
                     style={{ width: '50vh', marginBottom: '10px', fontSize: '20px' }}
                 />
 
-                <MyEditor ref={editorRef} onImageUploaded={handleImageUploaded} />
+                <MyEditor isDarkMode={isDarkMode} ref={editorRef} onImageUploaded={handleImageUploaded} />
 
                 <div className="flex flex-row justify-between items-center mt-4 mb-4">
                     <Select

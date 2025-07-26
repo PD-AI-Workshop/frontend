@@ -9,10 +9,13 @@ import FeedVersionOfArticle from '@/components/FeedVersionOfArticle'
 import Link from 'next/link'
 
 const FeedPage = () => {
-    const { articleStore, categoryStore, fileStore } = useContext(Context) as StoresType
+    const { articleStore, categoryStore, fileStore, themeStore } = useContext(Context) as StoresType
     const [searchTerm, setSearchTerm] = useState('')
     const [sortOption, setSortOption] = useState<'relevance' | 'date' | 'reading_time'>('relevance')
     const [isLoading, setIsLoading] = useState(true);
+    const isDarkMode = themeStore.isDarkMode
+
+    console.log(isDarkMode)
 
     useEffect(() => {
         const loadData = async () => {
@@ -28,7 +31,6 @@ const FeedPage = () => {
                 setIsLoading(false);
             }
         };
-
         loadData();
     }, []);
 
@@ -46,12 +48,10 @@ const FeedPage = () => {
             return 0
         })
 
-    console.log(filteredArticles)
-
     return (
-        <main className='min-h-[79vh] bg-[rgb(237,237,243)] py-8 px-4'>
+        <main className={`min-h-[79vh] py-8 px-4 ${isDarkMode ? 'bg-[rgb(38,38,38)]' : 'bg-[rgb(237,237,243)]'}`}>
             <div className='max-w-4xl mx-auto'>
-                <div className='bg-white rounded-xl p-6 mb-6 shadow-sm'>
+                <div className={`rounded-xl p-6 mb-6 shadow-sm ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
                     <div className='flex items-center justify-center mb-2'>
                         <h1 className='text-2xl font-bold'>Лента статей</h1>
                     </div>
@@ -90,6 +90,7 @@ const FeedPage = () => {
                             {filteredArticles.map(article =>
                                 <Link key={article.id} href={`/article/${article.id}`}>
                                     <FeedVersionOfArticle
+                                        isDarkMode={isDarkMode}
                                         article={article}
                                         categories={categories}
                                         files={files}
