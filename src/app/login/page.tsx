@@ -9,10 +9,11 @@ import Link from "next/link"
 import { useContext } from "react"
 import { Context } from "../StoresProvider"
 import { StoresType } from "@/types/StoresType"
+import { observer } from "mobx-react-lite"
 
 const Login = () => {
-    const { userStore } = useContext(Context) as StoresType
-
+    const { userStore, themeStore } = useContext(Context) as StoresType
+    const isDarkMode = themeStore.isDarkMode
     const initialValues: LoginFormType = {
         email: '',
         password: ''
@@ -20,14 +21,12 @@ const Login = () => {
 
     const handleSubmit = async (values: LoginFormType, actions: FormikHelpers<LoginFormType>) => {
         const { email, password } = values
-
         await userStore.login(email, password)
-
         actions.setSubmitting(false)
     }
 
     return (
-        <main className='min-h-[79vh] flex items-center justify-center bg-[rgb(237,237,243)]'>
+        <main className={`min-h-[79vh] flex items-center justify-center ${isDarkMode ? 'bg-[rgb(38,38,38)]' : 'bg-[rgb(237,237,243)]'}`}>
             <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
@@ -35,9 +34,9 @@ const Login = () => {
             >
                 {
                     ({ isSubmitting, errors, touched }) => (
-                        <Form className="w-full max-w-md bg-white rounded-2xl overflow-hidden">
+                        <Form className={`w-full max-w-md rounded-2xl overflow-hidden ${isDarkMode ? 'bg-[rgb(6,8,15)]' : 'bg-white'}`}>
                             <div className="p-8">
-                                <h1 className="text-center mb-8 text-3xl font-bold text-gray-800">Вход в аккаунт</h1>
+                                <h1 className={`text-center mb-8 text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>Вход в аккаунт</h1>
 
                                 <MyFieldInput
                                     value="email"
@@ -58,6 +57,7 @@ const Login = () => {
                                 />
 
                                 <MyButton
+                                    isDarkMode={isDarkMode}
                                     isSubmitting={isSubmitting}
                                     text="Войти"
                                 />
@@ -66,7 +66,7 @@ const Login = () => {
                             <div className="mb-6 text-center">
                                 <p className="text-gray-600 text-sm">
                                     Нет аккаунта?{' '}
-                                    <Link href="/register" className="font-medium text-indigo-600 hover:text-indigo-500">Зарегистрироваться</Link>
+                                    <Link href="/register" className={`font-medium ${isDarkMode ? 'text-white hover:text-gray-400' : 'text-indigo-600 hover:text-indigo-500'}`}>Зарегистрироваться</Link>
                                 </p>
                             </div>
                         </Form>
@@ -77,4 +77,4 @@ const Login = () => {
     )
 }
 
-export default Login
+export default observer(Login)

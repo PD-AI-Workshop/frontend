@@ -1,13 +1,13 @@
 import { SearchBarProps } from "@/props/SearchBarProps";
-import SearchButton from "./SearchButton";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { Context } from "@/app/StoresProvider";
 import { StoresType } from "@/types/StoresType";
 import SearchBarArticle from "./SearchBarArticle";
 import Link from "next/link";
 import { observer } from "mobx-react-lite";
+import { Search } from "lucide-react";
 
-const SearchBar = ({ active, setActive }: SearchBarProps) => {
+const SearchBar = ({ active, setActive, isDarkMode }: SearchBarProps) => {
     const [value, setValue] = useState("")
     const { articleStore } = useContext(Context) as StoresType
 
@@ -40,8 +40,7 @@ const SearchBar = ({ active, setActive }: SearchBarProps) => {
                 onMouseLeave={() => setActive(false)}
             >
                 <div
-                    className="relative bg-white w-full max-w-[400px] h-[50px] pl-6 rounded-[25px] 
-                        shadow-[17px_19px_24px_rgba(0,0,0,0.13)] z-10"
+                    className={`relative w-full max-w-[400px] h-[50px] pl-6 rounded-[25px] shadow-[17px_19px_24px_rgba(0,0,0,0.13)] z-10 ${isDarkMode ? 'bg-[rgb(38,38,38)]' : 'bg-white'}`}
                     onClick={stopPropagation}
                     onMouseEnter={() => setActive(true)}
                 >
@@ -53,19 +52,19 @@ const SearchBar = ({ active, setActive }: SearchBarProps) => {
                             placeholder="Найти статью..."
                             value={value}
                         />
-                        <SearchButton />
+                        <Search className={`mt-auto mb-auto ml-5 mr-5 ${isDarkMode ? 'text-white' : 'text-[#040BB6]'} `} />
                     </form>
                 </div>
 
                 <div
-                    className={`mt-2.5 flex flex-col w-full max-w-[400px] bg-white rounded-[15px] 
+                    className={`mt-2.5 flex flex-col w-full max-w-[400px] rounded-[15px] 
                         shadow-[17px_19px_24px_rgba(0,0,0,0.13)] overflow-y-auto overflow-x-hidden max-h-[500px]
-                        md:w-[440px] ${active ? "block" : "hidden"}`}
+                        md:w-[440px] ${active ? "block" : "hidden"} ${isDarkMode ? 'bg-black' : 'bg-white'}`}
                     onMouseEnter={() => setActive(true)}
                 >
                     {filteredArticles.map((article) => (
                         <Link href={`/article/${article.id}`} key={article.id}>
-                            <SearchBarArticle article={article} />
+                            <SearchBarArticle isDarkMode={isDarkMode} article={article} />
                         </Link>
                     ))}
                 </div>

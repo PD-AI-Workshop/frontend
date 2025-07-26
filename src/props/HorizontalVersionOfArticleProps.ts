@@ -6,4 +6,5 @@ export interface HorizontalVersionOfArticleProps {
     article: ArticleType
     categories: CategoryType[]
     files: FileType[]
+    isDarkMode: boolean
 }

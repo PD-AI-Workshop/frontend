@@ -9,7 +9,7 @@ import { StoresType } from "@/types/StoresType"
 import { observer } from "mobx-react-lite"
 
 function Home() {
-  const { articleStore, categoryStore, fileStore } = useContext(Context) as StoresType
+  const { articleStore, categoryStore, fileStore, themeStore } = useContext(Context) as StoresType
 
   useEffect(() => {
     articleStore.fetch()
@@ -22,6 +22,7 @@ function Home() {
   const neuralNetworkArticles = articleStore.getNeuralNetworkArticles(categories)
   const lastArticles = articleStore.lastArticles
   const files = fileStore.getFiles()
+  const isDarkMode = themeStore.isDarkMode
 
   return (
     <main className="flex flex-col items-center py-5 px-2.5 gap-5 grow shrink basis-0">
@@ -35,7 +36,7 @@ function Home() {
                 className="narrowVersion rounded-xl h-[350px] w-[415px]"
                 article={article}
                 categories={categories}
-                files={files}
+                isDarkMode={isDarkMode}
               />
             </Link>)}
         </div>
@@ -50,7 +51,7 @@ function Home() {
                 className="wideVersion rounded-xl w-[631px]"
                 article={article}
                 categories={categories}
-                files={files}
+                isDarkMode={isDarkMode}
               />
             </Link>)}
         </div>
@@ -62,6 +63,7 @@ function Home() {
           {lastArticles.map(article =>
             <Link href={`/article/${article.id}`} key={article.id}>
               <HorizontalVersionOfArticle
+                isDarkMode={isDarkMode}
                 article={article}
                 categories={categories}
                 files={files}

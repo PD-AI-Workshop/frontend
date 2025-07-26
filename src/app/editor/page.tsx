@@ -5,14 +5,14 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { Context } from "../StoresProvider";
 import { StoresType } from "@/types/StoresType";
 import { observer } from "mobx-react-lite";
-import { Button, Input, InputNumber, Select, Upload, UploadProps } from 'antd'
+import { Button, ConfigProvider, Input, InputNumber, Select, theme, Upload, UploadProps } from 'antd'
 import { UploadOutlined } from "@ant-design/icons";
 import { RcFile } from "antd/es/upload";
 import { CreateArticleType } from "@/types/CreateArticleType";
 import { useRouter } from "next/navigation";
 
 const EditorPage = () => {
-    const { categoryStore, fileStore, articleStore } = useContext(Context) as StoresType
+    const { categoryStore, fileStore, articleStore, themeStore } = useContext(Context) as StoresType
     const [imageUrl, setImageUrl] = useState<string | null>(null)
     const [loading, setLoading] = useState<boolean>(false)
     const [title, setTitle] = useState<string>('')
@@ -21,6 +21,7 @@ const EditorPage = () => {
     const [uploadedImageIds, setUploadedImageIds] = useState<number[]>([])
     const editorRef = useRef<MyEditorHandle>(null)
     const router = useRouter()
+    const isDarkMode = themeStore.isDarkMode
 
     useEffect(() => {
         categoryStore.fetch()
@@ -90,68 +91,74 @@ const EditorPage = () => {
     }
 
     return (
-        <main className="min-h-[79vh] flex items-center flex-col bg-[rgb(237,237,243)]">
-            <h1 className="mt-5 text-2xl font-bold mb-5">Редактор статьи</h1>
-
-            <Upload
-                customRequest={handleCustomRequest}
-                disabled={loading}
-                showUploadList={false}
+        <main className="min-h-[79vh] flex items-center flex-col">
+            <ConfigProvider
+                theme={{
+                    algorithm: isDarkMode ? theme.darkAlgorithm : theme.defaultAlgorithm
+                }}
             >
-                <Button icon={<UploadOutlined />}>Загрузить файл</Button>
-            </Upload>
+                <h1 className="mt-5 text-2xl font-bold mb-5">Редактор статьи</h1>
 
-            {imageUrl && (
-                <div className="mt-4">
-                    <h3 className="font-medium mb-2">Предпросмотр:</h3>
-                    <img
-                        src={imageUrl}
-                        alt="Uploaded preview"
-                        className="max-w-full max-h-60 object-contain border rounded"
-                    />
-                </div>
-            )}
-
-            <div className="flex flex-col mt-4">
-                <label className="font-medium text-xl" htmlFor="title">Заголовок статьи</label>
-                <Input
-                    id="title"
-                    name="title"
-                    type="text"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    style={{ width: '50vh', marginBottom: '10px', fontSize: '20px' }}
-                />
-
-                <MyEditor ref={editorRef} onImageUploaded={handleImageUploaded} />
-
-                <div className="flex flex-row justify-between items-center mt-4 mb-4">
-                    <Select
-                        style={{ width: '200px' }}
-                        mode="multiple"
-                        placeholder="Выберите категории"
-                        options={optionCategories}
-                        value={selectedCategories}
-                        onChange={setSelectedCategories}
-                    />
-
-                    <InputNumber
-                        min={0}
-                        defaultValue={0}
-                        value={time_reading}
-                        onChange={(value) => (value != null) ? setTimeReading(value) : setTimeReading(0)}
-                        style={{ width: '50px' }}
-                    />
-                </div>
-
-                <button
-                    type="submit"
-                    onClick={handleSubmit}
-                    className="bg-indigo-600 text-white mb-4 w-auto py-3 px-4 rounded-3xl hover:bg-indigo-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                <Upload
+                    customRequest={handleCustomRequest}
+                    disabled={loading}
+                    showUploadList={false}
                 >
-                    Опубликовать
-                </button>
-            </div>
+                    <Button icon={<UploadOutlined />}>Загрузить файл</Button>
+                </Upload>
+
+                {imageUrl && (
+                    <div className="mt-4">
+                        <h3 className="font-medium mb-2">Предпросмотр:</h3>
+                        <img
+                            src={imageUrl}
+                            alt="Uploaded preview"
+                            className="max-w-full max-h-60 object-contain border rounded"
+                        />
+                    </div>
+                )}
+
+                <div className="flex flex-col mt-4">
+                    <label className="font-medium text-xl" htmlFor="title">Заголовок статьи</label>
+                    <Input
+                        id="title"
+                        name="title"
+                        type="text"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        style={{ width: '50vh', marginBottom: '10px', fontSize: '20px' }}
+                    />
+
+                    <MyEditor isDarkMode={isDarkMode} ref={editorRef} onImageUploaded={handleImageUploaded} />
+
+                    <div className="flex flex-row justify-between items-center mt-4 mb-4">
+                        <Select
+                            style={{ width: '200px' }}
+                            mode="multiple"
+                            placeholder="Выберите категории"
+                            options={optionCategories}
+                            value={selectedCategories}
+                            onChange={setSelectedCategories}
+                        />
+
+                        <InputNumber
+                            min={0}
+                            defaultValue={0}
+                            value={time_reading}
+                            onChange={(value) => (value != null) ? setTimeReading(value) : setTimeReading(0)}
+                            style={{ width: '50px' }}
+                        />
+                    </div>
+
+                    <button
+                        type="submit"
+                        onClick={handleSubmit}
+                        className="bg-indigo-600 text-white mb-4 w-auto py-3 px-4 rounded-3xl hover:bg-indigo-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        Опубликовать
+                    </button>
+                </div>
+            </ConfigProvider>
         </main>
     );
 }

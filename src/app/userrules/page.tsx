@@ -1,8 +1,18 @@
+'use client'
+
+import { useContext } from "react"
+import { Context } from "../StoresProvider"
+import { StoresType } from "@/types/StoresType"
+import { observer } from "mobx-react-lite"
+
 const UserRulesPage = () => {
+    const { themeStore } = useContext(Context) as StoresType
+    const isDarkMode = themeStore.isDarkMode
+
     return (
-        <main className="min-h-[79vh] flex items-center justify-center bg-[rgb(237,237,243)] py-10 px-4">
-            <div className="w-full h-full max-w-4xl bg-white rounded-xl shadow-lg overflow-hidden">
-                <div className="bg-gradient-to-r from-blue-600 to-indigo-700 p-6 text-white">
+        <main className={`min-h-[79vh] flex items-center justify-center py-10 px-4 ${isDarkMode ? 'bg-[rgb(38,38,38)]' : 'bg-[rgb(237,237,243)]'}`}>
+            <div className={`w-full h-full max-w-4xl rounded-xl shadow-lg overflow-hidden ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
+                <div className={`${isDarkMode ? 'bg-gradient-to-r from-gray-600 to-gray-700' : 'bg-gradient-to-r from-blue-600 to-indigo-700'} p-6 text-white`}>
                     <h1 className="text-3xl md:text-4xl font-bold text-center">
                         Правила пользования платформой
                     </h1>
@@ -13,16 +23,16 @@ const UserRulesPage = () => {
 
                 <div className="p-6 md:p-8 space-y-6 max-h-full">
                     <section>
-                        <h2 className="text-xl font-semibold text-gray-800 mb-3">1. Общие положения</h2>
-                        <p className="text-gray-600 mb-4">
+                        <h2 className={`text-xl font-semibold mb-3 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>1. Общие положения</h2>
+                        <p className={`mb-4 ${isDarkMode ? 'text-white' : 'text-gray-600'}`}>
                             Настоящие правила регулируют использование платформы для публикации и чтения статей.
                             Регистрируясь на сайте, вы подтверждаете свое согласие с этими правилами.
                         </p>
                     </section>
 
                     <section>
-                        <h2 className="text-xl font-semibold text-gray-800 mb-3">2. Регистрация и учетная запись</h2>
-                        <ul className="list-disc pl-5 space-y-2 text-gray-600">
+                        <h2 className={`text-xl font-semibold mb-3 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>2. Регистрация и учетная запись</h2>
+                        <ul className={`list-disc pl-5 space-y-2 ${isDarkMode ? 'text-white' : 'text-gray-600'}`}>
                             <li>Для публикации статей обязательна регистрация</li>
                             <li>Запрещено создавать несколько аккаунтов</li>
                             <li>Вы несете ответственность за безопасность своих учетных данных</li>
@@ -31,8 +41,8 @@ const UserRulesPage = () => {
                     </section>
 
                     <section>
-                        <h2 className="text-xl font-semibold text-gray-800 mb-3">3. Публикация статей</h2>
-                        <div className="space-y-3 text-gray-600">
+                        <h2 className={`text-xl font-semibold mb-3 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>3. Публикация статей</h2>
+                        <div className={`space-y-3 ${isDarkMode ? 'text-white' : 'text-gray-600'}`}>
                             <p>
                                 <span className="font-medium">Требования к контенту:</span> Статьи должны быть уникальными,
                                 содержательными и соответствовать тематике платформы.
@@ -51,8 +61,8 @@ const UserRulesPage = () => {
                     </section>
 
                     <section>
-                        <h2 className="text-xl font-semibold text-gray-800 mb-3">4. Авторские права</h2>
-                        <div className="space-y-3 text-gray-600">
+                        <h2 className={`text-xl font-semibold mb-3 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>4. Авторские права</h2>
+                        <div className={`space-y-3 ${isDarkMode ? 'text-white' : 'text-gray-600'}`}>
                             <p>
                                 Публикуя статью, вы подтверждаете, что являетесь автором или обладаете правами на публикацию.
                             </p>
@@ -64,8 +74,8 @@ const UserRulesPage = () => {
                     </section>
 
                     <section>
-                        <h2 className="text-xl font-semibold text-gray-800 mb-3">5. Ответственность</h2>
-                        <ul className="list-disc pl-5 space-y-2 text-gray-600">
+                        <h2 className={`text-xl font-semibold mb-3 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>5. Ответственность</h2>
+                        <ul className={`list-disc pl-5 space-y-2 ${isDarkMode ? 'text-white' : 'text-gray-600'}`}>
                             <li>Автор несет полную ответственность за содержание статей</li>
                             <li>Платформа не отвечает за точность опубликованной информации</li>
                             <li>За нарушения возможна блокировка аккаунта без возврата средств</li>
@@ -73,8 +83,8 @@ const UserRulesPage = () => {
                     </section>
 
                     <section>
-                        <h2 className="text-xl font-semibold text-gray-800 mb-3">6. Заключительные положения</h2>
-                        <p className="text-gray-600">
+                        <h2 className={`text-xl font-semibold mb-3 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>6. Заключительные положения</h2>
+                        <p className={isDarkMode ? 'text-white' : 'text-gray-600'}>
                             Администрация оставляет за собой право изменять данные правила без предварительного уведомления.
                             Регулярно проверяйте эту страницу для ознакомления с актуальными условиями.
                         </p>
@@ -91,4 +101,4 @@ const UserRulesPage = () => {
     )
 }
 
-export default UserRulesPage
+export default observer(UserRulesPage)

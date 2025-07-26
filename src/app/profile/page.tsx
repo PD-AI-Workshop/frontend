@@ -8,11 +8,12 @@ import { useRouter } from "next/navigation";
 import ThemeToggleButton from "@/components/ThemeToggleButton";
 
 const Profile = () => {
-    const { userStore } = useContext(Context) as StoresType
+    const { userStore, themeStore } = useContext(Context) as StoresType
     const user = userStore.getUser()
     const router = useRouter()
     const [isLoading, setIsLoading] = useState(true)
     const role = user?.role
+    const isDarkMode = themeStore.isDarkMode
 
     const handleAdminButton = () => {
 
@@ -45,20 +46,20 @@ const Profile = () => {
     }
 
     return (
-        <main className="min-h-[79vh] flex justify-center items-center bg-[rgb(237,237,243)]">
-            <div className='w-[28rem] bg-white rounded-2xl overflow-hidden shadow-lg'>
+        <main className={`min-h-[79vh] flex justify-center items-center ${isDarkMode ? 'bg-[rgb(38,38,38)]' : 'bg-[rgb(237,237,243)]'}`}>
+            <div className={`w-[28rem] rounded-2xl overflow-hidden shadow-lg ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
                 <div className='p-10'>
-                    <h1 className='text-center mb-10 text-3xl font-bold text-gray-800'>Аккаунт</h1>
+                    <h1 className={`text-center mb-10 text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>Аккаунт</h1>
 
                     <div className='space-y-6 mb-4'>
                         <div className="flex flex-col">
-                            <span className="text-lg font-medium text-center py-2 px-4 bg-gray-100 rounded-lg">
+                            <span className="text-lg font-medium text-center py-2 px-4 bg-gray-100 rounded-lg text-black">
                                 {user?.username}
                             </span>
                         </div>
 
                         <div className="flex flex-col">
-                            <span className="text-lg font-medium cursor-pointer text-center py-2 px-4 bg-gray-100 rounded-lg">
+                            <span className='text-lg font-medium cursor-pointer text-center py-2 px-4 bg-gray-100 rounded-lg text-black'>
                                 {user?.email}
                             </span>
                         </div>
