@@ -103,7 +103,7 @@ const ArticlePage = observer(() => {
                         </div>
 
                         {
-                            userStore.getUser()?.id === article.user_id
+                            (userStore.getUser()?.id === article.user_id || userStore.getUser()?.role === 'admin')
                             &&
                             <div className="ml-auto flex gap-2.5">
                                 <button onClick={() => router.push(`/editor/${article.id}`)} className="border-2 rounded-2xl w-25 h-10 bg-amber-300 border-amber-500 cursor-pointer hover:bg-amber-600">Изменить</button>

@@ -46,7 +46,7 @@ const HorizontalVersionOfArticle = ({ article, categories, files, isDarkMode }: 
                 </div>
 
                 <div className="flex justify-start gap-[5px]">
-                    {categories.map(category => <Tag name={category.name} key={category.id} />)}
+                    {categories.filter(category => article.category_ids.includes(category.id)).map(category => <Tag name={category.name} key={category.id} />)}
                 </div>
                 <div className='mt-6 flex justify-between'>
                     <p className={`text-sm font-normal font-inter ${isDarkMode ? 'text-white' : 'text-gray-600 '}`}>{formatTime(article.created_date)}</p>

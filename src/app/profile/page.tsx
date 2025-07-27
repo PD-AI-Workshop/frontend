@@ -15,9 +15,7 @@ const Profile = () => {
     const role = user?.role
     const isDarkMode = themeStore.isDarkMode
 
-    const handleAdminButton = () => {
-
-    }
+    const handleAdminButton = () => router.push('/admin')
 
     const handleExitButton = async () => {
         await userStore.logout()
