@@ -1,10 +1,14 @@
 import { AuthApi } from "@/http/AuthApi";
+import { UserApi } from "@/http/UserApi";
+import { UpdateUserType } from "@/types/UpdateUserType";
 import { UserType } from "@/types/UserType";
 import { AxiosError } from "axios";
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 
 export class UserStore {
     private user: UserType | null
+    private users: UserType[] = []
+    private readonly userApi = new UserApi()
     isAuth: boolean
 
     constructor() {
@@ -31,6 +35,46 @@ export class UserStore {
 
     public getUser(): UserType | null {
         return this.user
+    }
+
+    public setUsers(users: UserType[]): void {
+        this.users = users
+    }
+
+    public getUsers(): UserType[] {
+        return this.users
+    }
+
+    async fetch(): Promise<void> {
+        try {
+            const users = await this.userApi.getAll()
+            const sortedUsers = users.sort((a, b) => a.id - b.id)
+            this.setUsers(sortedUsers)
+        } catch (error) {
+            console.error("Ошибка загрузки пользователей:", error)
+        }
+    }
+
+    async update(id: number, user: UpdateUserType): Promise<void> {
+        await this.userApi.update(id, user)
+
+        runInAction(() => {
+            const index = this.users.findIndex(a => a.id === id)
+            if (index !== -1) {
+                this.users[index] = {
+                    ...this.users[index],
+                    ...user
+                }
+            }
+        })
+    }
+
+    async delete(id: number): Promise<void> {
+        await this.userApi.delete(id)
+
+        runInAction(() => {
+            this.users = this.users.filter(a => a.id !== id)
+        })
     }
 
     public async getCurrentUser(): Promise<UserType | null> {

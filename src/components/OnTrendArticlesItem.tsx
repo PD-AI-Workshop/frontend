@@ -16,7 +16,7 @@ const OnTrendArticlesItem = ({ className, article, categories, isDarkMode }: OnT
                     {article.title}
                 </p>
                 <div className="flex mt-1 justify-start gap-[5px]">
-                    {categories.map(category => <Tag key={category.id} name={category.name} />)}
+                    {categories.filter(category => article.category_ids.includes(category.id)).map(category => <Tag key={category.id} name={category.name} />)}
                 </div>
             </div>
 
