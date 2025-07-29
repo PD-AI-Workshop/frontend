@@ -10,7 +10,7 @@ const Footer = () => {
     const isDarkMode = themeStore.isDarkMode
 
     return (
-        <footer className={`flex justify-between items-center gap-8 h-[104px] py-5 px-20 ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
+        <footer className={`flex justify-between items-center gap-8 h-[104px] px-2 py-5 ${isDarkMode ? 'bg-black' : 'bg-white'} md:px-20`}>
             <div className="h-full">
                 <figure className="h-full">
                     <a href="/">

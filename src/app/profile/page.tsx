@@ -44,7 +44,7 @@ const Profile = () => {
     }
 
     return (
-        <main className={`min-h-[79vh] flex justify-center items-center ${isDarkMode ? 'bg-[rgb(38,38,38)]' : 'bg-[rgb(237,237,243)]'}`}>
+        <main className={`min-h-[79vh] flex justify-center items-center p-8 ${isDarkMode ? 'bg-[rgb(38,38,38)]' : 'bg-[rgb(237,237,243)]'}`}>
             <div className={`w-[28rem] rounded-2xl overflow-hidden shadow-lg ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
                 <div className='p-10'>
                     <h1 className={`text-center mb-10 text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>Аккаунт</h1>

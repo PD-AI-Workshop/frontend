@@ -41,7 +41,7 @@ const FeedVersionOfArticle = ({ article, categories, files, isDarkMode }: FeedVe
     }, [contentFile]);
 
     return (
-        <div className={`flex w-7xl mb-4 border border-gray-300/50 rounded-[12px] overflow-hidden ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
+        <div className={`w-auto md:w-7xl lg:w-4xl mb-4 border border-gray-300/50 rounded-[12px] overflow-hidden ${isDarkMode ? 'bg-black' : 'bg-white'} md:flex`}>
             <img
                 src={article.main_image_url}
                 alt="article"
@@ -55,7 +55,7 @@ const FeedVersionOfArticle = ({ article, categories, files, isDarkMode }: FeedVe
                 </div>
 
                 <div className="flex justify-start gap-[5px]">
-                    {categories.map(category => <Tag name={category.name} key={category.id} />)}
+                    {categories.filter(category => article.category_ids.includes(category.id)).map(category => <Tag name={category.name} key={category.id} />)}
                 </div>
                 <div className='mt-6 flex justify-between'>
                     <p className={`text-sm font-normal font-inter ${isDarkMode ? 'text-white' : 'text-gray-600 '}`}>{formatTime(article.created_date)}</p>

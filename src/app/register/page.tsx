@@ -16,6 +16,7 @@ import { observer } from "mobx-react-lite"
 const Register = () => {
   const { userStore, themeStore } = useContext(Context) as StoresType
   const [notification, setNotification] = useState<NotificationType | null>(null)
+  const [isMobile, setIsMobile] = useState(false)
   const isDarkMode = themeStore.isDarkMode
 
   const initialValues: RegisterFormType = {
@@ -35,6 +36,16 @@ const Register = () => {
       return () => clearTimeout(timer)
     }
   }, [notification])
+
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.matchMedia("(max-width: 768px)").matches)
+    }
+
+    checkIsMobile()
+    window.addEventListener("resize", checkIsMobile)
+    return () => window.removeEventListener("resize", checkIsMobile)
+  }, [])
 
   const handleSubmit = async (values: RegisterFormType, actions: FormikHelpers<RegisterFormType>) => {
     try {
@@ -61,7 +72,7 @@ const Register = () => {
   }
 
   return (
-    <main className={`min-h-[79vh] flex justify-center items-center ${isDarkMode ? 'bg-[rgb(38,38,38)]' : 'bg-[rgb(237,237,243)]'}`}>
+    <main className={`min-h-[79vh] flex justify-center items-center p-5 ${isDarkMode ? 'bg-[rgb(38,38,38)]' : 'bg-[rgb(237,237,243)]'}`}>
 
       {notification && <Notification
         notificationType={notification.type}
@@ -80,7 +91,7 @@ const Register = () => {
                 <h1 className={`text-center mb-4 mt-4 text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>Регистрация</h1>
                 <h1 className="text-center mb-4 text-gray-400 text-base">Создай бесплатный аккаунт — будь в курсе новых технологий</h1>
 
-                <div className="flex justify-center gap-5">
+                <div className="justify-center gap-5 md:flex">
                   <MyFieldInput
                     value="username"
                     type="text"
@@ -88,6 +99,7 @@ const Register = () => {
                     isTouched={touched.username}
                     error={errors.username}
                     isSmall={true}
+                    isMobile={isMobile}
                   />
 
                   <MyFieldInput
@@ -97,6 +109,7 @@ const Register = () => {
                     isTouched={touched.email}
                     error={errors.email}
                     isSmall={true}
+                    isMobile={isMobile}
                   />
                 </div>
 
@@ -107,6 +120,7 @@ const Register = () => {
                   isTouched={touched.password}
                   error={errors.password}
                   isSmall={false}
+                  isMobile={isMobile}
                 />
 
                 <MyFieldInput
@@ -116,6 +130,7 @@ const Register = () => {
                   isTouched={touched.confirmPassword}
                   error={errors.confirmPassword}
                   isSmall={false}
+                  isMobile={isMobile}
                 />
 
                 <MyButton

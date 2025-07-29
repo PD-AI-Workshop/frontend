@@ -34,7 +34,7 @@ const SearchBar = ({ active, setActive, isDarkMode }: SearchBarProps) => {
             onClick={() => setActive(false)}
         >
             <div
-                className="absolute top-[7%] flex flex-col items-end w-full px-40"
+                className="absolute top-5 right-5 flex flex-col md:top-10 md:right-10"
                 onClick={() => setActive(true)}
                 onMouseEnter={() => setActive(true)}
                 onMouseLeave={() => setActive(false)}

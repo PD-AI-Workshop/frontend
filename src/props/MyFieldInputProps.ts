@@ -5,4 +5,5 @@ export interface MyFieldInputProps {
     isTouched: boolean | undefined
     error: string | undefined
     isSmall: boolean
+    isMobile: boolean
 }

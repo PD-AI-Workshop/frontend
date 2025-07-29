@@ -29,17 +29,17 @@ const Header = () => {
     }, [])
 
     return (
-        <header className={`flex justify-between gap-8 h-[104px] py-5 px-20 sticky top-0 border-b border-solid border-[#C4CDEE] z-10 ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
+        <header className={`flex justify-between h-[104px] py-5 px-2 sticky top-0 border-b border-solid border-[#C4CDEE] z-10 ${isDarkMode ? 'bg-black' : 'bg-white'} md:px-20 md:gap-8`}>
             <div className="flex gap-8 h-full">
                 <figure>
                     <Link href="/">
                         <img src={isDarkMode ? '/img/logoDark.png' : '/img/logo.svg'} className="w-full h-full object-cover" alt="logotype" />
                     </Link>
                 </figure>
-                <HeaderLeftLinks isDarkMode={isDarkMode} />
+                {!isMobile && <HeaderLeftLinks isDarkMode={isDarkMode} />}
             </div>
 
-            <div className="flex items-center gap-3 h-full">
+            <div className="flex items-center h-full md:gap-3">
                 {!isClient
                     ?
                     <Search className={`mt-auto mb-auto ml-5 mr-5 ${isDarkMode ? 'bg-white' : 'text-[#040BB6]'} `} />

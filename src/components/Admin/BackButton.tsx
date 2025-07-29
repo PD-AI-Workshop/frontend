@@ -6,7 +6,7 @@ const BackButton = () => {
     const handleBackClick = () => router.push('/')
 
     return (
-        <Space>
+        <Space className='relative left-10'>
             <Button type="primary" onClick={handleBackClick}>
                 Назад
             </Button>
