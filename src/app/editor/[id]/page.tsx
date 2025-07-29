@@ -7,8 +7,9 @@ import { UpdateArticleType } from "@/types/UpdateArticleType"
 import { UploadOutlined } from "@ant-design/icons"
 import { Button, Input, InputNumber, Select, Upload, UploadProps } from "antd"
 import { RcFile } from "antd/es/upload"
+import { observer } from "mobx-react-lite"
 import { useParams, useRouter } from "next/navigation"
-import { useContext, useEffect, useRef, useState } from "react"
+import { useCallback, useContext, useEffect, useRef, useState } from "react"
 
 const EditArticlePage = () => {
     const { categoryStore, fileStore, articleStore, themeStore } = useContext(Context) as StoresType
@@ -23,6 +24,7 @@ const EditArticlePage = () => {
     const params = useParams()
     const id = Array.isArray(params.id) ? params.id[0] : params.id
     const isDarkMode = themeStore.isDarkMode
+    const [editorContent, setEditorContent] = useState('')
 
     useEffect(() => {
         const loadArticle = async () => {
@@ -45,12 +47,9 @@ const EditArticlePage = () => {
                 const file = await fileStore.getById(article.text_id)
                 const response = await fetch(file.url)
                 const html = await response.text()
+                setEditorContent(html)
 
-                if (editorRef.current) {
-                    editorRef.current.setContent(html)
-                }
-
-            } catch(error) {
+            } catch (error) {
                 console.error("Ошибка загрузки статьи:", error)
             } finally {
                 setLoading(false)
@@ -91,6 +90,12 @@ const EditArticlePage = () => {
         }
     }
 
+    const handleEditorInit = useCallback(() => {
+        if (editorRef.current && editorContent) {
+            editorRef.current.setContent(editorContent);
+        }
+    }, [editorContent]);
+
     const handleSubmit = async () => {
         if (!id) return
 
@@ -127,7 +132,7 @@ const EditArticlePage = () => {
     }
 
     return (
-        <main className={`min-h-[79vh] flex items-center flex-col ${isDarkMode ? 'bg-[rgb(38,38,38)]' : 'bg-[rgb(237,237,243)]'}`}>
+        <main className={`min-h-[79vh] p-4 flex items-center flex-col ${isDarkMode ? 'bg-[rgb(38,38,38)]' : 'bg-[rgb(237,237,243)]'}`}>
             <h1 className="mt-5 text-2xl font-bold mb-5">Редактор статьи</h1>
 
             <Upload
@@ -160,7 +165,12 @@ const EditArticlePage = () => {
                     style={{ width: '50vh', marginBottom: '10px', fontSize: '20px' }}
                 />
 
-                <MyEditor isDarkMode={isDarkMode} ref={editorRef} onImageUploaded={handleImageUploaded} />
+                <MyEditor
+                    isDarkMode={isDarkMode}
+                    ref={editorRef}
+                    onImageUploaded={handleImageUploaded}
+                    initialContent={editorContent}
+                />
 
                 <div className="flex flex-row justify-between items-center mt-4 mb-4">
                     <Select
@@ -193,4 +203,4 @@ const EditArticlePage = () => {
     );
 }
 
-export default EditArticlePage
+export default observer(EditArticlePage)

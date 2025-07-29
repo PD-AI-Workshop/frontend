@@ -6,7 +6,7 @@ import { validationSchema } from "@/schemas/LoginValidationSchema"
 import { LoginFormType } from "@/types/LoginFormType"
 import { Form, Formik, FormikHelpers } from "formik"
 import Link from "next/link"
-import { useContext } from "react"
+import { useContext, useEffect, useState } from "react"
 import { Context } from "../StoresProvider"
 import { StoresType } from "@/types/StoresType"
 import { observer } from "mobx-react-lite"
@@ -14,6 +14,7 @@ import { observer } from "mobx-react-lite"
 const Login = () => {
     const { userStore, themeStore } = useContext(Context) as StoresType
     const isDarkMode = themeStore.isDarkMode
+    const [isMobile, setIsMobile] = useState(false)
     const initialValues: LoginFormType = {
         email: '',
         password: ''
@@ -25,8 +26,18 @@ const Login = () => {
         actions.setSubmitting(false)
     }
 
+    useEffect(() => {
+        const checkIsMobile = () => {
+            setIsMobile(window.matchMedia("(max-width: 768px)").matches)
+        }
+
+        checkIsMobile()
+        window.addEventListener("resize", checkIsMobile)
+        return () => window.removeEventListener("resize", checkIsMobile)
+    }, [])
+
     return (
-        <main className={`min-h-[79vh] flex items-center justify-center ${isDarkMode ? 'bg-[rgb(38,38,38)]' : 'bg-[rgb(237,237,243)]'}`}>
+        <main className={`min-h-[79vh] flex items-center p-2 justify-center ${isDarkMode ? 'bg-[rgb(38,38,38)]' : 'bg-[rgb(237,237,243)]'}`}>
             <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
@@ -45,6 +56,7 @@ const Login = () => {
                                     isTouched={touched.email}
                                     error={errors.email}
                                     isSmall={false}
+                                    isMobile={isMobile}
                                 />
 
                                 <MyFieldInput
@@ -54,6 +66,7 @@ const Login = () => {
                                     isTouched={touched.password}
                                     error={errors.password}
                                     isSmall={false}
+                                    isMobile={isMobile}
                                 />
 
                                 <MyButton

@@ -1,7 +1,7 @@
 import { Button } from 'antd'
 import Table, { ColumnType } from 'antd/es/table'
-import styles from './../../styles/GenericTable.module.css'
 import BackButton from './BackButton'
+import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 
 export interface GenericTableProps<T> {
     dataSource: T[]
@@ -18,23 +18,34 @@ const GenericTable = <T extends object>({
     addButtonText = 'Добавить',
     rowKey = 'id',
 }: GenericTableProps<T>) => {
+    const screens = useBreakpoint()
+    const isMobile = !screens.md
+
     return (
         <div>
-            {onAdd &&
-                <Button className={styles.addButton} onClick={onAdd} type="primary">
-                    {addButtonText}
-                </Button>
-            }
+            <div className="flex md:justify-start justify-center items-center gap-3 mb-4 flex-wrap">
+                {onAdd && (
+                    <Button
+                        onClick={onAdd}
+                        type="primary"
+                    >
+                        {addButtonText}
+                    </Button>
+                )}
+                <BackButton />
+            </div>
 
-            <BackButton />
-
-            <Table
-                bordered
-                className={styles.table}
-                dataSource={dataSource}
-                columns={columns}
-                rowKey={rowKey}
-            />
+            <div className="w-full overflow-x-auto">
+                <Table
+                    bordered
+                    className="min-w-full"
+                    dataSource={dataSource}
+                    columns={columns}
+                    rowKey={rowKey}
+                    scroll={{ x: 'max-content' }}
+                    size={isMobile ? 'small' : 'middle'}
+                />
+            </div>
         </div>
     )
 }

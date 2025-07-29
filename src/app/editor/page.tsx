@@ -91,7 +91,7 @@ const EditorPage = () => {
     }
 
     return (
-        <main className="min-h-[79vh] flex items-center flex-col">
+        <main className="min-h-[79vh] flex p-2 items-center flex-col">
             <ConfigProvider
                 theme={{
                     algorithm: isDarkMode ? theme.darkAlgorithm : theme.defaultAlgorithm

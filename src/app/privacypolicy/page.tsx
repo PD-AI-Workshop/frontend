@@ -11,7 +11,7 @@ const PrivacyPolicyPage = () => {
     const isDarkMode = themeStore.isDarkMode
 
     return (
-        <main className={`min-h-[79vh] py-12 ${isDarkMode ? 'bg-[rgb(38,38,38)]' : 'bg-[rgb(237,237,243)]'}`}>
+        <main className={`min-h-[79vh] p-2 ${isDarkMode ? 'bg-[rgb(38,38,38)]' : 'bg-[rgb(237,237,243)]'}`}>
             <div className={`max-w-4xl mx-auto rounded-xl shadow-md p-6 md:p-10 ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
                 <h1 className={`text-3xl md:text-4xl font-bold mb-2 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
                     Политика конфиденциальности

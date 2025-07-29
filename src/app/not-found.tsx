@@ -12,7 +12,7 @@ const NotFoundPage = () => {
     const isDarkMode = themeStore.isDarkMode
 
     return (
-        <main className={`min-h-[79vh] flex items-center justify-center px-4 py-12 ${isDarkMode ? 'bg-[rgb(38,38,38)]' : 'bg-[rgb(237,237,243)]'}`}>
+        <main className={`min-h-[79vh] flex items-center justify-center px-10 py-12 ${isDarkMode ? 'bg-[rgb(38,38,38)]' : 'bg-[rgb(237,237,243)]'}`}>
             <motion.div 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}

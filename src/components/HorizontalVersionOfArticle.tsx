@@ -32,13 +32,13 @@ const HorizontalVersionOfArticle = ({ article, categories, files, isDarkMode }: 
     }, [contentFile]);
 
     return (
-        <div className='flex w-7xl border border-gray-300/50 rounded-[12px] overflow-hidden'>
+        <div className='flex border border-gray-300/50 rounded-[12px] overflow-hidden flex-col w-auto md:flex-row'>
             <img
                 src={article.main_image_url}
                 alt="article"
-                className="w-xl object-cover " />
+                className="w-[500px] object-cover" /> 
 
-            <div className="p-3 flex flex-col">
+            <div className="p-3 flex flex-col md:w-full">
                 <p className="text-3xl font-semibold line-clamp-3">{article.title}</p>
 
                 <div className="my-4 min-h-[60px]">

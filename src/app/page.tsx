@@ -25,15 +25,15 @@ function Home() {
   const isDarkMode = themeStore.isDarkMode
 
   return (
-    <main className="flex flex-col items-center py-5 px-2.5 gap-5 grow shrink basis-0">
+    <main className="flex flex-col items-center py-5 px-2.5 gap-5 grow shrink basis-0 w-full">
 
       <div className="w-full max-w-7xl">
-        <h2 className="text-4xl font-semibold text-left w-full">В тренде</h2>
-        <div className="flex justify-between mt-6 h-[351px]">
+        <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-left w-full">В тренде</h2>
+        <div className="flex flex-col justify-between mt-6 h-auto md:flex-row gap-4">
           {onTrendArticles.map(article =>
             <Link href={`/article/${article.id}`} key={article.id}>
               <OnTrendArticlesItem
-                className="narrowVersion rounded-xl h-[350px] w-[415px]"
+                className="narrowVersion rounded-xl h-[350px] md:w-[415px]"
                 article={article}
                 categories={categories}
                 isDarkMode={isDarkMode}
@@ -43,12 +43,12 @@ function Home() {
       </div>
 
       <div className="w-full max-w-7xl">
-        <h2 className="text-4xl font-semibold text-left w-full">Нейросети</h2>
-        <div className="flex justify-between mt-6">
+        <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-left w-full">Нейросети</h2>
+        <div className="flex flex-col md:flex-row gap-5 mt-6 h-auto">
           {neuralNetworkArticles.map(article =>
-            <Link href={`/article/${article.id}`} key={article.id}>
+            <Link href={`/article/${article.id}`} key={article.id} className="w-full md:w-[48%] lg:w-[49%] xl:w-[631px]">
               <OnTrendArticlesItem
-                className="wideVersion rounded-xl w-[631px]"
+                className="wideVersion rounded-xl w-full h-auto md:h-[350px]"
                 article={article}
                 categories={categories}
                 isDarkMode={isDarkMode}
@@ -58,7 +58,7 @@ function Home() {
       </div>
 
       <div className="w-full max-w-7xl">
-        <h2 className="text-4xl font-semibold text-left w-full">Последнии статьи</h2>
+        <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-left w-full">Последнии статьи</h2>
         <div className="flex flex-col gap-5 mt-6">
           {lastArticles.map(article =>
             <Link href={`/article/${article.id}`} key={article.id}>

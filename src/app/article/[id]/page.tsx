@@ -6,7 +6,8 @@ import { formatDate } from "@/utils/formatTime"
 import { UserRound } from "lucide-react"
 import { observer } from "mobx-react-lite"
 import { useParams, useRouter } from "next/navigation"
-import { useContext, useEffect, useState } from "react"
+import Prism from 'prismjs'
+import { useContext, useEffect, useRef, useState } from "react"
 
 const ArticlePage = observer(() => {
     const [isLoading, setIsLoading] = useState(true)
@@ -17,6 +18,17 @@ const ArticlePage = observer(() => {
     const params = useParams()
     const id = Array.isArray(params.id) ? params.id[0] : params.id
     const router = useRouter()
+    const contentRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        if (content && contentRef.current) {
+            setTimeout(() => {
+                if (contentRef.current) {
+                    Prism.highlightAllUnder(contentRef.current);
+                }
+            }, 0);
+        }
+    }, [content]);
 
     useEffect(() => {
         let isMounted = true
@@ -83,8 +95,8 @@ const ArticlePage = observer(() => {
     if (!article) return <div>Статья не найдена</div>
 
     return (
-        <main className="min-h-[79vh] flex justify-center]">
-            <div className="w-[630px] mt-8 mr-auto ml-auto mb-8 border-1 border-solid border-[rgb(131,131,131)] rounded-xl">
+        <main className="min-h-[79vh] p-2 flex justify-center">
+            <div className="w-[400px] mt-8 mr-auto ml-auto mb-8 border-1 border-solid border-[rgb(131,131,131)] rounded-xl md:w-[630px]">
                 <img className="rounded-t-xl" src={article?.main_image_url} />
 
                 <div className="p-4">
@@ -105,14 +117,15 @@ const ArticlePage = observer(() => {
                         {
                             (userStore.getUser()?.id === article.user_id || userStore.getUser()?.role === 'admin')
                             &&
-                            <div className="ml-auto flex gap-2.5">
-                                <button onClick={() => router.push(`/editor/${article.id}`)} className="border-2 rounded-2xl w-25 h-10 bg-amber-300 border-amber-500 cursor-pointer hover:bg-amber-600">Изменить</button>
+                            <div className="ml-10 md:ml-auto md:flex md:gap-2.5">
+                                <button onClick={() => router.push(`/editor/${article.id}`)} className="border-2 mb-2 rounded-2xl w-25 h-10 bg-amber-300 border-amber-500 cursor-pointer hover:bg-amber-600">Изменить</button>
                                 <button onClick={handleDelete} className="border-2 rounded-2xl w-25 h-10 bg-red-300 border-red-500 cursor-pointer hover:bg-red-600">Удалить</button>
                             </div>
                         }
                     </div>
 
                     <div
+                        ref={contentRef}
                         className="prose max-w-none"
                         dangerouslySetInnerHTML={{ __html: content || "" }}
                     />

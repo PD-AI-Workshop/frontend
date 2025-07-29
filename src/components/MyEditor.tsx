@@ -2,6 +2,7 @@ import { Context } from '@/app/StoresProvider';
 import { BlobInfoType } from '@/types/BlobInfoType';
 import { StoresType } from '@/types/StoresType';
 import { Editor } from '@tinymce/tinymce-react';
+import { observer } from 'mobx-react-lite';
 import { useEffect, useState, useRef, useContext, forwardRef, useImperativeHandle } from 'react';
 
 declare global {
@@ -13,6 +14,7 @@ declare global {
 export interface MyEditorProps {
     onImageUploaded?: (id: number) => void
     isDarkMode: boolean
+    initialContent?: string
 }
 
 export interface MyEditorHandle {
@@ -20,19 +22,32 @@ export interface MyEditorHandle {
     getContent: () => string
 }
 
-const MyEditor = forwardRef<MyEditorHandle, MyEditorProps>(({ onImageUploaded, isDarkMode }, ref) => {
+const MyEditor = forwardRef<MyEditorHandle, MyEditorProps>(({ onImageUploaded, isDarkMode, initialContent }, ref) => {
     const { fileStore } = useContext(Context) as StoresType
     const [isClient, setIsClient] = useState(false)
     const editorRef = useRef<any>(null)
+    const [isMobile, setIsMobile] = useState(false)
+    const [isInitialized, setIsInitialized] = useState(false)
 
     useEffect(() => {
+        const checkIsMobile = () => {
+            setIsMobile(window.matchMedia("(max-width: 768px)").matches)
+        }
+
+        checkIsMobile()
         setIsClient(true)
+        window.addEventListener("resize", checkIsMobile)
+        return () => window.removeEventListener("resize", checkIsMobile)
     }, [])
 
+    useEffect(() => {
+        if (isInitialized && editorRef.current && initialContent !== undefined) {
+            editorRef.current.setContent(initialContent)
+        }
+    }, [initialContent, isInitialized])
+
     useImperativeHandle(ref, () => ({
-        getContent: () => {
-            return editorRef.current ? editorRef.current.getContent() : ''
-        },
+        getContent: () => editorRef.current ? editorRef.current.getContent() : '',
         setContent: (content: string) => {
             if (editorRef.current) {
                 editorRef.current.setContent(content)
@@ -61,16 +76,22 @@ const MyEditor = forwardRef<MyEditorHandle, MyEditorProps>(({ onImageUploaded, i
             {isClient ?
                 <Editor
                     tinymceScriptSrc="/tinymce/tinymce.min.js"
-                    onInit={(_, editor) => editorRef.current = editor}
+                    onInit={(_, editor) => {
+                        editorRef.current = editor
+                        if (initialContent !== undefined) {
+                            editor.setContent(initialContent)
+                        }
+                        setIsInitialized(true)
+                    }}
                     init={{
                         skin: `${isDarkMode ? 'oxide-dark' : 'oxide'}`,
                         content_css: `${isDarkMode ? 'dark' : 'default'}`,
                         height: 600,
-                        width: 900,
+                        width: isMobile ? 'auto' : 900,
                         highlight_on_focus: false,
                         menubar: true,
-                        plugins: 'advlist lists link image charmap table code help wordcount',
-                        toolbar: 'formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | outdent indent | image code',
+                        plugins: 'advlist lists link image charmap table help wordcount codesample',
+                        toolbar: 'formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | outdent indent | image codesample',
                         image_uploadtab: true,
                         images_upload_handler: handleImageUpload,
                         file_picker_types: 'image',
@@ -109,9 +130,9 @@ const MyEditor = forwardRef<MyEditorHandle, MyEditorProps>(({ onImageUploaded, i
                         }
                     }}
                 />
-                : <div />}
+                : <div>Загрузка редактора...</div>}
         </div>
     );
 })
 
-export default MyEditor;
+export default observer(MyEditor)
