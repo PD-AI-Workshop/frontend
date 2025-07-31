@@ -1,4 +1,4 @@
-import { ArticleType } from "@/types/ArticleType";
+import { ArticleType } from '@/types/ArticleTypes'
 
 export interface SearchBarArticleProps {
     article: ArticleType

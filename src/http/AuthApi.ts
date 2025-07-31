@@ -1,11 +1,11 @@
-import { AuthResponseType } from "@/types/AuthResponseType";
-import { AxiosResponse } from "axios";
-import $host from ".";
-import { RegResponseType } from "@/types/RegResponseType";
-import { UserType } from "@/types/UserType";
+import { AuthResponseType } from '@/types/AuthResponseType'
+import { AxiosResponse } from 'axios'
+import $host from '.'
+import { RegResponseType } from '@/types/RegResponseType'
+import { UserType } from '@/types/UserTypes'
 
 const FORM_URLENCODED_HEADERS = {
-    'Content-Type': 'application/x-www-form-urlencoded'
+    'Content-Type': 'application/x-www-form-urlencoded',
 }
 
 export class AuthApi {
@@ -15,7 +15,12 @@ export class AuthApi {
         return $host.post<AuthResponseType>('auth/login', params, { headers: FORM_URLENCODED_HEADERS })
     }
 
-    static async register(username: string, email: string, password: string, role: string): Promise<AxiosResponse<RegResponseType>> {
+    static async register(
+        username: string,
+        email: string,
+        password: string,
+        role: string
+    ): Promise<AxiosResponse<RegResponseType>> {
         return $host.post<RegResponseType>('auth/register', { username, email, password, role })
     }
 

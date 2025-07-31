@@ -23,26 +23,24 @@ const ActionButtons = <T extends { id: number }>({
 
         try {
             await onDelete(record)
-        }
-
-        catch (error) {
+        } catch (error) {
             console.error('Ошибка при удалении:', error)
         }
     }
 
     return (
         <Space>
-            {onEdit &&
+            {onEdit && (
                 <Button type="primary" onClick={handleEditClick}>
                     {editText}
                 </Button>
-            }
+            )}
 
-            {onDelete &&
+            {onDelete && (
                 <Button danger onClick={handleDelete}>
                     {deleteText}
                 </Button>
-            }
+            )}
         </Space>
     )
 }

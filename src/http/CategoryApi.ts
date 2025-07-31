@@ -1,7 +1,5 @@
-import { CategoryType } from "@/types/CategoryType";
-import { BaseApi } from "./BaseApi";
-import { CreateCategoryType } from "@/types/CreateCategoryType";
-import { UpdateCategoryType } from "@/types/UpdateCategoryType";
+import { CategoryType, CreateCategoryType, UpdateCategoryType } from '@/types/CategoryTypes'
+import { BaseApi } from './BaseApi'
 
 export class CategoryApi extends BaseApi<CategoryType, CreateCategoryType, UpdateCategoryType> {
     constructor() {

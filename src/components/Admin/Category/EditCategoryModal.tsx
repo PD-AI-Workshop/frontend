@@ -1,19 +1,12 @@
-import { Context } from "@/app/StoresProvider"
-import { CategoryType } from "@/types/CategoryType"
-import { StoresType } from "@/types/StoresType"
-import { Form, Input, Modal } from "antd"
-import { useForm } from "antd/es/form/Form"
-import { useContext, useEffect } from "react"
-
-export interface EditCategoryModalProps {
-    isEditModalOpen: boolean
-    setIsEditModalOpen: (value: boolean) => void
-    selectedCategory: CategoryType | null
-}
+import { useStores } from '@/hooks/useStores'
+import { EditCategoryModalProps } from '@/props/EditCategoryModalProps'
+import { Form, Input, Modal } from 'antd'
+import { useForm } from 'antd/es/form/Form'
+import { useEffect } from 'react'
 
 const EditCategoryModal = ({ isEditModalOpen, setIsEditModalOpen, selectedCategory }: EditCategoryModalProps) => {
     const [form] = useForm()
-    const { categoryStore } = useContext(Context) as StoresType
+    const { categoryStore } = useStores()
     const onCancel = () => setIsEditModalOpen(false)
 
     useEffect(() => {
@@ -32,12 +25,7 @@ const EditCategoryModal = ({ isEditModalOpen, setIsEditModalOpen, selectedCatego
     }
 
     return (
-        <Modal
-            title='Редактирование категории'
-            open={isEditModalOpen}
-            onOk={handleEdit}
-            onCancel={onCancel}
-        >
+        <Modal title="Редактирование категории" open={isEditModalOpen} onOk={handleEdit} onCancel={onCancel}>
             <Form layout="vertical" form={form}>
                 <Form.Item label="Название" name="name">
                     <Input style={{ width: '100%' }} />

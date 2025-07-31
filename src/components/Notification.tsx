@@ -1,24 +1,55 @@
-import { NotificationProps } from "@/props/NotificationProps"
-import { FiCheckCircle, FiXCircle } from "react-icons/fi"
+import { NotificationProps } from '@/props/NotificationProps'
+import { CircleCheckBig, CirclePlus, X } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
 
-const Notification = ({ notificationType, notificationMessage }: NotificationProps) => {
+const Notification = ({ notificationType, notificationMessage, autoClose = 5000 }: NotificationProps) => {
+    const [isVisible, setIsVisible] = useState(true)
+    const [isClosing, setIsClosing] = useState(false)
+    const timerRef = useRef<NodeJS.Timeout | null>(null)
+
+    const handleClose = () => {
+        setIsClosing(true)
+        setTimeout(() => setIsVisible(false), 300)
+    }
+
+    useEffect(() => {
+        if (autoClose > 0) timerRef.current = setTimeout(handleClose, autoClose)
+
+        return () => {
+            if (timerRef.current) clearTimeout(timerRef.current)
+        }
+    }, [autoClose])
+
+    useEffect(() => {
+        if (isClosing && timerRef.current) clearTimeout(timerRef.current)
+    }, [isClosing])
+
+    if (!isVisible) return null
+
     return (
-        <div className={`fixed top-30 right-4 z-50 flex items-center p-4 rounded-md shadow-lg transform transition-transform duration-300 animate-fadeIn overflow-hidden 
-            ${notificationType === 'success'
-                ? 'bg-green-100 text-green-800 border border-green-200'
-                : 'bg-red-100 text-red-800 border border-red-200'}
-        `}>
-
-            <div className="text-xl mr-2">
-                {notificationType === 'success'
-                    ? <FiCheckCircle />
-                    : <FiXCircle />}
+        <div
+            className={`fixed top-30 right-4 z-50 flex items-start p-4 rounded-md shadow-lg transform transition-transform duration-300 overflow-hidden max-w-xs
+            ${notificationType === 'success' ? 'bg-green-100 text-green-800 border border-green-200' : 'bg-red-100 text-red-800 border border-red-200'}
+            ${isClosing ? 'animate-fadeOut' : 'animate-fadeIn'}`}
+        >
+            <div className="text-xl mr-2 mt-0.5">
+                {notificationType === 'success' ? <CircleCheckBig /> : <CirclePlus className="rotate-45" />}
             </div>
 
-            <span>{notificationMessage}</span>
+            <div className="flex-1">{notificationMessage}</div>
+
+            <button
+                onClick={handleClose}
+                className="ml-2 text-gray-500 hover:text-gray-700 focus:outline-none"
+                aria-label="Закрыть уведомление"
+            >
+                <X />
+            </button>
 
             <div className="absolute bottom-0 left-0 w-full h-1 bg-current opacity-20"></div>
-            <div className="absolute bottom-0 right-0 h-1 w-full bg-current opacity-70 origin-right animate-progress"></div>
+            <div
+                className={`absolute bottom-0 right-0 h-1 w-full bg-current opacity-70 origin-right ${!isClosing ? 'animate-progress' : ''}`}
+            ></div>
         </div>
     )
 }

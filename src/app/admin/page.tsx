@@ -1,69 +1,33 @@
 'use client'
 
-import { Button, ConfigProvider, Layout, theme } from "antd"
-import { useContext, useEffect, useState } from "react"
-import { Context } from "../StoresProvider"
-import { StoresType } from "@/types/StoresType"
-import AdminMenu from "@/components/Admin/AdminMenu"
-import AdminRouter from "@/components/Admin/AdminRouter"
-import { observer } from "mobx-react-lite"
-import { useRouter } from "next/navigation"
-import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons"
-import Sider from "antd/es/layout/Sider"
-
-const { Content } = Layout
+import { Button, ConfigProvider, Layout, theme } from 'antd'
+import { useCallback, useEffect, useState } from 'react'
+import AdminMenu from '@/components/Admin/AdminMenu'
+import AdminRouter from '@/components/Admin/AdminRouter'
+import { observer } from 'mobx-react-lite'
+import { useRouter } from 'next/navigation'
+import { useMobileDetect } from '@/hooks/useMobileDetect'
+import { useAuthCheck } from '@/hooks/useAuthCheck'
+import { useLocalStorageState } from '@/hooks/useLocalStorageState'
+import { useStores } from '@/hooks/useStores'
+import { SquareChevronLeft, SquareChevronRight } from 'lucide-react'
 
 const AdminPage = () => {
-    const { categoryStore, fileStore, userStore, articleStore } = useContext(Context) as StoresType
-    const [isCheckingAuth, setIsCheckingAuth] = useState(true)
+    const { categoryStore, fileStore, userStore, articleStore } = useStores()
     const router = useRouter()
-    const [isMobile, setIsMobile] = useState(false)
+    const isCheckingAuth = useAuthCheck(userStore, router)
+    const isMobile = useMobileDetect()
     const [collapsed, setCollapsed] = useState(isMobile)
-    const [selectedKey, setSelectedKey] = useState(() => {
-        if (typeof window !== 'undefined') {
-            return localStorage.getItem('selectedKey') ?? '1'
-        }
+    const [selectedKey, setSelectedKey] = useLocalStorageState('selectedKey', '1')
 
-        return '1'
-    })
-
-    useEffect(() => {
-        const checkAuth = async () => {
-            await userStore.checkAuth()
-            setIsCheckingAuth(false)
-
-            if (!userStore.isAuth) {
-                router.push('/')
-            }
-        }
-        checkAuth()
-    }, [])
-
-    useEffect(() => {
-        const checkIsMobile = () => {
-            setIsMobile(window.matchMedia("(max-width: 768px)").matches)
-        }
-
-        checkIsMobile()
-        window.addEventListener("resize", checkIsMobile)
-        return () => window.removeEventListener("resize", checkIsMobile)
-    }, [])
-
-    useEffect(() => {
-        if (isMobile) {
-            setCollapsed(true)
-        }
-    }, [isMobile])
+    useEffect(() => setCollapsed(isMobile), [isMobile])
 
     useEffect(() => {
         if (isCheckingAuth) return
 
         const fetchData = async () => {
             try {
-                await categoryStore.fetch()
-                await fileStore.fetch()
-                await articleStore.fetch()
-                await userStore.fetch()
+                await Promise.all([categoryStore.fetch(), fileStore.fetch(), articleStore.fetch(), userStore.fetch()])
             } catch (error: any) {
                 if (error.response?.status === 401) {
                     await userStore.logout()
@@ -78,16 +42,19 @@ const AdminPage = () => {
     const handleMenuSelect = async ({ key }: { key: string }) => {
         setSelectedKey(key)
         localStorage.setItem('selectedKey', key)
+        if (isMobile) setCollapsed(true)
+    }
 
-        if (isMobile) {
-            setCollapsed(true)
-        }
+    const toggleMenu = useCallback(() => setCollapsed(!collapsed), [collapsed])
+
+    if (isCheckingAuth) {
+        return <div>Checking authorization...</div>
     }
 
     return (
         <ConfigProvider theme={{ algorithm: theme.darkAlgorithm }}>
-            <Layout style={{ minHeight: "100vh", display: "flex", flexDirection: "row" }}>
-                <Sider
+            <Layout className="flex min-h-screen">
+                <Layout.Sider
                     collapsible
                     collapsed={collapsed}
                     onCollapse={setCollapsed}
@@ -95,44 +62,24 @@ const AdminPage = () => {
                     width={200}
                     breakpoint="md"
                     trigger={null}
-                    style={{
-                        overflow: "auto",
-                        height: "100vh",
-                        position: isMobile ? "absolute" : "relative",
-                        zIndex: 100,
-                        left: isMobile ? (collapsed ? "-100%" : "0") : "auto"
-                    }}
+                    className={`h-screen fixed lg:relative z-50 ${isMobile && !collapsed ? 'inset-0' : ''}`}
                 >
-                    <AdminMenu
-                        selectedKey={selectedKey}
-                        handleMenuSelect={handleMenuSelect}
-                    />
-                </Sider>
+                    <AdminMenu selectedKey={selectedKey} handleMenuSelect={handleMenuSelect} />
+                </Layout.Sider>
 
                 <Layout>
                     {isMobile && (
                         <Button
                             type="text"
-                            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-                            onClick={() => setCollapsed(!collapsed)}
-                            style={{
-                                position: "absolute",
-                                top: 16,
-                                left: 16,
-                                zIndex: 99,
-                                color: "rgba(255, 255, 255, 0.8)"
-                            }}
+                            icon={collapsed ? <SquareChevronRight /> : <SquareChevronLeft />}
+                            onClick={toggleMenu}
+                            className="fixed top-4 left-4 z-40 text-white/80"
                         />
                     )}
 
-                    <Content style={{
-                        padding: 24,
-                        margin: 0,
-                        background: "#141414",
-                        minHeight: "100vh"
-                    }}>
+                    <Layout.Content className="p-6 bg-[#141414] min-h-screen">
                         <AdminRouter selectedKey={selectedKey} />
-                    </Content>
+                    </Layout.Content>
                 </Layout>
             </Layout>
         </ConfigProvider>

@@ -1,15 +1,8 @@
 import { Button } from 'antd'
-import Table, { ColumnType } from 'antd/es/table'
+import Table from 'antd/es/table'
 import BackButton from './BackButton'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
-
-export interface GenericTableProps<T> {
-    dataSource: T[]
-    columns: ColumnType<T>[]
-    onAdd?: () => void
-    addButtonText?: string
-    rowKey?: string
-}
+import { GenericTableProps } from '@/props/GenericTableProps'
 
 const GenericTable = <T extends object>({
     dataSource,
@@ -25,10 +18,7 @@ const GenericTable = <T extends object>({
         <div>
             <div className="flex md:justify-start justify-center items-center gap-3 mb-4 flex-wrap">
                 {onAdd && (
-                    <Button
-                        onClick={onAdd}
-                        type="primary"
-                    >
+                    <Button onClick={onAdd} type="primary">
                         {addButtonText}
                     </Button>
                 )}
