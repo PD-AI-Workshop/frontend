@@ -1,9 +1,8 @@
-import { AuthApi } from "@/http/AuthApi";
-import { UserApi } from "@/http/UserApi";
-import { UpdateUserType } from "@/types/UpdateUserType";
-import { UserType } from "@/types/UserType";
-import { AxiosError } from "axios";
-import { makeAutoObservable, runInAction } from "mobx";
+import { AuthApi } from '@/http/AuthApi'
+import { UserApi } from '@/http/UserApi'
+import { UpdateUserType, UserType } from '@/types/UserTypes'
+import { AxiosError } from 'axios'
+import { makeAutoObservable, runInAction } from 'mobx'
 
 export class UserStore {
     private user: UserType | null
@@ -51,7 +50,7 @@ export class UserStore {
             const sortedUsers = users.sort((a, b) => a.id - b.id)
             this.setUsers(sortedUsers)
         } catch (error) {
-            console.error("Ошибка загрузки пользователей:", error)
+            console.error('Ошибка загрузки пользователей:', error)
         }
     }
 
@@ -59,11 +58,11 @@ export class UserStore {
         await this.userApi.update(id, user)
 
         runInAction(() => {
-            const index = this.users.findIndex(a => a.id === id)
+            const index = this.users.findIndex((a) => a.id === id)
             if (index !== -1) {
                 this.users[index] = {
                     ...this.users[index],
-                    ...user
+                    ...user,
                 }
             }
         })
@@ -73,7 +72,7 @@ export class UserStore {
         await this.userApi.delete(id)
 
         runInAction(() => {
-            this.users = this.users.filter(a => a.id !== id)
+            this.users = this.users.filter((a) => a.id !== id)
         })
     }
 
@@ -94,8 +93,7 @@ export class UserStore {
             await this.checkAuth()
             window.location.href = '/profile'
         } catch (error) {
-            if (error instanceof AxiosError && error.response?.status === 400)
-                alert('Неверный email или пароль')
+            if (error instanceof AxiosError && error.response?.status === 400) alert('Неверный email или пароль')
         }
     }
 
@@ -118,9 +116,7 @@ export class UserStore {
     }
 
     public async checkAuth(): Promise<void> {
-        const token = typeof window !== 'undefined'
-            ? localStorage.getItem('token')
-            : null
+        const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null
 
         if (!token) {
             this.setAuth(false)
@@ -133,9 +129,7 @@ export class UserStore {
 
             this.setAuth(true)
             this.setUser(response.data)
-        }
-
-        catch (error) {
+        } catch (error) {
             this.setAuth(false)
             this.setUser({} as UserType)
             localStorage.removeItem('token')

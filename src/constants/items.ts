@@ -9,10 +9,10 @@ export const items = [
     },
     {
         key: '3',
-        label: 'Статьи'
+        label: 'Статьи',
     },
     {
         key: '4',
-        label: 'Пользователи'
-    }
+        label: 'Пользователи',
+    },
 ]

@@ -1,9 +1,9 @@
 export interface MyFieldInputProps {
     value: string
-    type: "text" | "password"
+    type: 'text' | 'password'
     placeholder: string
     isTouched: boolean | undefined
     error: string | undefined
-    isSmall: boolean
+    isSmall?: boolean
     isMobile: boolean
 }

@@ -1,18 +1,12 @@
-import { Context } from "@/app/StoresProvider"
-import { StoresType } from "@/types/StoresType"
-import { UserType } from "@/types/UserType"
-import { Dispatch, SetStateAction, useContext } from "react"
-import ActionButtons from "../ActionButtons"
-import GenericTable from "../GenericTable"
-import { observer } from "mobx-react-lite"
-
-export interface UserTableProps {
-    setIsEditModalOpen: Dispatch<SetStateAction<boolean>>
-    setSelectedUser: Dispatch<SetStateAction<UserType | null>>
-}
+import { UserType } from '@/types/UserTypes'
+import ActionButtons from '../ActionButtons'
+import GenericTable from '../GenericTable'
+import { observer } from 'mobx-react-lite'
+import { UserTableProps } from '@/props/UserTableProps'
+import { useStores } from '@/hooks/useStores'
 
 const UserTable = ({ setIsEditModalOpen, setSelectedUser }: UserTableProps) => {
-    const { userStore } = useContext(Context) as StoresType
+    const { userStore } = useStores()
     const users = userStore.getUsers()
     const onEdit = (user: UserType) => {
         setSelectedUser(user)
@@ -42,12 +36,7 @@ const UserTable = ({ setIsEditModalOpen, setSelectedUser }: UserTableProps) => {
         },
     ]
 
-    return (
-        <GenericTable
-            dataSource={users}
-            columns={columns}
-        /> 
-    )
+    return <GenericTable dataSource={users} columns={columns} />
 }
 
 export default observer(UserTable)

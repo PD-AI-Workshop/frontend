@@ -1,26 +1,28 @@
 'use client'
 
-import { useContext, useEffect, useState } from "react";
-import { Context } from "../StoresProvider";
-import { StoresType } from "@/types/StoresType";
-import { observer } from "mobx-react-lite";
-import { useRouter } from "next/navigation";
-import ThemeToggleButton from "@/components/ThemeToggleButton";
+import { useCallback, useEffect, useState } from 'react'
+import { observer } from 'mobx-react-lite'
+import { useRouter } from 'next/navigation'
+import ThemeToggleButton from '@/components/ThemeToggleButton'
+import { useStores } from '@/hooks/useStores'
+import { useTheme } from '@/hooks/useTheme'
+import ActionButton from '@/components/ActionButton'
+import InfoItem from '@/components/InfoItem'
 
 const Profile = () => {
-    const { userStore, themeStore } = useContext(Context) as StoresType
+    const { userStore } = useStores()
     const user = userStore.getUser()
     const router = useRouter()
     const [isLoading, setIsLoading] = useState(true)
     const role = user?.role
-    const isDarkMode = themeStore.isDarkMode
+    const isDarkMode = useTheme()
 
-    const handleAdminButton = () => router.push('/admin')
-
-    const handleExitButton = async () => {
+    const handleAdmin = useCallback(() => router.push('/admin'), [router])
+    const handleEditor = useCallback(() => router.push('/editor'), [router])
+    const handleLogout = useCallback(async () => {
         await userStore.logout()
         router.push('/')
-    }
+    }, [userStore, router])
 
     useEffect(() => {
         const func = async () => {
@@ -44,42 +46,37 @@ const Profile = () => {
     }
 
     return (
-        <main className={`min-h-[79vh] flex justify-center items-center p-8 ${isDarkMode ? 'bg-[rgb(38,38,38)]' : 'bg-[rgb(237,237,243)]'}`}>
+        <main
+            className={`min-h-[79vh] flex justify-center items-center p-8 ${isDarkMode ? 'bg-[rgb(38,38,38)]' : 'bg-[rgb(237,237,243)]'}`}
+        >
             <div className={`w-[28rem] rounded-2xl overflow-hidden shadow-lg ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
-                <div className='p-10'>
-                    <h1 className={`text-center mb-10 text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>Аккаунт</h1>
+                <div className="p-10">
+                    <h1
+                        className={`text-center mb-10 text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}
+                    >
+                        Аккаунт
+                    </h1>
 
-                    <div className='space-y-6 mb-4'>
-                        <div className="flex flex-col">
-                            <span className="text-lg font-medium text-center py-2 px-4 bg-gray-100 rounded-lg text-black">
-                                {user?.username}
-                            </span>
-                        </div>
-
-                        <div className="flex flex-col">
-                            <span className='text-lg font-medium cursor-pointer text-center py-2 px-4 bg-gray-100 rounded-lg text-black'>
-                                {user?.email}
-                            </span>
-                        </div>
+                    <div className="space-y-6 mb-4">
+                        <InfoItem value={user?.username} />
+                        <InfoItem value={user?.email} />
                     </div>
 
                     <ThemeToggleButton />
 
-                    {(role === 'admin' || role === 'writer')
-                        &&
-                        <button
-                            onClick={() => router.push('/editor')}
-                            className="w-full mt-2 p-3 bg-indigo-600 text-white text-xl rounded-3xl cursor-pointer hover:bg-indigo-700"
-                        >Написать статью</button>}
-
-                    {role === 'admin'
-                        &&
-                        <button
-                            onClick={handleAdminButton}
-                            className="w-full mt-4 p-3 bg-neutral-600 text-white text-xl cursor-pointer rounded-3xl hover:bg-neutral-700"
-                        >Админ-панель</button>}
-
-                    <button onClick={handleExitButton} className="w-full mt-4 p-3 bg-red-600 text-white text-xl cursor-pointer rounded-3xl hover:bg-red-700">Выйти</button>
+                    {(role === 'admin' || role === 'writer') && (
+                        <ActionButton onClick={handleEditor} color="primary">
+                            Написать статью
+                        </ActionButton>
+                    )}
+                    {role === 'admin' && (
+                        <ActionButton onClick={handleAdmin} color="secondary">
+                            Админ-панель
+                        </ActionButton>
+                    )}
+                    <ActionButton onClick={handleLogout} color="danger">
+                        Выйти
+                    </ActionButton>
                 </div>
             </div>
         </main>

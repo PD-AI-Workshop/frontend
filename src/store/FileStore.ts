@@ -1,6 +1,6 @@
-import { FileApi } from "@/http/FileApi";
-import { FileType } from "@/types/FileType";
-import { makeAutoObservable, runInAction } from "mobx";
+import { FileApi } from '@/http/FileApi'
+import { FileType } from '@/types/FileType'
+import { makeAutoObservable, runInAction } from 'mobx'
 
 export class FileStore {
     private files: FileType[] = []
@@ -22,13 +22,13 @@ export class FileStore {
         try {
             const files = await this.fileApi.getAll()
             this.setFiles(files)
-        } catch(error) {
-            console.error("Ошибка загрузки файлов:", error)
+        } catch (error) {
+            console.error('Ошибка загрузки файлов:', error)
         }
     }
 
     async getById(id: number): Promise<FileType> {
-        const existing = this.files.find(a => a.id === id)
+        const existing = this.files.find((a) => a.id === id)
         if (existing) return existing
 
         const file = await this.fileApi.getById(id)
@@ -50,11 +50,11 @@ export class FileStore {
         await this.fileApi.update(id, file)
 
         runInAction(() => {
-            const index = this.files.findIndex(a => a.id === id)
+            const index = this.files.findIndex((a) => a.id === id)
             if (index !== -1) {
                 this.files[index] = {
                     ...this.files[index],
-                    ...file
+                    ...file,
                 }
             }
         })
@@ -64,7 +64,7 @@ export class FileStore {
         await this.fileApi.delete(id)
 
         runInAction(() => {
-            this.files = this.files.filter(a => a.id !== id)
+            this.files = this.files.filter((a) => a.id !== id)
         })
     }
 }

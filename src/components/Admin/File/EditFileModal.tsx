@@ -1,19 +1,12 @@
-import { Context } from "@/app/StoresProvider"
-import { FileType } from "@/types/FileType"
-import { StoresType } from "@/types/StoresType"
-import { Button, Form, Modal, Upload } from "antd"
-import { useForm } from "antd/es/form/Form"
-import { useContext, useEffect } from "react"
-
-export interface EditFileModalProps {
-    isEditModalOpen: boolean
-    setIsEditModalOpen: (value: boolean) => void
-    selectedFile: FileType | null
-}
+import { useStores } from '@/hooks/useStores'
+import { EditFileModalProps } from '@/props/EditFileModalProps'
+import { Button, Form, Modal, Upload } from 'antd'
+import { useForm } from 'antd/es/form/Form'
+import { useEffect } from 'react'
 
 const EditFileModal = ({ isEditModalOpen, setIsEditModalOpen, selectedFile }: EditFileModalProps) => {
     const [form] = useForm()
-    const { fileStore } = useContext(Context) as StoresType
+    const { fileStore } = useStores()
     const onCancel = () => setIsEditModalOpen(false)
     const rules = [{ required: true, message: 'Выберите файл' }]
     const beforeUpload = () => false
@@ -40,18 +33,13 @@ const EditFileModal = ({ isEditModalOpen, setIsEditModalOpen, selectedFile }: Ed
     }
 
     return (
-        <Modal
-            title="Редактирование файла"
-            open={isEditModalOpen}
-            onOk={handleEdit}
-            onCancel={onCancel}
-        >
+        <Modal title="Редактирование файла" open={isEditModalOpen} onOk={handleEdit} onCancel={onCancel}>
             <Form layout="vertical" form={form}>
                 <Form.Item
                     label="Файл"
                     name="file"
                     valuePropName="fileList"
-                    getValueFromEvent={e => e.fileList}
+                    getValueFromEvent={(e) => e.fileList}
                     rules={rules}
                 >
                     <Upload accept="files/*" maxCount={1} beforeUpload={beforeUpload}>

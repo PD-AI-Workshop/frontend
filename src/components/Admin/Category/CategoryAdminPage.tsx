@@ -1,17 +1,7 @@
-import { CategoryType } from "@/types/CategoryType"
-import { Dispatch, SetStateAction } from "react"
-import CategoryTable from "./CategoryTable"
-import EditCategoryModal from "./EditCategoryModal"
-import AddCategoryModal from "./AddCategoryModal"
-
-export interface CategoryAdminPageProps {
-    isAddModalOpen: boolean
-    setIsAddModalOpen: Dispatch<SetStateAction<boolean>>
-    isEditModalOpen: boolean
-    setIsEditModalOpen: Dispatch<SetStateAction<boolean>>
-    selectedCategory: CategoryType | null
-    setSelectedCategory: Dispatch<SetStateAction<CategoryType | null>>
-}
+import CategoryTable from './CategoryTable'
+import EditCategoryModal from './EditCategoryModal'
+import AddCategoryModal from './AddCategoryModal'
+import { CategoryAdminPageProps } from '@/props/CategoryAdminPageProps'
 
 const CategoryAdminPage = ({
     isAddModalOpen,
@@ -19,7 +9,7 @@ const CategoryAdminPage = ({
     isEditModalOpen,
     setIsEditModalOpen,
     selectedCategory,
-    setSelectedCategory
+    setSelectedCategory,
 }: CategoryAdminPageProps) => {
     return (
         <>
@@ -35,10 +25,7 @@ const CategoryAdminPage = ({
                 selectedCategory={selectedCategory}
             />
 
-            <AddCategoryModal
-                isAddModalOpen={isAddModalOpen}
-                setIsAddModalOpen={setIsAddModalOpen}
-            />
+            <AddCategoryModal isAddModalOpen={isAddModalOpen} setIsAddModalOpen={setIsAddModalOpen} />
         </>
     )
 }

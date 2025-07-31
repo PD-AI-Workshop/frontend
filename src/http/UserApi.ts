@@ -1,6 +1,5 @@
-import { UserType } from "@/types/UserType";
-import $host from ".";
-import { UpdateUserType } from "@/types/UpdateUserType";
+import { UpdateUserType, UserType } from '@/types/UserTypes'
+import $host from '.'
 
 export class UserApi {
     async getAll() {

@@ -1,8 +1,6 @@
-import { CategoryApi } from "@/http/CategoryApi";
-import { CategoryType } from "@/types/CategoryType";
-import { CreateCategoryType } from "@/types/CreateCategoryType";
-import { UpdateCategoryType } from "@/types/UpdateCategoryType";
-import { makeAutoObservable, runInAction } from "mobx";
+import { CategoryApi } from '@/http/CategoryApi'
+import { CategoryType, CreateCategoryType, UpdateCategoryType } from '@/types/CategoryTypes'
+import { makeAutoObservable, runInAction } from 'mobx'
 
 export class CategoryStore {
     private categories: CategoryType[] = []
@@ -24,15 +22,15 @@ export class CategoryStore {
         try {
             const categories = await this.categoryApi.getAll()
             this.setCategories(categories)
-        } catch(error) {
-            console.error("Ошибка загрузки статей:", error)
+        } catch (error) {
+            console.error('Ошибка загрузки статей:', error)
         }
     }
 
     async getById(id: number): Promise<CategoryType> {
-        const existing = this.categories.find(a => a.id === id)
+        const existing = this.categories.find((a) => a.id === id)
         if (existing) return existing
-        
+
         const category = await this.categoryApi.getById(id)
 
         runInAction(() => {
@@ -51,11 +49,11 @@ export class CategoryStore {
         await this.categoryApi.update(id, category)
 
         runInAction(() => {
-            const index = this.categories.findIndex(a => a.id === id)
+            const index = this.categories.findIndex((a) => a.id === id)
             if (index !== -1) {
                 this.categories[index] = {
                     ...this.categories[index],
-                    ...category
+                    ...category,
                 }
             }
         })
@@ -65,7 +63,7 @@ export class CategoryStore {
         await this.categoryApi.delete(id)
 
         runInAction(() => {
-            this.categories = this.categories.filter(a => a.id !== id)
+            this.categories = this.categories.filter((a) => a.id !== id)
         })
     }
 }

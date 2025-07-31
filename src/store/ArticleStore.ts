@@ -1,9 +1,7 @@
-import { ArticleApi } from "@/http/ArticleApi";
-import { ArticleType } from "@/types/ArticleType";
-import { CategoryType } from "@/types/CategoryType";
-import { CreateArticleType } from "@/types/CreateArticleType";
-import { UpdateArticleType } from "@/types/UpdateArticleType";
-import { makeAutoObservable, runInAction } from "mobx";
+import { ArticleApi } from '@/http/ArticleApi'
+import { ArticleType, CreateArticleType, UpdateArticleType } from '@/types/ArticleTypes'
+import { CategoryType } from '@/types/CategoryTypes'
+import { makeAutoObservable, runInAction } from 'mobx'
 
 export class ArticleStore {
     private articles: ArticleType[] = []
@@ -31,7 +29,7 @@ export class ArticleStore {
             const articles = await this.articleApi.getAll()
             this.setArticles(articles)
         } catch (error) {
-            console.error("Ошибка загрузки статей:", error)
+            console.error('Ошибка загрузки статей:', error)
         }
     }
 
@@ -49,11 +47,11 @@ export class ArticleStore {
         await this.articleApi.update(id, article)
 
         runInAction(() => {
-            const index = this.articles.findIndex(a => a.id === id)
+            const index = this.articles.findIndex((a) => a.id === id)
             if (index !== -1) {
                 this.articles[index] = {
                     ...this.articles[index],
-                    ...article
+                    ...article,
                 }
             }
         })
@@ -63,24 +61,22 @@ export class ArticleStore {
         await this.articleApi.delete(id)
 
         runInAction(() => {
-            this.articles = this.articles.filter(a => a.id !== id)
+            this.articles = this.articles.filter((a) => a.id !== id)
         })
     }
 
     get onTrendArticles(): ArticleType[] {
-        return this.articles
-            .toSorted(() => Math.random() - 0.5)
-            .slice(0, 3)
+        return this.articles.toSorted(() => Math.random() - 0.5).slice(0, 3)
     }
 
     public getNeuralNetworkArticles(categories: CategoryType[]): ArticleType[] {
         return this.articles
-            .map(article => ({
+            .map((article) => ({
                 ...article,
-                category_names: article.category_ids.map(id => categories.find(cat => cat.id === id)?.name)
+                category_names: article.category_ids.map((id) => categories.find((cat) => cat.id === id)?.name),
             }))
-            .filter(article => article.category_names.includes("Нейросети"))
-            .map(article => {
+            .filter((article) => article.category_names.includes('Нейросети'))
+            .map((article) => {
                 const { category_names, ...rest } = article
                 return rest
             })
@@ -91,5 +87,4 @@ export class ArticleStore {
             .toSorted((a, b) => new Date(b.created_date).getTime() - new Date(a.created_date).getTime())
             .slice(0, 2)
     }
-
 }

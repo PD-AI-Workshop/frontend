@@ -1,18 +1,12 @@
-import { Context } from "@/app/StoresProvider"
-import { CategoryType } from "@/types/CategoryType"
-import { StoresType } from "@/types/StoresType"
-import { Dispatch, SetStateAction, useContext } from "react"
-import ActionButtons from "../ActionButtons"
-import GenericTable from "../GenericTable"
-
-export interface CategoryTableProps {
-    setIsAddModalOpen: Dispatch<SetStateAction<boolean>>
-    setIsEditModalOpen: Dispatch<SetStateAction<boolean>>
-    setSelectedCategory: Dispatch<SetStateAction<CategoryType | null>>
-}
+import { CategoryType } from '@/types/CategoryTypes'
+import ActionButtons from '../ActionButtons'
+import GenericTable from '../GenericTable'
+import { observer } from 'mobx-react-lite'
+import { CategoryTableProps } from '@/props/CategoryTableProps'
+import { useStores } from '@/hooks/useStores'
 
 const CategoryTable = ({ setIsAddModalOpen, setIsEditModalOpen, setSelectedCategory }: CategoryTableProps) => {
-    const { categoryStore } = useContext(Context) as StoresType
+    const { categoryStore } = useStores()
     const categories = categoryStore.getCategories()
     const onEdit = (category: CategoryType) => {
         setSelectedCategory(category)
@@ -41,13 +35,7 @@ const CategoryTable = ({ setIsAddModalOpen, setIsEditModalOpen, setSelectedCateg
         },
     ]
 
-    return (
-        <GenericTable
-            dataSource={categories}
-            columns={columns}
-            onAdd={onAdd}
-        /> 
-    )
+    return <GenericTable dataSource={categories} columns={columns} onAdd={onAdd} />
 }
 
-export default CategoryTable
+export default observer(CategoryTable)

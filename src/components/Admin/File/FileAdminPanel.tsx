@@ -1,17 +1,7 @@
-import { FileType } from "@/types/FileType"
-import { Dispatch, SetStateAction } from "react"
-import FileTable from "./FileTable"
-import EditFileModal from "./EditFileModal"
-import AddFileModal from "./AddFileModal"
-
-export interface FileAdminPanelProps {
-    isAddModalOpen: boolean
-    setIsAddModalOpen: Dispatch<SetStateAction<boolean>>
-    isEditModalOpen: boolean
-    setIsEditModalOpen: Dispatch<SetStateAction<boolean>>
-    selectedFile: FileType | null
-    setSelectedFile: Dispatch<SetStateAction<FileType | null>>
-}
+import FileTable from './FileTable'
+import EditFileModal from './EditFileModal'
+import AddFileModal from './AddFileModal'
+import { FileAdminPanelProps } from '@/props/FileAdminPanelProps'
 
 const FileAdminPanel = ({
     isAddModalOpen,
@@ -35,10 +25,7 @@ const FileAdminPanel = ({
                 selectedFile={selectedFile}
             />
 
-            <AddFileModal
-                isAddModalOpen={isAddModalOpen}
-                setIsAddModalOpen={setIsAddModalOpen}
-            />
+            <AddFileModal isAddModalOpen={isAddModalOpen} setIsAddModalOpen={setIsAddModalOpen} />
         </>
     )
 }

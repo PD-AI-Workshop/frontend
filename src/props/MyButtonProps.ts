@@ -1,5 +1,6 @@
+import { ReactNode } from 'react'
 export interface MyButtonProps {
     isSubmitting: boolean
-    text: string
+    children: ReactNode
     isDarkMode: boolean
 }

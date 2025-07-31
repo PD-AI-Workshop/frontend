@@ -1,19 +1,12 @@
-import { Context } from "@/app/StoresProvider"
-import { FileType } from "@/types/FileType"
-import { StoresType } from "@/types/StoresType"
-import { Dispatch, SetStateAction, useContext } from "react"
-import ActionButtons from "../ActionButtons"
-import GenericTable from "../GenericTable"
-import { observer } from "mobx-react-lite"
-
-export interface FileTableProps {
-    setIsAddModalOpen: Dispatch<SetStateAction<boolean>>
-    setIsEditModalOpen: Dispatch<SetStateAction<boolean>>
-    setSelectedFile: Dispatch<SetStateAction<FileType | null>>
-}
+import { FileType } from '@/types/FileType'
+import ActionButtons from '../ActionButtons'
+import GenericTable from '../GenericTable'
+import { observer } from 'mobx-react-lite'
+import { FileTableProps } from '@/props/FileTableProps'
+import { useStores } from '@/hooks/useStores'
 
 const FileTable = ({ setIsAddModalOpen, setIsEditModalOpen, setSelectedFile }: FileTableProps) => {
-    const { fileStore } = useContext(Context) as StoresType
+    const { fileStore } = useStores()
     const files = fileStore.getFiles()
     const onEdit = (file: FileType) => {
         setSelectedFile(file)
@@ -44,13 +37,7 @@ const FileTable = ({ setIsAddModalOpen, setIsEditModalOpen, setSelectedFile }: F
         },
     ]
 
-    return (
-        <GenericTable
-            dataSource={files}
-            columns={columns}
-            onAdd={onAdd}
-        /> 
-    )
+    return <GenericTable dataSource={files} columns={columns} onAdd={onAdd} />
 }
 
 export default observer(FileTable)
