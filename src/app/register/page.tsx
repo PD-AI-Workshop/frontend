@@ -103,11 +103,11 @@ const Register = () => {
                         </MyButton>
                         <p className="text-center mt-4 text-gray-400 text-xs">
                             Нажимая на кнопку, вы соглашаетесь с
-                            <Link className="text-[rgb(141,146,252)] underline" href={'/userrules'}>
+                            <Link className="text-[rgb(141,146,252)] underline ml-1 mr-1" href={'/userrules'}>
                                 Правилами Использования
                             </Link>
                             и нашей
-                            <Link className="text-[rgb(141,146,252)] underline" href={'/privacypolicy'}>
+                            <Link className="text-[rgb(141,146,252)] underline ml-1" href={'/privacypolicy'}>
                                 Политикой <br /> Конфиденциальности
                             </Link>
                         </p>

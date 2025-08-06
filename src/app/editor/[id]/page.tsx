@@ -1,9 +1,9 @@
 'use client'
 
 import ArticleEditor from '@/components/ArticleEditor'
-import { MyEditorHandle } from '@/components/MyEditor'
 import { useStores } from '@/hooks/useStores'
-import { UpdateArticleType } from '@/types/UpdateArticleType'
+import { MyEditorHandleProps } from '@/props/MyEditorHandleProps'
+import { UpdateArticleType } from '@/types/ArticleTypes'
 import { observer } from 'mobx-react-lite'
 import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
@@ -19,7 +19,7 @@ const EditArticlePage = () => {
         image_ids: [] as number[],
     })
 
-    const editorRef = useRef<MyEditorHandle>(null)
+    const editorRef = useRef<MyEditorHandleProps>(null)
     const router = useRouter()
     const params = useParams()
     const id = Array.isArray(params.id) ? params.id[0] : params.id

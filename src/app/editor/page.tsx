@@ -1,12 +1,12 @@
 'use client'
 
-import { MyEditorHandle } from '@/components/MyEditor'
 import { useRef, useState } from 'react'
 import { observer } from 'mobx-react-lite'
-import { CreateArticleType } from '@/types/CreateArticleType'
 import { useRouter } from 'next/navigation'
 import ArticleEditor from '@/components/ArticleEditor'
 import { useStores } from '@/hooks/useStores'
+import { CreateArticleType } from '@/types/ArticleTypes'
+import { MyEditorHandleProps } from '@/props/MyEditorHandleProps'
 
 const EditorPage = () => {
     const { fileStore, articleStore } = useStores()
@@ -18,7 +18,7 @@ const EditorPage = () => {
         image_ids: [] as number[],
     })
 
-    const editorRef = useRef<MyEditorHandle>(null)
+    const editorRef = useRef<MyEditorHandleProps>(null)
     const router = useRouter()
 
     const handleSubmit = async () => {
