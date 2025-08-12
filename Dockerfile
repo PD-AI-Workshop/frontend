@@ -33,7 +33,8 @@ COPY --from=builder /app/.next ./.next
 
 COPY --from=builder /app/public ./public
 
-RUN npm install -g pnpm@10.6.5 && \
+RUN apk add --no-cache curl && \
+    npm install -g pnpm@10.6.5 && \
     pnpm install --prod --frozen-lockfile && \
     pnpm store prune
 
