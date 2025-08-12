@@ -65,6 +65,9 @@ const MyEditor = forwardRef<MyEditorHandleProps, MyEditorProps>(
                             toolbar:
                                 'formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | outdent indent | image codesample',
                             image_uploadtab: true,
+                            relative_urls: false,
+                            remove_script_host: false,
+                            convert_urls: false,
                             images_upload_handler: handleImageUpload,
                             file_picker_types: 'image',
                             file_picker_callback: (cb) => {
