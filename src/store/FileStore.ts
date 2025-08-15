@@ -67,4 +67,8 @@ export class FileStore {
             this.files = this.files.filter((a) => a.id !== id)
         })
     }
+
+    async delete_all_unused(): Promise<void> {
+        await this.fileApi.delete_all_unused()
+    }
 }

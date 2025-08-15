@@ -23,6 +23,7 @@ const Profile = () => {
         await userStore.logout()
         router.push('/')
     }, [userStore, router])
+    const handleMonitoring = useCallback(() => window.location.href = `http://${window.location.hostname}:3001`, [])
 
     useEffect(() => {
         const func = async () => {
@@ -69,11 +70,15 @@ const Profile = () => {
                             Написать статью
                         </ActionButton>
                     )}
-                    {role === 'admin' && (
-                        <ActionButton onClick={handleAdmin} color="secondary">
-                            Админ-панель
-                        </ActionButton>
-                    )}
+                    {role === 'admin' &&
+                        <div>
+                            <ActionButton onClick={handleAdmin} color="secondary">
+                                Админ-панель
+                            </ActionButton>
+                            <ActionButton onClick={handleMonitoring} color="purple">
+                                Мониторинг
+                            </ActionButton>
+                        </div>}
                     <ActionButton onClick={handleLogout} color="danger">
                         Выйти
                     </ActionButton>
