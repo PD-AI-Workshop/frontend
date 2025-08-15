@@ -5,6 +5,7 @@ const ActionButton = ({ children, onClick, color }: ActionButtonProps) => {
         primary: 'bg-indigo-600 hover:bg-indigo-700',
         secondary: 'bg-neutral-600 hover:bg-neutral-700',
         danger: 'bg-red-600 hover:bg-red-700',
+        purple: 'bg-purple-600 hover:bg-purple-700'
     }
 
     return (
