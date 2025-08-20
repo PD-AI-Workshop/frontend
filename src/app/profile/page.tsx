@@ -23,7 +23,7 @@ const Profile = () => {
         await userStore.logout()
         router.push('/')
     }, [userStore, router])
-    const handleMonitoring = useCallback(() => window.location.href = `http://${window.location.hostname}:3001`, [])
+    const handleMonitoring = useCallback(() => window.location.href = "/monitoring", [])
 
     useEffect(() => {
         const func = async () => {
