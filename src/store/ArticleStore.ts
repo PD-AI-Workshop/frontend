@@ -80,6 +80,7 @@ export class ArticleStore {
                 const { category_names, ...rest } = article
                 return rest
             })
+            .slice(0, 3)
     }
 
     get lastArticles(): ArticleType[] {
