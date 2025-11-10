@@ -46,7 +46,7 @@ const FeedPage = () => {
 
     return (
         <main className={`min-h-[79vh] py-8 px-4 ${isDarkMode ? 'bg-[rgb(38,38,38)]' : 'bg-[rgb(237,237,243)]'}`}>
-            <div className="max-w-4xl mx-auto">
+            <div className="max-w-6xl mx-auto">
                 <div className={`rounded-xl p-6 mb-6 shadow-sm ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
                     <h1 className="text-2xl font-bold text-center mb-4">Лента статей</h1>
 

@@ -24,19 +24,17 @@ const Header = () => {
 
     return (
         <header
-            className={`flex justify-between h-[104px] py-5 px-2 sticky top-0 border-b border-solid border-[#C4CDEE] z-10 ${isDarkMode ? 'bg-black' : 'bg-white'} md:px-20 md:gap-8`}
+            className={`flex justify-between items-center h-[104px] py-5 px-2 sticky top-0 border-b border-solid border-[#C4CDEE] z-10 ${isDarkMode ? 'bg-black' : 'bg-white'} md:px-20 md:gap-8`}
         >
-            <div className="flex gap-8 h-full">
-                <figure>
-                    <Link href="/">
-                        <img
-                            src={isDarkMode ? '/img/logoDark.png' : '/img/logo.svg'}
-                            className="w-full h-full object-cover"
-                            alt="logotype"
-                        />
-                    </Link>
-                </figure>
-                {!isMobile && <NavigationLinks isMobile={isMobile} isDarkMode={isDarkMode} />}
+            <div className="flex gap-8 h-full items-center">
+                <Link href="/">
+                    <img
+                        src={isDarkMode ? '/img/logoDark.png' : '/img/logo.png'}
+                        className="w-full h-[44.1px] object-contain"
+                        alt="logotype"
+                    />
+                </Link>
+                {!isMobile && <NavigationLinks isMobile={isMobile} isDarkMode={false} />}
             </div>
 
             <div className="flex items-center h-full md:gap-3">

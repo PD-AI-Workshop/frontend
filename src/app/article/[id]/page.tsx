@@ -88,7 +88,7 @@ const ArticlePage = observer(() => {
 
     return (
         <main className="min-h-[79vh] p-2 flex justify-center">
-            <div className="w-[400px] mt-8 mr-auto ml-auto mb-8 border-1 border-solid border-[rgb(131,131,131)] rounded-xl md:w-[630px]">
+            <div className="w-[72rem] mt-8 mr-auto ml-auto mb-8 border-1 border-solid border-[rgb(131,131,131)] rounded-xl md:w-[630px]">
                 <img className="rounded-t-xl" src={article?.main_image_url} />
 
                 <div className="p-4">
