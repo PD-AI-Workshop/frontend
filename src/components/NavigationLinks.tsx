@@ -14,23 +14,23 @@ const NavigationLinks = ({ isDarkMode, isMobile }: NavigationLinksProps) => {
             <nav>
                 <ul className={`flex items-center gap-8 list-none ${isMobile && 'justify-center mt-2'}`}>
                     <li>
-                        <Link className="flex gap-2" href="/">
-                            <BookOpenText className={isDarkMode ? 'text-white' : 'text-[#040BB6]'} />
-                            Главная
+                        <Link className="flex gap-2 items-center" href="/">
+                            <BookOpenText className={isDarkMode ? 'text-white w-6 h-6' : 'text-[#040BB6] w-6 h-6'} />
+                            <p className="pb-[2px]">Главная</p>
                         </Link>
                     </li>
                     <li>
-                        <Link className="flex gap-2" href="/feed">
+                        <Link className="flex gap-2 items-center" href="/feed">
                             <List className={isDarkMode ? 'text-white' : 'text-[#040BB6]'} />
-                            Лента
+                            <p className="pb-[2px]">Лента</p>
                         </Link>
                     </li>
                     <li>
-                        <Link className="flex gap-2" target="_blank" href="https://t.me/AI_officina">
+                        <Link className="flex gap-2 items-center" target="_blank" href="https://t.me/AI_officina">
                             <figure className="w-6 h-6">
-                                <img alt="icon" src="/img/telegram.svg" className="w-full h-full object-cover" />
+                                <img alt="icon" src="/img/telegram.svg" className="w-full h-full object-contain" />
                             </figure>
-                            ТГ-канал
+                            <p className="pb-[2px]">ТГ-канал</p>
                         </Link>
                     </li>
                 </ul>

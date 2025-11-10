@@ -37,14 +37,14 @@ const ArticleCard = ({ variant, article, categories, files = [], isDarkMode, cla
             alt="article"
             className={`
         ${variant === 'horizontal' ? 'w-full md:w-[500px]' : variant === 'trending' ? 'w-full h-50' : 'w-full md:w-64 lg:w-80'}
-        ${variant === 'trending' ? 'rounded-tr-[12px]' : 'rounded-t-[12px] md:rounded-tr-none md:rounded-l-[12px]'} object-cover`}
+        ${variant === 'trending' ? 'rounded-tr-[12px]' : 'rounded-t-[12px] md:rounded-tr-none md:rounded-l-[12px]'} object-cover flex-1`}
         />
     )
 
     const Footer = (
         <div
             className={`flex justify-between items-center
-      ${variant === 'trending' ? 'px-4 py-2.5 border-t border-gray-200' : 'mt-13'}
+      ${variant === 'trending' ? 'px-4 py-2.5 border-t border-gray-200' : 'mt-auto'}
       ${isDarkMode ? 'text-white' : 'text-gray-600'}`}
         >
             <p className="text-sm font-inter">{formattedDate}</p>
@@ -54,14 +54,14 @@ const ArticleCard = ({ variant, article, categories, files = [], isDarkMode, cla
 
     return (
         <div
-            className={`border border-gray-300/50 rounded-[12px] overflow-hidden
+            className={`h-[330px] border border-gray-300/50 rounded-[12px] overflow-hidden
         ${isDarkMode ? 'bg-black' : 'bg-white'}
         ${variant === 'horizontal' ? 'flex flex-col md:flex-row' : variant === 'feed' ? 'mb-4 md:flex' : 'flex flex-col'}
         ${className}`}
         >
             {ImageBlock}
             <div className="flex flex-col flex-1 p-3">
-                <p className={`font-semibold line-clamp-3 ${variant === 'trending' ? 'text-lg' : 'text-3xl'}`}>
+                <p className={`font-semibold line-clamp-2 ${variant === 'trending' ? 'text-lg' : 'text-3xl'}`}>
                     {article.title}
                 </p>
 
