@@ -1,9 +1,9 @@
 import { formatTime } from '@/utils/formatTime'
 import { useEffect, useState } from 'react'
 import Tag from './Tag'
-import { ArticleCardProps } from '@/props/ArticleCardProps'
+import { ArticleCardPropsType } from '@/types/ArticleCardPropsType'
 
-const ArticleCard = ({ variant, article, categories, files = [], isDarkMode, className = '' }: ArticleCardProps) => {
+const ArticleCard = ({ variant, article, categories, files = [], isDarkMode, className = '' }: ArticleCardPropsType) => {
     const needsContent = variant === 'horizontal' || variant === 'feed'
     const contentFile = needsContent ? files.find((f) => f.id === article.text_id) : null
     const [fileContent, setFileContent] = useState<string | null>(null)
@@ -38,6 +38,7 @@ const ArticleCard = ({ variant, article, categories, files = [], isDarkMode, cla
             className={`
         ${variant === 'horizontal' ? 'w-full md:w-[500px]' : variant === 'trending' ? 'w-full h-50' : 'w-full md:w-64 lg:w-80'}
         ${variant === 'trending' ? 'rounded-tr-[12px]' : 'rounded-t-[12px] md:rounded-tr-none md:rounded-l-[12px]'} object-cover flex-1`}
+            loading='lazy'
         />
     )
 
@@ -54,7 +55,7 @@ const ArticleCard = ({ variant, article, categories, files = [], isDarkMode, cla
 
     return (
         <div
-            className={`h-[330px] border border-gray-300/50 rounded-[12px] overflow-hidden
+            className={`border border-gray-300/50 rounded-[12px] overflow-hidden
         ${isDarkMode ? 'bg-black' : 'bg-white'}
         ${variant === 'horizontal' ? 'flex flex-col md:flex-row' : variant === 'feed' ? 'mb-4 md:flex' : 'flex flex-col'}
         ${className}`}

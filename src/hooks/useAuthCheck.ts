@@ -1,8 +1,8 @@
 import { StoresType } from '@/types/StoresType'
-import { useRouter } from 'next/navigation'
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime'
 import { useEffect, useState } from 'react'
 
-export const useAuthCheck = (userStore: StoresType['userStore'], router: ReturnType<typeof useRouter>) => {
+export const useAuthCheck = (userStore: StoresType['userStore'], router: AppRouterInstance) => {
     const [isCheckingAuth, setIsCheckingAuth] = useState(true)
 
     useEffect(() => {

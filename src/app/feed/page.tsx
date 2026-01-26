@@ -2,10 +2,10 @@
 
 import { Input, Select } from 'antd'
 import { useEffect, useMemo, useState } from 'react'
-import { renderContent } from '@/components/renderContent'
 import { useTheme } from '@/hooks/useTheme'
 import { useStores } from '@/hooks/useStores'
 import { Search } from 'lucide-react'
+import { RenderContent } from '@/components/RenderContent'
 
 const FeedPage = () => {
     const { articleStore, categoryStore, fileStore } = useStores()
@@ -75,7 +75,7 @@ const FeedPage = () => {
                     </div>
                 </div>
 
-                {renderContent({
+                {RenderContent({
                     isLoading,
                     isDarkMode,
                     error,

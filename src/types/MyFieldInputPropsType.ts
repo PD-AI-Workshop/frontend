@@ -1,4 +1,4 @@
-export interface MyFieldInputProps {
+export type MyFieldInputPropsType = {
     value: string
     type: 'text' | 'password'
     placeholder: string

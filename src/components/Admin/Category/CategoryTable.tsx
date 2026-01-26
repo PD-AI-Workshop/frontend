@@ -2,21 +2,21 @@ import { CategoryType } from '@/types/CategoryTypes'
 import ActionButtons from '../ActionButtons'
 import GenericTable from '../GenericTable'
 import { observer } from 'mobx-react-lite'
-import { CategoryTableProps } from '@/props/CategoryTableProps'
 import { useStores } from '@/hooks/useStores'
+import { CategoryTablePropsType } from '@/types/CategoryAdminPanelPropsType'
 
-const CategoryTable = ({ setIsAddModalOpen, setIsEditModalOpen, setSelectedCategory }: CategoryTableProps) => {
+const CategoryTable = ({ setIsAddModalOpen, setIsEditModalOpen, setSelectedItem }: CategoryTablePropsType) => {
     const { categoryStore } = useStores()
     const categories = categoryStore.getCategories()
     const onEdit = (category: CategoryType) => {
-        setSelectedCategory(category)
+        setSelectedItem(category)
         setIsEditModalOpen(true)
     }
     const onDelete = async (category: CategoryType) => {
         await categoryStore.delete(category.id)
         await categoryStore.fetch()
     }
-    const onAdd = () => setIsAddModalOpen(true)
+    const onAdd = () => setIsAddModalOpen?.(true)
 
     const columns = [
         { title: 'ID', dataIndex: 'id', key: 'id' },

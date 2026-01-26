@@ -1,6 +1,6 @@
-import { MyButtonProps } from '@/props/MyButtonProps'
+import { MyButtonPropsType } from '@/types/MyButtonPropsType'
 
-const MyButton = ({ isSubmitting, isDarkMode, children }: MyButtonProps) => {
+const MyButton = ({ isSubmitting, isDarkMode, children }: MyButtonPropsType) => {
     return (
         <button
             type="submit"

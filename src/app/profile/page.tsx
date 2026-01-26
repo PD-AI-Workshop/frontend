@@ -8,6 +8,7 @@ import { useStores } from '@/hooks/useStores'
 import { useTheme } from '@/hooks/useTheme'
 import ActionButton from '@/components/ActionButton'
 import InfoItem from '@/components/InfoItem'
+import Spinner from '@/components/Spinner'
 
 const Profile = () => {
     const { userStore } = useStores()
@@ -16,6 +17,8 @@ const Profile = () => {
     const [isLoading, setIsLoading] = useState(true)
     const role = user?.role
     const isDarkMode = useTheme()
+    const isAdminOrWriter = role === 'admin' || role === 'writer'
+    const isAdmin = role === 'admin'
 
     const handleAdmin = useCallback(() => router.push('/admin'), [router])
     const handleEditor = useCallback(() => router.push('/editor'), [router])
@@ -39,11 +42,7 @@ const Profile = () => {
     }, [userStore, router])
 
     if (isLoading) {
-        return (
-            <main className="min-h-[79vh] flex justify-center items-center bg-[rgb(237,237,243)]">
-                <div className="text-xl">Загрузка...</div>
-            </main>
-        )
+        return <Spinner />
     }
 
     return (
@@ -65,20 +64,20 @@ const Profile = () => {
 
                     <ThemeToggleButton />
 
-                    {(role === 'admin' || role === 'writer') && (
+                    {isAdminOrWriter && (
                         <ActionButton onClick={handleEditor} color="primary">
                             Написать статью
                         </ActionButton>
                     )}
-                    {role === 'admin' &&
-                        <div>
+                    {isAdmin &&
+                        <>
                             <ActionButton onClick={handleAdmin} color="secondary">
                                 Админ-панель
                             </ActionButton>
                             <ActionButton onClick={handleMonitoring} color="purple">
                                 Мониторинг
                             </ActionButton>
-                        </div>}
+                        </>}
                     <ActionButton onClick={handleLogout} color="danger">
                         Выйти
                     </ActionButton>

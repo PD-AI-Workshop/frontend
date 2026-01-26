@@ -1,10 +1,10 @@
 import { useStores } from '@/hooks/useStores'
-import { EditFileModalProps } from '@/props/EditFileModalProps'
+import { EditFileModalPropsType } from '@/types/FileAdminPanelPropsType'
 import { Button, Form, Modal, Upload } from 'antd'
 import { useForm } from 'antd/es/form/Form'
 import { useEffect } from 'react'
 
-const EditFileModal = ({ isEditModalOpen, setIsEditModalOpen, selectedFile }: EditFileModalProps) => {
+const EditFileModal = ({ isEditModalOpen, setIsEditModalOpen, selectedItem }: EditFileModalPropsType) => {
     const [form] = useForm()
     const { fileStore } = useStores()
     const onCancel = () => setIsEditModalOpen(false)
@@ -12,13 +12,13 @@ const EditFileModal = ({ isEditModalOpen, setIsEditModalOpen, selectedFile }: Ed
     const beforeUpload = () => false
 
     useEffect(() => {
-        if (isEditModalOpen && selectedFile) {
-            form.setFieldsValue(selectedFile)
+        if (isEditModalOpen && selectedItem) {
+            form.setFieldsValue(selectedItem)
         }
-    }, [isEditModalOpen, selectedFile])
+    }, [isEditModalOpen, selectedItem])
 
     const handleEdit = async () => {
-        if (!selectedFile) return
+        if (!selectedItem) return
 
         const values = await form.validateFields()
 
@@ -27,7 +27,7 @@ const EditFileModal = ({ isEditModalOpen, setIsEditModalOpen, selectedFile }: Ed
         const formData = new FormData()
 
         formData.append('file', values.file[0].originFileObj)
-        await fileStore.update(selectedFile.id, formData)
+        await fileStore.update(selectedItem.id, formData)
         setIsEditModalOpen(false)
         form.resetFields()
     }

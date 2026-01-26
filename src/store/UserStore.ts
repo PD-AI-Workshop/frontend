@@ -8,6 +8,7 @@ export class UserStore {
     private user: UserType | null
     private users: UserType[] = []
     private readonly userApi = new UserApi()
+    private readonly authApi = new AuthApi()
     isAuth: boolean
 
     constructor() {
@@ -50,7 +51,7 @@ export class UserStore {
             const sortedUsers = users.sort((a, b) => a.id - b.id)
             this.setUsers(sortedUsers)
         } catch (error) {
-            console.error('Ошибка загрузки пользователей:', error)
+            throw error
         }
     }
 
@@ -78,7 +79,7 @@ export class UserStore {
 
     public async getCurrentUser(): Promise<UserType | null> {
         try {
-            const response = await AuthApi.getCurrentUser()
+            const response = await this.authApi.getCurrentUser()
             return response.data
         } catch (error) {
             this.logout()
@@ -88,7 +89,7 @@ export class UserStore {
 
     public async login(email: string, password: string): Promise<void> {
         try {
-            const response = await AuthApi.login(email, password)
+            const response = await this.authApi.login(email, password)
             localStorage.setItem('token', response.data.access_token)
             await this.checkAuth()
             window.location.href = '/profile'
@@ -98,12 +99,12 @@ export class UserStore {
     }
 
     public async registration(username: string, email: string, password: string, role: string): Promise<void> {
-        await AuthApi.register(username, email, password, role)
+        await this.authApi.register(username, email, password, role)
     }
 
     public async logout(): Promise<void> {
         try {
-            await AuthApi.logout()
+            await this.authApi.logout()
         } finally {
             if (typeof window !== 'undefined') {
                 localStorage.removeItem('token')
@@ -125,7 +126,7 @@ export class UserStore {
         }
 
         try {
-            const response = await AuthApi.getCurrentUser()
+            const response = await this.authApi.getCurrentUser()
 
             this.setAuth(true)
             this.setUser(response.data)

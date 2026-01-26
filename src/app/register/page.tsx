@@ -1,7 +1,5 @@
 'use client'
 
-import { validationSchema } from '@/schemas/RegisterValidationSchema'
-import { RegisterFormType } from '@/types/RegisterFormType'
 import { Form, Formik, FormikHelpers } from 'formik'
 import Link from 'next/link'
 import { useState } from 'react'
@@ -12,6 +10,8 @@ import { useStores } from '@/hooks/useStores'
 import { useTheme } from '@/hooks/useTheme'
 import dynamic from 'next/dynamic'
 import { FIELD_CONFIG } from '@/config/REGISTER_FIELD'
+import { RegisterFormType } from '@/types/FormTypes'
+import { registerValidationSchema } from '@/schemas/RegisterValidationSchema'
 
 const MyButton = dynamic(() => import('@/components/MyButton'))
 const MyFieldInput = dynamic(() => import('@/components/MyFieldInput'))
@@ -57,7 +57,7 @@ const Register = () => {
                 <Notification notificationType={notification.type} notificationMessage={notification.message} />
             )}
 
-            <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
+            <Formik initialValues={initialValues} validationSchema={registerValidationSchema} onSubmit={handleSubmit}>
                 {({ isSubmitting, errors, touched }) => (
                     <Form
                         className={`w-auto p-8 max-w-auto rounded-2xl overflow-hidden ${isDarkMode ? 'bg-black' : 'bg-white'}`}

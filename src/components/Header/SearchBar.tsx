@@ -1,4 +1,4 @@
-import { SearchBarProps } from '@/props/SearchBarProps'
+import { SearchBarPropsType } from '@/types/SearchBarPropsType'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import SearchBarArticle from './SearchBarArticle'
 import Link from 'next/link'
@@ -6,7 +6,7 @@ import { observer } from 'mobx-react-lite'
 import { Search } from 'lucide-react'
 import { useStores } from '@/hooks/useStores'
 
-const SearchBar = ({ active, setActive, isDarkMode }: SearchBarProps) => {
+const SearchBar = ({ active, setActive, isDarkMode }: SearchBarPropsType) => {
     const [value, setValue] = useState('')
     const { articleStore } = useStores()
 

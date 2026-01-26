@@ -1,8 +1,8 @@
-import { AuthorInfoProps } from '@/props/AuthorInfoProps'
+import { ArticleAuthorInfoPropsType } from '@/types/ArticleTypes'
 import { formatDate } from '@/utils/formatTime'
 import { UserRound } from 'lucide-react'
 
-const AuthorInfo = ({ username, created_date, time_reading }: AuthorInfoProps) => {
+const AuthorInfo = ({ username, created_date, time_reading }: ArticleAuthorInfoPropsType) => {
     return (
         <div className="flex gap-4">
             <div className="w-12 h-12 bg-[#ccc] rounded-[50%] flex items-center justify-center">

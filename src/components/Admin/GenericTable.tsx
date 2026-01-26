@@ -2,7 +2,7 @@ import { Button } from 'antd'
 import Table from 'antd/es/table'
 import BackButton from './BackButton'
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
-import { GenericTableProps } from '@/props/GenericTableProps'
+import { GenericTablePropsType } from '@/types/GenericTablePropsType'
 
 const GenericTable = <T extends object>({
     dataSource,
@@ -10,7 +10,7 @@ const GenericTable = <T extends object>({
     onAdd,
     addButtonText = 'Добавить',
     rowKey = 'id',
-}: GenericTableProps<T>) => {
+}: GenericTablePropsType<T>) => {
     const screens = useBreakpoint()
     const isMobile = !screens.md
 

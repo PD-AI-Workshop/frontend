@@ -9,16 +9,16 @@ import NavigationLinks from '../NavigationLinks'
 import { useTheme } from '@/hooks/useTheme'
 import { useMobileDetect } from '@/hooks/useMobileDetect'
 import { useStores } from '@/hooks/useStores'
+import { useIsClient } from '@/hooks/useIsClient'
 
 const Header = () => {
     const { userStore } = useStores()
     const [modalActive, setModalActive] = useState(false)
     const isMobile = useMobileDetect()
-    const [isClient, setIsClient] = useState(false)
+    const isClient = useIsClient()
     const isDarkMode = useTheme()
 
     useEffect(() => {
-        setIsClient(true)
         userStore.checkAuth()
     }, [])
 
@@ -34,7 +34,7 @@ const Header = () => {
                         alt="logotype"
                     />
                 </Link>
-                {!isMobile && <NavigationLinks isMobile={isMobile} isDarkMode={false} />}
+                {!isMobile && <NavigationLinks isMobile={isMobile} isDarkMode={isDarkMode} />}
             </div>
 
             <div className="flex items-center h-full md:gap-3">

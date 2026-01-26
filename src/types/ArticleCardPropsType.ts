@@ -2,7 +2,7 @@ import { ArticleType } from '@/types/ArticleTypes'
 import { CategoryType } from '@/types/CategoryTypes'
 import { FileType } from '@/types/FileType'
 
-export interface ArticleCardProps {
+export type ArticleCardPropsType = {
     variant: 'horizontal' | 'trending' | 'feed'
     article: ArticleType
     categories: CategoryType[]
