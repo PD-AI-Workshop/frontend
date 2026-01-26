@@ -2,7 +2,7 @@ import { Button, Input, InputNumber, Select, Upload, UploadProps } from 'antd'
 import MyEditor from './MyEditor'
 import { useEffect, useState } from 'react'
 import { RcFile } from 'antd/es/upload'
-import { ArticleEditorProps } from '@/props/ArticleEditorProps'
+import { ArticleEditorPropsType } from '@/types/ArticleEditorPropsType'
 import { useStores } from '@/hooks/useStores'
 import { UploadIcon } from 'lucide-react'
 
@@ -13,7 +13,7 @@ const ArticleEditor = ({
     handleSubmit,
     editorRef,
     initialEditorContent,
-}: ArticleEditorProps) => {
+}: ArticleEditorPropsType) => {
     const { categoryStore, themeStore, fileStore } = useStores()
 
     const [loading, setLoading] = useState({

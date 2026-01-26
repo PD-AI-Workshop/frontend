@@ -1,6 +1,6 @@
 import { ArticleType } from '@/types/ArticleTypes'
 
-export interface SearchBarArticleProps {
+export type SearchBarArticlePropsType = {
     article: ArticleType
     isDarkMode: boolean
 }

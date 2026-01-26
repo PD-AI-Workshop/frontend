@@ -2,14 +2,14 @@ import { UserType } from '@/types/UserTypes'
 import ActionButtons from '../ActionButtons'
 import GenericTable from '../GenericTable'
 import { observer } from 'mobx-react-lite'
-import { UserTableProps } from '@/props/UserTableProps'
 import { useStores } from '@/hooks/useStores'
+import { UserTablePropsType } from '@/types/UserAdminPanelPropsType'
 
-const UserTable = ({ setIsEditModalOpen, setSelectedUser }: UserTableProps) => {
+const UserTable = ({ setIsEditModalOpen, setSelectedItem }: UserTablePropsType) => {
     const { userStore } = useStores()
     const users = userStore.getUsers()
     const onEdit = (user: UserType) => {
-        setSelectedUser(user)
+        setSelectedItem(user)
         setIsEditModalOpen(true)
     }
     const onDelete = async (user: UserType) => {

@@ -1,18 +1,18 @@
 import FileTable from './FileTable'
 import EditFileModal from './EditFileModal'
 import AddFileModal from './AddFileModal'
-import { FileAdminPanelProps } from '@/props/FileAdminPanelProps'
 import { Button } from 'antd'
 import { useStores } from '@/hooks/useStores'
+import { FileAdminPanelPropsType } from '@/types/FileAdminPanelPropsType'
 
 const FileAdminPanel = ({
     isAddModalOpen,
     setIsAddModalOpen,
     isEditModalOpen,
     setIsEditModalOpen,
-    selectedFile,
-    setSelectedFile,
-}: FileAdminPanelProps) => {
+    selectedItem,
+    setSelectedItem,
+}: FileAdminPanelPropsType) => {
     const { fileStore } = useStores()
 
     return (
@@ -22,13 +22,13 @@ const FileAdminPanel = ({
             <FileTable
                 setIsAddModalOpen={setIsAddModalOpen}
                 setIsEditModalOpen={setIsEditModalOpen}
-                setSelectedFile={setSelectedFile}
+                setSelectedItem={setSelectedItem}
             />
 
             <EditFileModal
                 isEditModalOpen={isEditModalOpen}
                 setIsEditModalOpen={setIsEditModalOpen}
-                selectedFile={selectedFile}
+                selectedItem={selectedItem}
             />
 
             <AddFileModal isAddModalOpen={isAddModalOpen} setIsAddModalOpen={setIsAddModalOpen} />

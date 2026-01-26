@@ -1,6 +1,6 @@
-import { ActionButtonProps } from '@/props/ActionButtonProps'
+import { ActionButtonPropsType } from '@/types/ActionButtonPropsType'
 
-const ActionButton = ({ children, onClick, color }: ActionButtonProps) => {
+const ActionButton = ({ children, onClick, color }: ActionButtonPropsType) => {
     const colorClasses = {
         primary: 'bg-indigo-600 hover:bg-indigo-700',
         secondary: 'bg-neutral-600 hover:bg-neutral-700',

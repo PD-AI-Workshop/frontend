@@ -1,4 +1,4 @@
-import { ActionButtonsProps } from '@/props/ActionButtonsProps'
+import { ActionButtonsPropsType } from '@/types/ActionButtonsPropsType'
 import { Button, Space } from 'antd'
 import { ReactElement } from 'react'
 
@@ -9,7 +9,7 @@ const ActionButtons = <T extends { id: number }>({
     editText = 'Изменить',
     deleteText = 'Удалить',
     confirmDeleteMessage,
-}: ActionButtonsProps<T>): ReactElement => {
+}: ActionButtonsPropsType<T>): ReactElement => {
     const handleEditClick = () => {
         onEdit?.(record)
     }

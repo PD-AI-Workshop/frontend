@@ -1,11 +1,11 @@
 import { Context } from '@/components/StoresProvider'
-import { AddCategoryModalProps } from '@/props/AddCategoryModalProps'
+import { BaseAddModalPropsType } from '@/types/AdminPanelTypes'
 import { StoresType } from '@/types/StoresType'
 import { Form, Input, Modal } from 'antd'
 import { useForm } from 'antd/es/form/Form'
 import { useContext, useEffect } from 'react'
 
-const AddCategoryModal = ({ isAddModalOpen, setIsAddModalOpen }: AddCategoryModalProps) => {
+const AddCategoryModal = ({ isAddModalOpen, setIsAddModalOpen }: BaseAddModalPropsType) => {
     const [form] = useForm()
     const { categoryStore } = useContext(Context) as StoresType
     const onCancel = () => setIsAddModalOpen(false)

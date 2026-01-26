@@ -1,21 +1,20 @@
+import { useIsClient } from '@/hooks/useIsClient'
 import { useMobileDetect } from '@/hooks/useMobileDetect'
 import { useStores } from '@/hooks/useStores'
-import { MyEditorHandleProps } from '@/props/MyEditorHandleProps'
-import { MyEditorProps } from '@/props/MyEditorProps'
+import { MyEditorHandlePropsType } from '@/types/MyEditorHandlePropsType'
+import { MyEditorPropsType } from '@/types/MyEditorPropsType'
 import { BlobInfoType } from '@/types/BlobInfoType'
 import { Editor } from '@tinymce/tinymce-react'
 import { observer } from 'mobx-react-lite'
 import { useEffect, useState, useRef, forwardRef, useImperativeHandle } from 'react'
 
-const MyEditor = forwardRef<MyEditorHandleProps, MyEditorProps>(
+const MyEditor = forwardRef<MyEditorHandlePropsType, MyEditorPropsType>(
     ({ onImageUploaded, isDarkMode, initialContent }, ref) => {
         const { fileStore } = useStores()
-        const [isClient, setIsClient] = useState(false)
+        const isClient = useIsClient()
         const editorRef = useRef<any>(null)
         const isMobile = useMobileDetect()
         const [isInitialized, setIsInitialized] = useState(false)
-
-        useEffect(() => setIsClient(true), [])
 
         useEffect(() => {
             if (isInitialized && editorRef.current && initialContent !== undefined) {
@@ -61,7 +60,7 @@ const MyEditor = forwardRef<MyEditorHandleProps, MyEditorProps>(
                             width: isMobile ? 'auto' : 900,
                             highlight_on_focus: false,
                             menubar: true,
-                            plugins: 'advlist lists link image charmap table help wordcount codesample',
+                            plugins: 'lists link image charmap table help wordcount codesample',
                             toolbar:
                                 'formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | outdent indent | image codesample',
                             image_uploadtab: true,

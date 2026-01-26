@@ -1,28 +1,28 @@
 import CategoryTable from './CategoryTable'
 import EditCategoryModal from './EditCategoryModal'
 import AddCategoryModal from './AddCategoryModal'
-import { CategoryAdminPageProps } from '@/props/CategoryAdminPageProps'
+import { CategoryAdminPanelPropsType } from '@/types/CategoryAdminPanelPropsType'
 
 const CategoryAdminPage = ({
     isAddModalOpen,
     setIsAddModalOpen,
     isEditModalOpen,
     setIsEditModalOpen,
-    selectedCategory,
-    setSelectedCategory,
-}: CategoryAdminPageProps) => {
+    selectedItem,
+    setSelectedItem,
+}: CategoryAdminPanelPropsType) => {
     return (
         <>
             <CategoryTable
                 setIsAddModalOpen={setIsAddModalOpen}
                 setIsEditModalOpen={setIsEditModalOpen}
-                setSelectedCategory={setSelectedCategory}
+                setSelectedItem={setSelectedItem}
             />
 
             <EditCategoryModal
                 isEditModalOpen={isEditModalOpen}
                 setIsEditModalOpen={setIsEditModalOpen}
-                selectedCategory={selectedCategory}
+                selectedItem={selectedItem}
             />
 
             <AddCategoryModal isAddModalOpen={isAddModalOpen} setIsAddModalOpen={setIsAddModalOpen} />

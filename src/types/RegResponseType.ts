@@ -1,7 +1,3 @@
-export interface RegResponseType {
-    email: string
-    username: string
-    password: string
-    image_url: string
-    role: string
-}
+import { RegisterFormType } from "./FormTypes";
+
+export type RegResponseType = Omit<RegisterFormType, 'confirmPassword'> & { role: string }

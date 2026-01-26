@@ -1,9 +1,9 @@
 import { useStores } from '@/hooks/useStores'
-import { AddFileModalProps } from '@/props/AddFileModalProps'
+import { BaseAddModalPropsType } from '@/types/AdminPanelTypes'
 import { Button, Form, Modal, Upload } from 'antd'
 import { useForm } from 'antd/es/form/Form'
 
-const AddFileModal = ({ isAddModalOpen, setIsAddModalOpen }: AddFileModalProps) => {
+const AddFileModal = ({ isAddModalOpen, setIsAddModalOpen }: BaseAddModalPropsType) => {
     const [form] = useForm()
     const { fileStore } = useStores()
     const onCancel = () => setIsAddModalOpen(false)

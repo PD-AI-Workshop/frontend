@@ -2,21 +2,21 @@ import { FileType } from '@/types/FileType'
 import ActionButtons from '../ActionButtons'
 import GenericTable from '../GenericTable'
 import { observer } from 'mobx-react-lite'
-import { FileTableProps } from '@/props/FileTableProps'
 import { useStores } from '@/hooks/useStores'
+import { FileTablePropsType } from '@/types/FileAdminPanelPropsType'
 
-const FileTable = ({ setIsAddModalOpen, setIsEditModalOpen, setSelectedFile }: FileTableProps) => {
+const FileTable = ({ setIsAddModalOpen, setIsEditModalOpen, setSelectedItem }: FileTablePropsType) => {
     const { fileStore } = useStores()
     const files = fileStore.getFiles()
     const onEdit = (file: FileType) => {
-        setSelectedFile(file)
+        setSelectedItem(file)
         setIsEditModalOpen(true)
     }
     const onDelete = async (file: FileType) => {
         await fileStore.delete(file.id)
         await fileStore.fetch()
     }
-    const onAdd = () => setIsAddModalOpen(true)
+    const onAdd = () => setIsAddModalOpen?.(true)
 
     const columns = [
         { title: 'ID', dataIndex: 'id', key: 'id' },

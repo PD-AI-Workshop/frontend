@@ -1,8 +1,8 @@
-import { NotificationProps } from '@/props/NotificationProps'
+import { NotificationType } from '@/types/NotificationType'
 import { CircleCheckBig, CirclePlus, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 
-const Notification = ({ notificationType, notificationMessage, autoClose = 5000 }: NotificationProps) => {
+const Notification = ({ type, message, autoClose = 5000 }: NotificationType) => {
     const [isVisible, setIsVisible] = useState(true)
     const [isClosing, setIsClosing] = useState(false)
     const timerRef = useRef<NodeJS.Timeout | null>(null)
@@ -29,14 +29,14 @@ const Notification = ({ notificationType, notificationMessage, autoClose = 5000 
     return (
         <div
             className={`fixed top-30 right-4 z-50 flex items-start p-4 rounded-md shadow-lg transform transition-transform duration-300 overflow-hidden max-w-xs
-            ${notificationType === 'success' ? 'bg-green-100 text-green-800 border border-green-200' : 'bg-red-100 text-red-800 border border-red-200'}
+            ${type === 'success' ? 'bg-green-100 text-green-800 border border-green-200' : 'bg-red-100 text-red-800 border border-red-200'}
             ${isClosing ? 'animate-fadeOut' : 'animate-fadeIn'}`}
         >
             <div className="text-xl mr-2 mt-0.5">
-                {notificationType === 'success' ? <CircleCheckBig /> : <CirclePlus className="rotate-45" />}
+                {type === 'success' ? <CircleCheckBig /> : <CirclePlus className="rotate-45" />}
             </div>
 
-            <div className="flex-1">{notificationMessage}</div>
+            <div className="flex-1">{message}</div>
 
             <button
                 onClick={handleClose}

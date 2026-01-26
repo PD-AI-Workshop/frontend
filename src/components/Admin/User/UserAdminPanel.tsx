@@ -1,21 +1,21 @@
 import UserTable from './UserTable'
 import EditUserModal from './EditUserModal'
-import { UserAdminPanelProps } from '@/props/UserAdminPanelProps'
+import { UserAdminPanelPropsType } from '@/types/UserAdminPanelPropsType'
 
 const UserAdminPanel = ({
     isEditModalOpen,
     setIsEditModalOpen,
-    selectedUser,
-    setSelectedUser,
-}: UserAdminPanelProps) => {
+    selectedItem,
+    setSelectedItem,
+}: UserAdminPanelPropsType) => {
     return (
         <>
-            <UserTable setIsEditModalOpen={setIsEditModalOpen} setSelectedUser={setSelectedUser} />
+            <UserTable setIsEditModalOpen={setIsEditModalOpen} setSelectedItem={setSelectedItem} />
 
             <EditUserModal
                 isEditModalOpen={isEditModalOpen}
                 setIsEditModalOpen={setIsEditModalOpen}
-                selectedUser={selectedUser}
+                selectedItem={selectedItem}
             />
         </>
     )

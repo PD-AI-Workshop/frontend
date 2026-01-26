@@ -1,6 +1,6 @@
-import { SearchBarArticleProps } from '@/props/SearchBarArticleProps'
+import { SearchBarArticlePropsType } from '@/types/SearchBarArticlePropsType'
 
-const SearchBarArticle = ({ article, isDarkMode }: SearchBarArticleProps) => {
+const SearchBarArticle = ({ article, isDarkMode }: SearchBarArticlePropsType) => {
     return (
         <div
             className={`m-2.5 flex border border-[rgba(166,166,166,0.463)] rounded-[15px] overflow-hidden h-20 ${isDarkMode ? 'bg-[rgb(38,38,38)]' : 'bg-white'}`}

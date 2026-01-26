@@ -1,9 +1,9 @@
 import { Empty, Skeleton } from 'antd'
 import Link from 'next/link'
 import ArticleCard from './ArticleCard'
-import { renderContentProps } from '@/props/renderContentProps'
+import { RenderContentPropsType } from '@/types/RenderContentPropsType'
 
-export const renderContent = ({
+export const RenderContent = ({
     isLoading,
     isDarkMode,
     error,
@@ -11,7 +11,7 @@ export const renderContent = ({
     filteredArticles,
     categoryStore,
     fileStore,
-}: renderContentProps) => {
+}: RenderContentPropsType) => {
     if (isLoading) {
         return (
             <div className="flex flex-col gap-6 w-full max-w-2xl mx-auto">

@@ -11,44 +11,33 @@ import { useAuthCheck } from '@/hooks/useAuthCheck'
 import { useLocalStorageState } from '@/hooks/useLocalStorageState'
 import { useStores } from '@/hooks/useStores'
 import { SquareChevronLeft, SquareChevronRight } from 'lucide-react'
+import { useAdminData } from '@/hooks/useAdminData'
 
 const AdminPage = () => {
-    const { categoryStore, fileStore, userStore, articleStore } = useStores()
+    const { userStore } = useStores()
     const router = useRouter()
     const isCheckingAuth = useAuthCheck(userStore, router)
     const isMobile = useMobileDetect()
     const [collapsed, setCollapsed] = useState(isMobile)
-    const [selectedKey, setSelectedKey] = useLocalStorageState('selectedKey', '1')
-
-    useEffect(() => setCollapsed(isMobile), [isMobile])
+    const [selectedKey, setSelectedKey] = useLocalStorageState<string>('selectedKey', '1')
 
     useEffect(() => {
-        if (isCheckingAuth) return
+        setCollapsed(isMobile)
+    }, [isMobile])
 
-        const fetchData = async () => {
-            try {
-                await Promise.all([categoryStore.fetch(), fileStore.fetch(), articleStore.fetch(), userStore.fetch()])
-            } catch (error: any) {
-                if (error.response?.status === 401) {
-                    await userStore.logout()
-                    router.push('/')
-                }
-            }
-        }
+    useAdminData({ userStore, router, selectedKey })
 
-        fetchData()
-    }, [selectedKey, isCheckingAuth])
-
-    const handleMenuSelect = async ({ key }: { key: string }) => {
+    const handleMenuSelect = ({ key }: { key: string }) => {
         setSelectedKey(key)
-        localStorage.setItem('selectedKey', key)
         if (isMobile) setCollapsed(true)
     }
 
-    const toggleMenu = useCallback(() => setCollapsed(!collapsed), [collapsed])
+    const toggleMenu = useCallback(() => {
+        setCollapsed(prev => !prev)
+    }, [])
 
     if (isCheckingAuth) {
-        return <div>Checking authorization...</div>
+        return <div className='flex items-center justify-center min-h-screen'>Checking authorization...</div>
     }
 
     return (
