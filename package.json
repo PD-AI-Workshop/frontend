@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@tinymce/tinymce-react": "^6.2.1",
-    "antd": "^5.26.6",
+    "antd": "^6.2.2",
     "axios": "^1.10.0",
     "formik": "^2.4.6",
     "framer-motion": "^12.23.9",
