@@ -1,4 +1,4 @@
-import { Button, Input, InputNumber, Select, Upload, UploadProps } from 'antd'
+import { Button, Input, InputNumber, Select, Upload, UploadProps, message } from 'antd'
 import MyEditor from './MyEditor'
 import { useEffect, useState } from 'react'
 import { RcFile } from 'antd/es/upload'
@@ -15,6 +15,7 @@ const ArticleEditor = ({
     initialEditorContent,
 }: ArticleEditorPropsType) => {
     const { categoryStore, themeStore, fileStore } = useStores()
+    const [messageApi, contextHolder] = message.useMessage()
 
     const [loading, setLoading] = useState({
         article: false,
@@ -39,6 +40,32 @@ const ArticleEditor = ({
             ...prev,
             image_ids: [...prev.image_ids, id],
         }))
+    }
+
+    const checkImageDimensions = (file: RcFile): Promise<boolean> => {
+        return new Promise((resolve, _) => {
+            const img = new Image()
+            img.src = URL.createObjectURL(file)
+
+            img.onload = () => {
+                URL.revokeObjectURL(img.src)
+                const { width, height } = img
+
+                if (width >= 1280 && height >= 720) {
+                    resolve(true)
+                } else {
+                    messageApi.open({
+                        type: 'error',
+                        content: `Изображение должно быть не менее 1280x720 пикселей. Текущий размер: ${width}x${height} пикселей`,
+                    })
+                    resolve(false)
+                }
+            }
+        })
+    }
+
+    const beforeUpload: UploadProps['beforeUpload'] = async (file: RcFile) => {
+        return await checkImageDimensions(file)
     }
 
     const handleCustomRequest: UploadProps['customRequest'] = async ({ file, onSuccess, onError }) => {
@@ -67,11 +94,23 @@ const ArticleEditor = ({
 
     return (
         <main className="min-h-[79vh] flex p-4 items-center flex-col">
+            {contextHolder}
             <h1 className="mt-5 text-2xl font-bold mb-5">Редактор статьи</h1>
 
-            <Upload customRequest={handleCustomRequest} disabled={loading.image} showUploadList={false}>
-                <Button icon={<UploadIcon />}>Загрузить файл</Button>
-            </Upload>
+            <div className="flex flex-col justify-center items-center">
+                <Upload
+                    customRequest={handleCustomRequest}
+                    beforeUpload={beforeUpload}
+                    disabled={loading.image}
+                    showUploadList={false}
+                    accept="image/*"
+                >
+                    <Button icon={<UploadIcon />}>Загрузить файл</Button>
+                </Upload>
+                <p className="text-sm mt-2 text-white">
+                    *Основное изображение статьи должно быть не менее 1280×720 пикселей
+                </p>
+            </div>
 
             {articleData.main_image_url && (
                 <div className="mt-4">
