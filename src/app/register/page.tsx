@@ -12,6 +12,7 @@ import dynamic from 'next/dynamic'
 import { FIELD_CONFIG } from '@/config/REGISTER_FIELD'
 import { RegisterFormType } from '@/types/FormTypes'
 import { registerValidationSchema } from '@/schemas/RegisterValidationSchema'
+import clsx from 'clsx'
 
 const MyButton = dynamic(() => import('@/components/MyButton'))
 const MyFieldInput = dynamic(() => import('@/components/MyFieldInput'))
@@ -51,20 +52,32 @@ const Register = () => {
 
     return (
         <main
-            className={`min-h-[79vh] flex justify-center items-center p-5 ${isDarkMode ? 'bg-[rgb(38,38,38)]' : 'bg-[rgb(237,237,243)]'}`}
-        >
+            className={clsx('min-h-[79vh] flex justify-center items-center p-5',
+                {
+                    'bg-[rgb(38,38,38)]': isDarkMode,
+                    'bg-[rgb(237,237,243)]': !isDarkMode
+                }
+            )}>
             {notification && (
-                <Notification notificationType={notification.type} notificationMessage={notification.message} />
+                <Notification type={notification.type} message={notification.message} />
             )}
 
             <Formik initialValues={initialValues} validationSchema={registerValidationSchema} onSubmit={handleSubmit}>
                 {({ isSubmitting, errors, touched }) => (
                     <Form
-                        className={`w-auto p-8 max-w-auto rounded-2xl overflow-hidden ${isDarkMode ? 'bg-black' : 'bg-white'}`}
-                    >
+                        className={clsx('w-auto p-8 max-w-auto rounded-2xl overflow-hidden',
+                            {
+                                'bg-black': isDarkMode,
+                                'bg-white': !isDarkMode
+                            }
+                        )}>
                         <h1
-                            className={`text-center mb-4 mt-4 text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}
-                        >
+                            className={clsx('text-center mb-4 mt-4 text-3xl font-bold',
+                                {
+                                    'text-white': isDarkMode,
+                                    'text-gray-800': !isDarkMode
+                                }
+                            )}>
                             Регистрация
                         </h1>
                         <h1 className="text-center mb-4 text-gray-400 text-base">

@@ -11,6 +11,7 @@ import { useTheme } from '@/hooks/useTheme'
 import { useStores } from '@/hooks/useStores'
 import { FIELD_CONFIG } from '@/config/LOGIN_FIELD'
 import { loginValidationSchema } from '@/schemas/LoginValidationSchema'
+import clsx from 'clsx'
 
 const Login = () => {
     const { userStore } = useStores()
@@ -28,17 +29,29 @@ const Login = () => {
 
     return (
         <main
-            className={`min-h-[79vh] flex items-center p-2 justify-center ${isDarkMode ? 'bg-[rgb(38,38,38)]' : 'bg-[rgb(237,237,243)]'}`}
-        >
+            className={clsx('min-h-[79vh] flex items-center p-2 justify-center',
+                {
+                    'bg-[rgb(38,38,38)]': isDarkMode,
+                    'bg-[rgb(237,237,243)]': !isDarkMode
+                }
+            )}>
             <Formik initialValues={initialValues} validationSchema={loginValidationSchema} onSubmit={handleSubmit}>
                 {({ isSubmitting, errors, touched }) => (
                     <Form
-                        className={`w-full max-w-md rounded-2xl overflow-hidden ${isDarkMode ? 'bg-[rgb(6,8,15)]' : 'bg-white'}`}
-                    >
+                        className={clsx('w-full max-w-md rounded-2xl overflow-hidden',
+                            {
+                                'bg-[rgb(6,8,15)]': isDarkMode,
+                                'bg-white': !isDarkMode
+                            }
+                        )}>
                         <div className="p-8">
                             <h1
-                                className={`text-center mb-8 text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}
-                            >
+                                className={clsx('text-center mb-8 text-3xl font-bold',
+                                    {
+                                        'text-white': isDarkMode,
+                                        'text-gray-800': !isDarkMode
+                                    }
+                                )}>
                                 Вход в аккаунт
                             </h1>
 
@@ -64,8 +77,12 @@ const Login = () => {
                                 Нет аккаунта?{' '}
                                 <Link
                                     href="/register"
-                                    className={`font-medium ${isDarkMode ? 'text-white hover:text-gray-400' : 'text-indigo-600 hover:text-indigo-500'}`}
-                                >
+                                    className={clsx('font-medium',
+                                        {
+                                            'text-white hover:text-gray-400': isDarkMode,
+                                            'text-indigo-600 hover:text-indigo-500': !isDarkMode
+                                        }
+                                    )}>
                                     Зарегистрироваться
                                 </Link>
                             </p>

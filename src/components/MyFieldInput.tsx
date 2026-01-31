@@ -1,4 +1,5 @@
 import { MyFieldInputPropsType } from '@/types/MyFieldInputPropsType'
+import clsx from 'clsx'
 import { ErrorMessage, Field } from 'formik'
 
 const MyFieldInput = ({ value, type, placeholder, isTouched, error, isSmall = false, isMobile }: MyFieldInputPropsType) => {
@@ -9,11 +10,17 @@ const MyFieldInput = ({ value, type, placeholder, isTouched, error, isSmall = fa
                 name={value}
                 type={type}
                 placeholder={placeholder}
-                className={`${!(isSmall <= isMobile) ? 'w-2xs' : 'w-full'} px-4 py-3 rounded-2xl border ${
-                    isTouched && error
-                        ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
-                        : 'border-gray-300 focus:ring-indigo-500 focus:border-indigo-500'
-                } focus:outline-none focus:ring-2 transition-colors`}
+                className={clsx(
+                    "px-4 py-3 rounded-2xl border focus:outline-none focus:ring-2 transition-colors",
+                    {
+                        'w-2xs': !(isSmall <= isMobile),
+                        'w-full': isSmall <= isMobile,
+                    },
+                    {
+                        'border-red-500 focus:ring-red-500 focus:border-red-500': isTouched && error,
+                        'border-gray-300 focus:ring-indigo-500 focus:border-indigo-500': !(isTouched && error),
+                    }
+                )}
             />
             <ErrorMessage name={value} component="div" className="mt-1.5 text-sm text-red-600" />
         </div>
