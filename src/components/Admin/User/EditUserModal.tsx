@@ -2,6 +2,7 @@ import { useStores } from '@/hooks/useStores'
 import { UserEditModalPropsType } from '@/types/UserAdminPanelPropsType'
 import { Checkbox, Form, Input, Modal, Select } from 'antd'
 import { useForm } from 'antd/es/form/Form'
+import { Option } from 'antd/es/mentions'
 import { useEffect } from 'react'
 
 const EditUserModal = ({ isEditModalOpen, setIsEditModalOpen, selectedItem }: UserEditModalPropsType) => {
@@ -38,9 +39,9 @@ const EditUserModal = ({ isEditModalOpen, setIsEditModalOpen, selectedItem }: Us
 
                 <Form.Item label="Роль" name="role" rules={[{ message: 'Выберите роль' }]}>
                     <Select>
-                        <Select.Option value="user">Пользователь</Select.Option>
-                        <Select.Option value="admin">Администратор</Select.Option>
-                        <Select.Option value="writer">Писатель</Select.Option>
+                        <Option value="user">Пользователь</Option>
+                        <Option value="admin">Администратор</Option>
+                        <Option value="writer">Писатель</Option>
                     </Select>
                 </Form.Item>
 

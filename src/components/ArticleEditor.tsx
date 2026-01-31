@@ -5,6 +5,7 @@ import { RcFile } from 'antd/es/upload'
 import { ArticleEditorPropsType } from '@/types/ArticleEditorPropsType'
 import { useStores } from '@/hooks/useStores'
 import { UploadIcon } from 'lucide-react'
+import clsx from 'clsx'
 
 const ArticleEditor = ({
     mode,
@@ -177,7 +178,15 @@ const ArticleEditor = ({
                 <button
                     type="submit"
                     onClick={handleSubmit}
-                    className={`${mode === 'edit' ? 'bg-amber-600 hover:bg-amber-700' : 'bg-indigo-600 hover:bg-indigo-700'} text-white mb-2 w-auto py-3 px-4 rounded-3xl transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed`}
+                    className={clsx(
+                        'text-white mb-2 w-auto py-3 px-4 rounded-3xl transition-colors',
+                        'disabled:opacity-50 disabled:cursor-not-allowed',
+                        'focus:outline-none focus:ring-2 focus:ring-offset-2',
+                        {
+                            'bg-amber-600 hover:bg-amber-700': mode === 'edit',
+                            'bg-indigo-600 hover:bg-indigo-700': mode !== 'edit'
+                        }
+                    )}
                 >
                     {mode === 'edit' ? 'Изменить' : 'Опубликовать'}
                 </button>

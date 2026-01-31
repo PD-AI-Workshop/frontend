@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { observer } from 'mobx-react-lite'
 import { Search } from 'lucide-react'
 import { useStores } from '@/hooks/useStores'
+import clsx from 'clsx'
 
 const SearchBar = ({ active, setActive, isDarkMode }: SearchBarPropsType) => {
     const [value, setValue] = useState('')
@@ -25,8 +26,12 @@ const SearchBar = ({ active, setActive, isDarkMode }: SearchBarPropsType) => {
 
     return (
         <div
-            className={`fixed inset-0 flex flex-col items-end transition-all duration-300
-                ${active ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+            className={clsx('fixed inset-0 flex flex-col items-end transition-all duration-300',
+                {
+                    'opacity-100 pointer-events-auto': active,
+                    'opacity-0 pointer-events-none': !active
+                }
+            )}
             onClick={() => setActive(false)}
         >
             <div
@@ -36,7 +41,12 @@ const SearchBar = ({ active, setActive, isDarkMode }: SearchBarPropsType) => {
                 onMouseLeave={() => setActive(false)}
             >
                 <div
-                    className={`relative w-full max-w-[400px] h-[50px] pl-6 rounded-[25px] shadow-[17px_19px_24px_rgba(0,0,0,0.13)] z-10 ${isDarkMode ? 'bg-[rgb(38,38,38)]' : 'bg-white'}`}
+                    className={clsx('relative w-full max-w-[400px] h-[50px] pl-6 rounded-[25px] shadow-[17px_19px_24px_rgba(0,0,0,0.13)] z-10',
+                        {
+                            'bg-[rgb(38,38,38)]': isDarkMode,
+                            'bg-white': !isDarkMode
+                        }
+                    )}
                     onClick={stopPropagation}
                     onMouseEnter={() => setActive(true)}
                 >
@@ -49,15 +59,27 @@ const SearchBar = ({ active, setActive, isDarkMode }: SearchBarPropsType) => {
                             value={value}
                         />
                         <Search
-                            className={`mt-auto mb-auto ml-5 mr-5 ${isDarkMode ? 'text-white' : 'text-[#040BB6]'} `}
+                            className={clsx('mt-auto mb-auto ml-5 mr-5',
+                                {
+                                    'text-white': isDarkMode,
+                                    'text-[#040BB6]': !isDarkMode
+                                }
+                            )}
                         />
                     </form>
                 </div>
 
                 <div
-                    className={`mt-2.5 flex flex-col w-full max-w-[400px] rounded-[15px] 
-                        shadow-[17px_19px_24px_rgba(0,0,0,0.13)] overflow-y-auto overflow-x-hidden max-h-[500px]
-                        md:w-[440px] ${active ? 'block' : 'hidden'} ${isDarkMode ? 'bg-black' : 'bg-white'}`}
+                    className={clsx(
+                        'mt-2.5 flex flex-col w-full max-w-[400px] rounded-[15px]',
+                        'shadow-[17px_19px_24px_rgba(0,0,0,0.13)] overflow-y-auto overflow-x-hidden max-h-[500px] md:w-[440px]',
+                        {
+                            'block': active,
+                            'hidden': !active,
+                            'bg-black': isDarkMode,
+                            'bg-white': !isDarkMode
+                        }
+                    )}
                     onMouseEnter={() => setActive(true)}
                 >
                     {filteredArticles.map((article) => (

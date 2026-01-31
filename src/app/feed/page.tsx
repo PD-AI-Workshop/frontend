@@ -6,6 +6,7 @@ import { useTheme } from '@/hooks/useTheme'
 import { useStores } from '@/hooks/useStores'
 import { Search } from 'lucide-react'
 import { RenderContent } from '@/components/RenderContent'
+import clsx from 'clsx'
 
 const FeedPage = () => {
     const { articleStore, categoryStore, fileStore } = useStores()
@@ -45,9 +46,21 @@ const FeedPage = () => {
     }, [articleStore.getArticles(), searchTerm, sortOption])
 
     return (
-        <main className={`min-h-[79vh] py-8 px-4 ${isDarkMode ? 'bg-[rgb(38,38,38)]' : 'bg-[rgb(237,237,243)]'}`}>
+        <main className={clsx(
+            'min-h-[79vh] py-8 px-4',
+            {
+                'bg-[rgb(38,38,38)]': isDarkMode,
+                'bg-[rgb(237,237,243)]': !isDarkMode
+            }
+        )}>
             <div className="max-w-6xl mx-auto">
-                <div className={`rounded-xl p-6 mb-6 shadow-sm ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
+                <div className={clsx(
+                    'rounded-xl p-6 mb-6 shadow-sm',
+                    {
+                        'bg-black': isDarkMode,
+                        'bg-white': !isDarkMode
+                    }
+                )}>
                     <h1 className="text-2xl font-bold text-center mb-4">Лента статей</h1>
 
                     <div className="flex flex-col sm:flex-row gap-3">

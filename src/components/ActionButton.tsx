@@ -1,4 +1,5 @@
 import { ActionButtonPropsType } from '@/types/ActionButtonPropsType'
+import clsx from 'clsx'
 
 const ActionButton = ({ children, onClick, color }: ActionButtonPropsType) => {
     const colorClasses = {
@@ -11,7 +12,10 @@ const ActionButton = ({ children, onClick, color }: ActionButtonPropsType) => {
     return (
         <button
             onClick={onClick}
-            className={`w-full p-3 text-white mt-4 text-xl rounded-3xl transition-colors ${colorClasses[color]}`}
+            className={clsx(
+                "w-full p-3 text-white mt-4 text-xl rounded-3xl transition-colors",
+                colorClasses[color]
+            )}
         >
             {children}
         </button>

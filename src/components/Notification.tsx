@@ -1,4 +1,5 @@
 import { NotificationType } from '@/types/NotificationType'
+import clsx from 'clsx'
 import { CircleCheckBig, CirclePlus, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 
@@ -28,9 +29,16 @@ const Notification = ({ type, message, autoClose = 5000 }: NotificationType) => 
 
     return (
         <div
-            className={`fixed top-30 right-4 z-50 flex items-start p-4 rounded-md shadow-lg transform transition-transform duration-300 overflow-hidden max-w-xs
-            ${type === 'success' ? 'bg-green-100 text-green-800 border border-green-200' : 'bg-red-100 text-red-800 border border-red-200'}
-            ${isClosing ? 'animate-fadeOut' : 'animate-fadeIn'}`}
+            className={clsx('fixed top-30 right-4 z-50 flex items-start p-4 rounded-md shadow-lg transform transition-transform duration-300 overflow-hidden max-w-xs',
+                {
+                    'bg-green-100 text-green-800 border border-green-200': type === 'success',
+                    'bg-red-100 text-red-800 border border-red-200': type !== 'success'
+                },
+                {
+                    'animate-fadeOut': isClosing,
+                    'animate-fadeIn': !isClosing
+                }
+            )}
         >
             <div className="text-xl mr-2 mt-0.5">
                 {type === 'success' ? <CircleCheckBig /> : <CirclePlus className="rotate-45" />}
@@ -48,7 +56,11 @@ const Notification = ({ type, message, autoClose = 5000 }: NotificationType) => 
 
             <div className="absolute bottom-0 left-0 w-full h-1 bg-current opacity-20"></div>
             <div
-                className={`absolute bottom-0 right-0 h-1 w-full bg-current opacity-70 origin-right ${!isClosing ? 'animate-progress' : ''}`}
+                className={clsx('absolute bottom-0 right-0 h-1 w-full bg-current opacity-70 origin-right',
+                    {
+                        'animate-progress': !isClosing,
+                    }
+                )}
             ></div>
         </div>
     )

@@ -3,21 +3,42 @@
 import Section from '@/components/Section'
 import { observer } from 'mobx-react-lite'
 import { useTheme } from '@/hooks/useTheme'
+import clsx from 'clsx'
 
 const PrivacyPolicyPage = () => {
     const isDarkMode = useTheme()
 
     return (
-        <main className={`min-h-[79vh] p-2 ${isDarkMode ? 'bg-[rgb(38,38,38)]' : 'bg-[rgb(237,237,243)]'}`}>
+        <main className={clsx('min-h-[79vh] p-2',
+            {
+                'bg-[rgb(38,38,38)]': isDarkMode,
+                'bg-[rgb(237,237,243)]': !isDarkMode
+            }
+        )}>
             <div
-                className={`max-w-4xl mx-auto rounded-xl shadow-md p-6 md:p-10 ${isDarkMode ? 'bg-black' : 'bg-white'}`}
+                className={clsx('max-w-4xl mx-auto rounded-xl shadow-md p-6 md:p-10',
+                    {
+                        'bg-black': isDarkMode,
+                        'bg-white': !isDarkMode
+                    }
+                )}
             >
-                <h1 className={`text-3xl md:text-4xl font-bold mb-2 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
+                <h1 className={clsx('text-3xl md:text-4xl font-bold mb-2',
+                    {
+                        'text-white': isDarkMode,
+                        'text-gray-800': !isDarkMode
+                    }
+                )}>
                     Политика конфиденциальности
                 </h1>
                 <p className="text-gray-600 mb-8">Последнее обновление: {new Date().toLocaleDateString('ru-RU')}</p>
 
-                <div className={`space-y-8 ${isDarkMode ? 'text-white' : 'text-black'}`}>
+                <div className={clsx('space-y-8',
+                    {
+                        'text-white': isDarkMode,
+                        'text-black': !isDarkMode
+                    }
+                )}>
                     <Section title="1. Введение" isDarkMode={isDarkMode}>
                         <p>
                             Наш сервис предоставляет платформу для создания и публикации статей. Мы ценим ваше доверие и

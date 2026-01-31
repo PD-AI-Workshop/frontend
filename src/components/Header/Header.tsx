@@ -10,6 +10,7 @@ import { useTheme } from '@/hooks/useTheme'
 import { useMobileDetect } from '@/hooks/useMobileDetect'
 import { useStores } from '@/hooks/useStores'
 import { useIsClient } from '@/hooks/useIsClient'
+import clsx from 'clsx'
 
 const Header = () => {
     const { userStore } = useStores()
@@ -24,8 +25,12 @@ const Header = () => {
 
     return (
         <header
-            className={`flex justify-between items-center h-[104px] py-5 px-2 sticky top-0 border-b border-solid border-[#C4CDEE] z-10 ${isDarkMode ? 'bg-black' : 'bg-white'} md:px-20 md:gap-8`}
-        >
+            className={clsx('flex justify-between items-center h-[104px] py-5 px-2 sticky top-0 border-b border-solid border-[#C4CDEE] z-10 md:px-20 md:gap-8',
+                {
+                    'bg-black': isDarkMode,
+                    'bg-white': !isDarkMode
+                }
+            )}>
             <div className="flex gap-8 h-full items-center">
                 <Link href="/">
                     <img
@@ -39,15 +44,30 @@ const Header = () => {
 
             <div className="flex items-center h-full md:gap-3">
                 {!isClient ? (
-                    <Search className={`mt-auto mb-auto ml-5 mr-5 ${isDarkMode ? 'bg-white' : 'text-[#040BB6]'} `} />
+                    <Search className={clsx('mt-auto mb-auto ml-5 mr-5',
+                        {
+                            'bg-white': isDarkMode,
+                            'text-[#040BB6]': !isDarkMode
+                        }
+                    )} />
                 ) : isMobile ? (
                     <Search
-                        className={`mt-auto mb-auto ml-5 mr-5 ${isDarkMode ? 'text-white' : 'text-[#040BB6]'} `}
+                        className={clsx('mt-auto mb-auto ml-5 mr-5',
+                            {
+                                'text-white': isDarkMode,
+                                'text-[#040BB6]': !isDarkMode
+                            }
+                        )}
                         onClick={() => setModalActive(true)}
                     />
                 ) : (
                     <Search
-                        className={`mt-auto mb-auto ml-5 mr-5 ${isDarkMode ? 'text-white' : 'text-[#040BB6]'} `}
+                        className={clsx('mt-auto mb-auto ml-5 mr-5',
+                            {
+                                'text-white': isDarkMode,
+                                'text-[#040BB6]': !isDarkMode
+                            }
+                        )}
                         onMouseEnter={() => setModalActive(true)}
                     />
                 )}
@@ -56,21 +76,46 @@ const Header = () => {
 
                 {!isClient ? (
                     <span>
-                        <CircleUser className={`${isDarkMode ? 'text-white' : 'text-[rgb(70,74,249)]'}`} />
+                        <CircleUser className={clsx(
+                            {
+                                'text-white': isDarkMode,
+                                'text-[rgb(70,74,249)]': !isDarkMode
+                            }
+                        )} />
                     </span>
                 ) : userStore.isAuth ? (
                     <Link
-                        className={`flex justify-center items-center w-[60px] h-[60%] rounded-3xl ${isDarkMode ? 'bg-white' : 'bg-[rgb(70,74,249)]'}`}
+                        className={clsx('flex justify-center items-center w-[60px] h-[60%] rounded-3xl',
+                            {
+                                'bg-white': isDarkMode,
+                                'bg-[rgb(70,74,249)]': !isDarkMode
+                            }
+                        )}
                         href="/profile"
                     >
-                        <UserRound className={isDarkMode ? 'text-black' : 'text-white'} />
+                        <UserRound className={clsx(
+                            {
+                                'text-black': isDarkMode,
+                                'text-white': !isDarkMode
+                            }
+                        )} />
                     </Link>
                 ) : (
                     <Link
-                        className={`flex justify-center items-center w-[90px] h-[70%] rounded-3xl ${isDarkMode ? 'bg-white' : 'bg-[rgb(70,74,249)]'}`}
+                        className={clsx('flex justify-center items-center w-[90px] h-[70%] rounded-3xl',
+                            {
+                                'bg-white': isDarkMode,
+                                'bg-[rgb(70,74,249)]': !isDarkMode
+                            }
+                        )}
                         href="/login"
                     >
-                        <p className={isDarkMode ? 'text-black' : 'text-white'}>Войти</p>
+                        <p className={clsx(
+                            {
+                                'text-black': isDarkMode,
+                                'text-white': !isDarkMode
+                            }
+                        )}>Войти</p>
                     </Link>
                 )}
             </div>

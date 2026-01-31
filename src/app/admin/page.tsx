@@ -12,6 +12,7 @@ import { useLocalStorageState } from '@/hooks/useLocalStorageState'
 import { useStores } from '@/hooks/useStores'
 import { SquareChevronLeft, SquareChevronRight } from 'lucide-react'
 import { useAdminData } from '@/hooks/useAdminData'
+import clsx from 'clsx'
 
 const AdminPage = () => {
     const { userStore } = useStores()
@@ -51,7 +52,10 @@ const AdminPage = () => {
                     width={200}
                     breakpoint="md"
                     trigger={null}
-                    className={`h-screen fixed lg:relative z-50 ${isMobile && !collapsed ? 'inset-0' : ''}`}
+                    className={clsx(
+                        'h-screen fixed lg:relative z-50',
+                        isMobile && !collapsed && 'inset-0'
+                    )}
                 >
                     <AdminMenu selectedKey={selectedKey} handleMenuSelect={handleMenuSelect} />
                 </Layout.Sider>
