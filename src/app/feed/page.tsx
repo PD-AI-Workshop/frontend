@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useTheme } from '@/hooks/useTheme'
 import { useStores } from '@/hooks/useStores'
 import { Search } from 'lucide-react'
-import { RenderContent } from '@/components/RenderContent'
+import { RenderContent } from '@/components/renderContent'
 import clsx from 'clsx'
 
 const FeedPage = () => {

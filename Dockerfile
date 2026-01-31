@@ -7,7 +7,7 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
 
 RUN npm install -g pnpm@10.6.5 && \
-    pnpm install --frozen-lockfile
+    pnpm install
 
 FROM node:24-alpine AS builder
 
