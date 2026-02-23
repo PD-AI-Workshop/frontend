@@ -9,13 +9,13 @@ const FORM_URLENCODED_HEADERS = {
 }
 
 export class AuthApi {
-    static async login(email: string, password: string): Promise<AxiosResponse<AuthResponseType>> {
+    async login(email: string, password: string): Promise<AxiosResponse<AuthResponseType>> {
         const params = new URLSearchParams({ username: email, password })
 
         return $host.post<AuthResponseType>('auth/login', params, { headers: FORM_URLENCODED_HEADERS })
     }
 
-    static async register(
+    async register(
         username: string,
         email: string,
         password: string,
@@ -24,11 +24,11 @@ export class AuthApi {
         return $host.post<RegResponseType>('auth/register', { username, email, password, role })
     }
 
-    static async logout(): Promise<AxiosResponse<void>> {
+    async logout(): Promise<AxiosResponse<void>> {
         return $host.post<void>('auth/logout')
     }
 
-    static async getCurrentUser(): Promise<AxiosResponse<UserType>> {
+    async getCurrentUser(): Promise<AxiosResponse<UserType>> {
         return $host.get<UserType>('user/me')
     }
 }

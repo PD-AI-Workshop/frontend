@@ -3,8 +3,6 @@ export type CategoryType = {
     name: string
 }
 
-export type CreateCategoryType = {
-    name: string
-}
+export type CreateCategoryType = Omit<CategoryType, 'id'>
 
 export type UpdateCategoryType = CategoryType

@@ -8,6 +8,8 @@ import { useStores } from '@/hooks/useStores'
 import { useTheme } from '@/hooks/useTheme'
 import ActionButton from '@/components/ActionButton'
 import InfoItem from '@/components/InfoItem'
+import Spinner from '@/components/Spinner'
+import clsx from 'clsx'
 
 const Profile = () => {
     const { userStore } = useStores()
@@ -16,6 +18,8 @@ const Profile = () => {
     const [isLoading, setIsLoading] = useState(true)
     const role = user?.role
     const isDarkMode = useTheme()
+    const isAdminOrWriter = role === 'admin' || role === 'writer'
+    const isAdmin = role === 'admin'
 
     const handleAdmin = useCallback(() => router.push('/admin'), [router])
     const handleEditor = useCallback(() => router.push('/editor'), [router])
@@ -39,22 +43,32 @@ const Profile = () => {
     }, [userStore, router])
 
     if (isLoading) {
-        return (
-            <main className="min-h-[79vh] flex justify-center items-center bg-[rgb(237,237,243)]">
-                <div className="text-xl">Загрузка...</div>
-            </main>
-        )
+        return <Spinner />
     }
 
     return (
         <main
-            className={`min-h-[79vh] flex justify-center items-center p-8 ${isDarkMode ? 'bg-[rgb(38,38,38)]' : 'bg-[rgb(237,237,243)]'}`}
+            className={clsx('min-h-[79vh] flex justify-center items-center p-8',
+                {
+                    'bg-[rgb(38,38,38)]': isDarkMode,
+                    'bg-[rgb(237,237,243)]': !isDarkMode
+                }
+            )}
         >
-            <div className={`w-[28rem] rounded-2xl overflow-hidden shadow-lg ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
+            <div className={clsx('w-[28rem] rounded-2xl overflow-hidden shadow-lg',
+                {
+                    'bg-black': isDarkMode,
+                    'bg-white': !isDarkMode
+                }
+            )}>
                 <div className="p-10">
                     <h1
-                        className={`text-center mb-10 text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}
-                    >
+                        className={clsx('text-center mb-10 text-3xl font-bold',
+                            {
+                                'text-white': isDarkMode,
+                                'text-gray-800': !isDarkMode
+                            }
+                        )}>
                         Аккаунт
                     </h1>
 
@@ -65,20 +79,20 @@ const Profile = () => {
 
                     <ThemeToggleButton />
 
-                    {(role === 'admin' || role === 'writer') && (
+                    {isAdminOrWriter && (
                         <ActionButton onClick={handleEditor} color="primary">
                             Написать статью
                         </ActionButton>
                     )}
-                    {role === 'admin' &&
-                        <div>
+                    {isAdmin &&
+                        <>
                             <ActionButton onClick={handleAdmin} color="secondary">
                                 Админ-панель
                             </ActionButton>
                             <ActionButton onClick={handleMonitoring} color="purple">
                                 Мониторинг
                             </ActionButton>
-                        </div>}
+                        </>}
                     <ActionButton onClick={handleLogout} color="danger">
                         Выйти
                     </ActionButton>

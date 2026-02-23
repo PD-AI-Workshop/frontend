@@ -1,9 +1,10 @@
 import { formatTime } from '@/utils/formatTime'
 import { useEffect, useState } from 'react'
 import Tag from './Tag'
-import { ArticleCardProps } from '@/props/ArticleCardProps'
+import { ArticleCardPropsType } from '@/types/ArticleCardPropsType'
+import clsx from 'clsx'
 
-const ArticleCard = ({ variant, article, categories, files = [], isDarkMode, className = '' }: ArticleCardProps) => {
+const ArticleCard = ({ variant, article, categories, files = [], isDarkMode, className = '' }: ArticleCardPropsType) => {
     const needsContent = variant === 'horizontal' || variant === 'feed'
     const contentFile = needsContent ? files.find((f) => f.id === article.text_id) : null
     const [fileContent, setFileContent] = useState<string | null>(null)
@@ -35,18 +36,35 @@ const ArticleCard = ({ variant, article, categories, files = [], isDarkMode, cla
         <img
             src={article.main_image_url}
             alt="article"
-            className={`
-        ${variant === 'horizontal' ? 'w-full md:w-[500px]' : variant === 'trending' ? 'w-full h-50' : 'w-full md:w-64 lg:w-80'}
-        ${variant === 'trending' ? 'rounded-tr-[12px]' : 'rounded-t-[12px] md:rounded-tr-none md:rounded-l-[12px]'} object-cover flex-1`}
+            className={clsx(
+                "object-cover flex-1",
+                {
+                    'w-full md:w-[500px]': variant === 'horizontal',
+                    'w-full h-50': variant === 'trending',
+                    'w-full md:w-64 lg:w-80': !['horizontal', 'trending'].includes(variant),
+                },
+                {
+                    'rounded-tr-[12px]': variant === 'trending',
+                    'rounded-t-[12px] md:rounded-tr-none md:rounded-l-[12px]': variant !== 'trending',
+                }
+            )}
+            loading='lazy'
         />
     )
 
     const Footer = (
         <div
-            className={`flex justify-between items-center
-      ${variant === 'trending' ? 'px-4 py-2.5 border-t border-gray-200' : 'mt-auto'}
-      ${isDarkMode ? 'text-white' : 'text-gray-600'}`}
-        >
+            className={clsx(
+                "flex justify-between items-center",
+                {
+                    'px-4 py-2.5 border-t border-gray-200': variant === 'trending',
+                    'mt-auto': variant !== 'trending',
+                },
+                {
+                    'text-white': isDarkMode,
+                    'text-gray-600': !isDarkMode,
+                }
+            )}>
             <p className="text-sm font-inter">{formattedDate}</p>
             <p className="text-sm font-inter">Советы</p>
         </div>
@@ -54,20 +72,39 @@ const ArticleCard = ({ variant, article, categories, files = [], isDarkMode, cla
 
     return (
         <div
-            className={`h-[330px] border border-gray-300/50 rounded-[12px] overflow-hidden
-        ${isDarkMode ? 'bg-black' : 'bg-white'}
-        ${variant === 'horizontal' ? 'flex flex-col md:flex-row' : variant === 'feed' ? 'mb-4 md:flex' : 'flex flex-col'}
-        ${className}`}
+            className={clsx(
+                "border border-gray-300/50 rounded-[12px] overflow-hidden",
+                {
+                    'bg-black': isDarkMode,
+                    'bg-white': !isDarkMode
+                },
+                {
+                    'flex flex-col md:flex-row': variant === 'horizontal',
+                    'mb-4 md:flex': variant === 'feed',
+                    'flex flex-col': !variant || (variant !== 'horizontal' && variant !== 'feed'),
+                },
+                className
+            )}
         >
             {ImageBlock}
             <div className="flex flex-col flex-1 p-3">
-                <p className={`font-semibold line-clamp-2 ${variant === 'trending' ? 'text-lg' : 'text-3xl'}`}>
+                <p className={clsx('font-semibold line-clamp-2',
+                    {
+                        'text-lg': variant === 'trending',
+                        'text-3xl': variant !== 'trending'
+                    }
+                )}>
                     {article.title}
                 </p>
 
                 {needsContent && fileContent && (
                     <div className="my-4 min-h-[60px]">
-                        <p className={`line-clamp-3 ${isDarkMode ? 'text-white' : 'text-gray-700'}`}>{fileContent}</p>
+                        <p className={clsx('line-clamp-3',
+                            {
+                                'text-white': isDarkMode,
+                                'text-gray-700': !isDarkMode
+                            }
+                        )}>{fileContent}</p>
                     </div>
                 )}
 

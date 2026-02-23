@@ -1,10 +1,10 @@
 import { items } from '@/constants/items'
-import { AdminMenuProps } from '@/props/AdminMenuProps'
+import { AdminMenuPropsType } from '@/types/AdminMenuPropsType'
 import { Menu } from 'antd'
 import Sider from 'antd/es/layout/Sider'
 import { useState } from 'react'
 
-const AdminMenu = ({ selectedKey, handleMenuSelect }: AdminMenuProps) => {
+const AdminMenu = ({ selectedKey, handleMenuSelect }: AdminMenuPropsType) => {
     const [collapsed, setCollapsed] = useState(false)
     const onCollapse = (value: boolean) => setCollapsed(value)
 

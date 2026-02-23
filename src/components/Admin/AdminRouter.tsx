@@ -1,53 +1,33 @@
-import { CategoryType } from '@/types/CategoryTypes'
-import { FileType } from '@/types/FileType'
 import CategoryAdminPage from './Category/CategoryAdminPage'
-import { useState } from 'react'
 import FileAdminPanel from './File/FileAdminPanel'
 import ArticleTable from './Article/ArticleTable'
 import UserAdminPanel from './User/UserAdminPanel'
-import { UserType } from '@/types/UserTypes'
-import { AdminRouterProps } from '@/props/AdminRouterProps'
+import { useAdminState } from '@/hooks/useAdminState'
+import { JSX } from 'react'
 
-const AdminRouter = ({ selectedKey }: AdminRouterProps) => {
-    const [isAddModalOpen, setIsAddModalOpen] = useState(false)
-    const [isEditModalOpen, setIsEditModalOpen] = useState(false)
-    const [selectedCategory, setSelectedCategory] = useState<CategoryType | null>(null)
-    const [selectedFile, setSelectedFile] = useState<FileType | null>(null)
-    const [selectedUser, setSelectedUser] = useState<UserType | null>(null)
+const AdminRouter = ({ selectedKey }: { selectedKey: string }) => {
+    const state = useAdminState()
 
-    return (
-        <div>
-            {(selectedKey === '1' && (
-                <CategoryAdminPage
-                    isAddModalOpen={isAddModalOpen}
-                    setIsAddModalOpen={setIsAddModalOpen}
-                    isEditModalOpen={isEditModalOpen}
-                    setIsEditModalOpen={setIsEditModalOpen}
-                    selectedCategory={selectedCategory}
-                    setSelectedCategory={setSelectedCategory}
-                />
-            )) ||
-                (selectedKey === '2' && (
-                    <FileAdminPanel
-                        isAddModalOpen={isAddModalOpen}
-                        setIsAddModalOpen={setIsAddModalOpen}
-                        isEditModalOpen={isEditModalOpen}
-                        setIsEditModalOpen={setIsEditModalOpen}
-                        selectedFile={selectedFile}
-                        setSelectedFile={setSelectedFile}
-                    />
-                )) ||
-                (selectedKey === '3' && <ArticleTable />) ||
-                (selectedKey === '4' && (
-                    <UserAdminPanel
-                        isEditModalOpen={isEditModalOpen}
-                        setIsEditModalOpen={setIsEditModalOpen}
-                        selectedUser={selectedUser}
-                        setSelectedUser={setSelectedUser}
-                    />
-                ))}
-        </div>
-    )
+    const components: Record<string, JSX.Element> = {
+        '1': <CategoryAdminPage
+            {...state}
+            selectedItem={state.selectedCategory}
+            setSelectedItem={state.setSelectedCategory}
+        />,
+        '2': <FileAdminPanel
+            {...state}
+            selectedItem={state.selectedFile}
+            setSelectedItem={state.setSelectedFile}
+        />,
+        '3': <ArticleTable />,
+        '4': <UserAdminPanel
+            {...state}
+            selectedItem={state.selectedUser}
+            setSelectedItem={state.setSelectedUser}
+        />
+    }
+
+    return <div>{components[selectedKey]}</div>
 }
 
 export default AdminRouter

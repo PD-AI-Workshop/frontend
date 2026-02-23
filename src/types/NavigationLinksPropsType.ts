@@ -1,4 +1,4 @@
-export interface NavigationLinksProps {
+export type NavigationLinksPropsType = {
     isDarkMode: boolean
     isMobile: boolean
 }

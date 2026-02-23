@@ -1,25 +1,26 @@
 import { useStores } from '@/hooks/useStores'
-import { EditUserModalProps } from '@/props/EditUserModalProps'
+import { UserEditModalPropsType } from '@/types/UserAdminPanelPropsType'
 import { Checkbox, Form, Input, Modal, Select } from 'antd'
 import { useForm } from 'antd/es/form/Form'
+import { Option } from 'antd/es/mentions'
 import { useEffect } from 'react'
 
-const EditUserModal = ({ isEditModalOpen, setIsEditModalOpen, selectedUser }: EditUserModalProps) => {
+const EditUserModal = ({ isEditModalOpen, setIsEditModalOpen, selectedItem }: UserEditModalPropsType) => {
     const [form] = useForm()
     const { userStore } = useStores()
     const onCancel = () => setIsEditModalOpen(false)
 
     useEffect(() => {
-        if (isEditModalOpen && selectedUser) {
-            form.setFieldsValue(selectedUser)
+        if (isEditModalOpen && selectedItem) {
+            form.setFieldsValue(selectedItem)
         }
-    }, [isEditModalOpen, selectedUser])
+    }, [isEditModalOpen, selectedItem])
 
     const handleEdit = async () => {
-        if (!selectedUser) return
+        if (!selectedItem) return
 
         const values = await form.validateFields()
-        await userStore.update(selectedUser.id, values)
+        await userStore.update(selectedItem.id, values)
         await userStore.fetch()
 
         setIsEditModalOpen(false)
@@ -38,9 +39,9 @@ const EditUserModal = ({ isEditModalOpen, setIsEditModalOpen, selectedUser }: Ed
 
                 <Form.Item label="Роль" name="role" rules={[{ message: 'Выберите роль' }]}>
                     <Select>
-                        <Select.Option value="user">Пользователь</Select.Option>
-                        <Select.Option value="admin">Администратор</Select.Option>
-                        <Select.Option value="writer">Писатель</Select.Option>
+                        <Option value="user">Пользователь</Option>
+                        <Option value="admin">Администратор</Option>
+                        <Option value="writer">Писатель</Option>
                     </Select>
                 </Form.Item>
 

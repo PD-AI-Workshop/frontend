@@ -1,4 +1,4 @@
-export interface SectionProps {
+export type SectionPropsType = {
     title: string
     children: React.ReactNode
     isDarkMode: boolean

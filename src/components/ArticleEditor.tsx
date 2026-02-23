@@ -1,10 +1,11 @@
-import { Button, Input, InputNumber, Select, Upload, UploadProps } from 'antd'
+import { Button, Input, InputNumber, Select, Upload, UploadProps, message } from 'antd'
 import MyEditor from './MyEditor'
 import { useEffect, useState } from 'react'
 import { RcFile } from 'antd/es/upload'
-import { ArticleEditorProps } from '@/props/ArticleEditorProps'
+import { ArticleEditorPropsType } from '@/types/ArticleEditorPropsType'
 import { useStores } from '@/hooks/useStores'
 import { UploadIcon } from 'lucide-react'
+import clsx from 'clsx'
 
 const ArticleEditor = ({
     mode,
@@ -13,8 +14,9 @@ const ArticleEditor = ({
     handleSubmit,
     editorRef,
     initialEditorContent,
-}: ArticleEditorProps) => {
+}: ArticleEditorPropsType) => {
     const { categoryStore, themeStore, fileStore } = useStores()
+    const [messageApi, contextHolder] = message.useMessage()
 
     const [loading, setLoading] = useState({
         article: false,
@@ -39,6 +41,32 @@ const ArticleEditor = ({
             ...prev,
             image_ids: [...prev.image_ids, id],
         }))
+    }
+
+    const checkImageDimensions = (file: RcFile): Promise<boolean> => {
+        return new Promise((resolve, _) => {
+            const img = new Image()
+            img.src = URL.createObjectURL(file)
+
+            img.onload = () => {
+                URL.revokeObjectURL(img.src)
+                const { width, height } = img
+
+                if (width >= 1280 && height >= 720) {
+                    resolve(true)
+                } else {
+                    messageApi.open({
+                        type: 'error',
+                        content: `Изображение должно быть не менее 1280x720 пикселей. Текущий размер: ${width}x${height} пикселей`,
+                    })
+                    resolve(false)
+                }
+            }
+        })
+    }
+
+    const beforeUpload: UploadProps['beforeUpload'] = async (file: RcFile) => {
+        return await checkImageDimensions(file)
     }
 
     const handleCustomRequest: UploadProps['customRequest'] = async ({ file, onSuccess, onError }) => {
@@ -67,11 +95,23 @@ const ArticleEditor = ({
 
     return (
         <main className="min-h-[79vh] flex p-4 items-center flex-col">
+            {contextHolder}
             <h1 className="mt-5 text-2xl font-bold mb-5">Редактор статьи</h1>
 
-            <Upload customRequest={handleCustomRequest} disabled={loading.image} showUploadList={false}>
-                <Button icon={<UploadIcon />}>Загрузить файл</Button>
-            </Upload>
+            <div className="flex flex-col justify-center items-center">
+                <Upload
+                    customRequest={handleCustomRequest}
+                    beforeUpload={beforeUpload}
+                    disabled={loading.image}
+                    showUploadList={false}
+                    accept="image/*"
+                >
+                    <Button icon={<UploadIcon />}>Загрузить файл</Button>
+                </Upload>
+                <p className="text-sm mt-2 text-white">
+                    *Основное изображение статьи должно быть не менее 1280×720 пикселей
+                </p>
+            </div>
 
             {articleData.main_image_url && (
                 <div className="mt-4">
@@ -138,7 +178,15 @@ const ArticleEditor = ({
                 <button
                     type="submit"
                     onClick={handleSubmit}
-                    className={`${mode === 'edit' ? 'bg-amber-600 hover:bg-amber-700' : 'bg-indigo-600 hover:bg-indigo-700'} text-white mb-2 w-auto py-3 px-4 rounded-3xl transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed`}
+                    className={clsx(
+                        'text-white mb-2 w-auto py-3 px-4 rounded-3xl transition-colors',
+                        'disabled:opacity-50 disabled:cursor-not-allowed',
+                        'focus:outline-none focus:ring-2 focus:ring-offset-2',
+                        {
+                            'bg-amber-600 hover:bg-amber-700': mode === 'edit',
+                            'bg-indigo-600 hover:bg-indigo-700': mode !== 'edit'
+                        }
+                    )}
                 >
                     {mode === 'edit' ? 'Изменить' : 'Опубликовать'}
                 </button>

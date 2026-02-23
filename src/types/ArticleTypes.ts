@@ -11,13 +11,10 @@ export type ArticleType = {
     image_ids: number[]
 }
 
-export type CreateArticleType = {
-    title: string
-    time_reading: number
-    main_image_url: string
-    text_id: number
-    category_ids: number[]
-    image_ids: number[]
-}
+export type CreateArticleType = Omit<ArticleType, 'id' | 'created_date' | 'user_id' | 'username'>
+
+export type ArticleDataType = Omit<CreateArticleType, 'text_id'>
 
 export type UpdateArticleType = CreateArticleType
+
+export type ArticleAuthorInfoPropsType = Pick<ArticleType, 'time_reading' | 'username' | 'created_date'>

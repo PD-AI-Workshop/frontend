@@ -1,4 +1,4 @@
-export interface ActionButtonsProps<T> {
+export type ActionButtonsPropsType<T> = {
     record: T
     onEdit?: (record: T) => void
     onDelete?: (record: T) => Promise<void>

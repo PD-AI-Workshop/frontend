@@ -1,25 +1,25 @@
 import { useStores } from '@/hooks/useStores'
-import { EditCategoryModalProps } from '@/props/EditCategoryModalProps'
+import { EditCategoryModalPropsType } from '@/types/CategoryAdminPanelPropsType'
 import { Form, Input, Modal } from 'antd'
 import { useForm } from 'antd/es/form/Form'
 import { useEffect } from 'react'
 
-const EditCategoryModal = ({ isEditModalOpen, setIsEditModalOpen, selectedCategory }: EditCategoryModalProps) => {
+const EditCategoryModal = ({ isEditModalOpen, setIsEditModalOpen, selectedItem }: EditCategoryModalPropsType) => {
     const [form] = useForm()
     const { categoryStore } = useStores()
     const onCancel = () => setIsEditModalOpen(false)
 
     useEffect(() => {
-        if (isEditModalOpen && selectedCategory) {
-            form.setFieldsValue(selectedCategory)
+        if (isEditModalOpen && selectedItem) {
+            form.setFieldsValue(selectedItem)
         }
-    }, [isEditModalOpen, selectedCategory])
+    }, [isEditModalOpen, selectedItem])
 
     const handleEdit = async () => {
-        if (!selectedCategory) return
+        if (!selectedItem) return
 
         const values = await form.validateFields()
-        await categoryStore.update(selectedCategory.id, values)
+        await categoryStore.update(selectedItem.id, values)
 
         setIsEditModalOpen(false)
     }

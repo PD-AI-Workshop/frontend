@@ -8,7 +8,7 @@ import { useStores } from '@/hooks/useStores'
 import { useTheme } from '@/hooks/useTheme'
 
 function Home() {
-    const { articleStore, categoryStore, fileStore, themeStore } = useStores()
+    const { articleStore, categoryStore, fileStore } = useStores()
 
     useEffect(() => {
         articleStore.fetch()

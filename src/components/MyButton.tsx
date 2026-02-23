@@ -1,12 +1,20 @@
-import { MyButtonProps } from '@/props/MyButtonProps'
+import { MyButtonPropsType } from '@/types/MyButtonPropsType'
+import clsx from 'clsx'
 
-const MyButton = ({ isSubmitting, isDarkMode, children, testId = '' }: MyButtonProps) => {
+const MyButton = ({ isSubmitting, isDarkMode, children }: MyButtonPropsType) => {
     return (
         <button
             data-testid={testId}
             type="submit"
             disabled={isSubmitting}
-            className={`${isDarkMode ? 'bg-white text-black hover:bg-gray-400' : 'bg-indigo-600 text-white hover:bg-indigo-700'} w-full mt-4 py-3 px-4 rounded-3xl transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed`}
+            className={clsx('w-full mt-4 py-3 px-4 rounded-3xl transition-colors',
+                'disabled:opacity-50 disabled:cursor-not-allowed',
+                'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500',
+                {
+                    'bg-white text-black hover:bg-gray-400': isDarkMode,
+                    'bg-indigo-600 text-white hover:bg-indigo-700': !isDarkMode
+                }
+            )}
         >
             {isSubmitting ? (
                 <span className="flex items-center justify-center">

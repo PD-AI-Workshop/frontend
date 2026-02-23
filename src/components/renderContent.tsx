@@ -1,9 +1,10 @@
 import { Empty, Skeleton } from 'antd'
 import Link from 'next/link'
 import ArticleCard from './ArticleCard'
-import { renderContentProps } from '@/props/renderContentProps'
+import { RenderContentPropsType } from '@/types/RenderContentPropsType'
+import clsx from 'clsx'
 
-export const renderContent = ({
+export const RenderContent = ({
     isLoading,
     isDarkMode,
     error,
@@ -11,7 +12,7 @@ export const renderContent = ({
     filteredArticles,
     categoryStore,
     fileStore,
-}: renderContentProps) => {
+}: RenderContentPropsType) => {
     if (isLoading) {
         return (
             <div className="flex flex-col gap-6 w-full max-w-2xl mx-auto">
@@ -24,7 +25,12 @@ export const renderContent = ({
 
     if (error) {
         return (
-            <div className={`rounded-xl p-12 text-center ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
+            <div className={clsx('rounded-xl p-12 text-center',
+                {
+                    'bg-black': isDarkMode,
+                    'bg-white': !isDarkMode
+                }
+            )}>
                 <h3 className="text-xl font-medium mb-2">Ошибка загрузки</h3>
                 <p className="text-gray-600">{error}</p>
             </div>
@@ -35,11 +41,20 @@ export const renderContent = ({
         return (
             <Empty
                 description={
-                    <span className={isDarkMode ? 'text-white' : ''}>
+                    <span className={clsx(
+                        {
+                            'text-white': isDarkMode
+                        }
+                    )}>
                         {searchTerm ? 'По вашему запросу ничего не найдено' : 'Статьи не найдены'}
                     </span>
                 }
-                className={`py-12 rounded-xl ${isDarkMode ? 'bg-black text-white' : 'bg-white'}`}
+                className={clsx('py-12 rounded-xl',
+                    {
+                        'bg-black text-white': isDarkMode,
+                        'bg-white': !isDarkMode
+                    }
+                )}
             />
         )
     }
