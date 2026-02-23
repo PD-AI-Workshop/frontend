@@ -37,6 +37,7 @@ const Login = () => {
                     >
                         <div className="p-8">
                             <h1
+                                data-testid="login-title"
                                 className={`text-center mb-8 text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}
                             >
                                 Вход в аккаунт
@@ -51,10 +52,11 @@ const Login = () => {
                                     isTouched={touched[field.name]}
                                     error={errors[field.name]}
                                     isMobile={isMobile}
+                                    testId={`login-input-${field.name}`}
                                 />
                             ))}
 
-                            <MyButton isDarkMode={isDarkMode} isSubmitting={isSubmitting}>
+                            <MyButton isDarkMode={isDarkMode} isSubmitting={isSubmitting} testId="login-submit-button">
                                 Войти
                             </MyButton>
                         </div>

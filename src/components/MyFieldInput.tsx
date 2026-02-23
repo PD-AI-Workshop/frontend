@@ -1,10 +1,11 @@
 import { MyFieldInputProps } from '@/props/MyFieldInputProps'
 import { ErrorMessage, Field } from 'formik'
 
-const MyFieldInput = ({ value, type, placeholder, isTouched, error, isSmall = false, isMobile }: MyFieldInputProps) => {
+const MyFieldInput = ({ value, type, placeholder, isTouched, error, isSmall = false, isMobile, testId = '' }: MyFieldInputProps) => {
     return (
         <div className="mt-4">
             <Field
+                data-testid={testId}
                 id={value}
                 name={value}
                 type={type}

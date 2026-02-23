@@ -3,4 +3,5 @@ export interface MyButtonProps {
     isSubmitting: boolean
     children: ReactNode
     isDarkMode: boolean
+    testId?: string
 }

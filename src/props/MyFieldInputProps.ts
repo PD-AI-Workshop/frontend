@@ -6,4 +6,5 @@ export interface MyFieldInputProps {
     error: string | undefined
     isSmall?: boolean
     isMobile: boolean
+    testId?: string
 }

@@ -63,6 +63,7 @@ const Register = () => {
                         className={`w-auto p-8 max-w-auto rounded-2xl overflow-hidden ${isDarkMode ? 'bg-black' : 'bg-white'}`}
                     >
                         <h1
+                            data-testid="register-title"
                             className={`text-center mb-4 mt-4 text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}
                         >
                             Регистрация
@@ -82,6 +83,7 @@ const Register = () => {
                                     error={errors[field.name]}
                                     isMobile={isMobile}
                                     isSmall
+                                    testId={`register-input-${field.name}`}
                                 />
                             ))}
                         </div>
@@ -95,10 +97,11 @@ const Register = () => {
                                 isTouched={touched[field.name]}
                                 error={errors[field.name]}
                                 isMobile={isMobile}
+                                testId={`register-input-${field.name}`}
                             />
                         ))}
 
-                        <MyButton isDarkMode={isDarkMode} isSubmitting={isSubmitting}>
+                        <MyButton isDarkMode={isDarkMode} isSubmitting={isSubmitting} testId="register-submit-button">
                             Создать аккаунт
                         </MyButton>
                         <p className="text-center mt-4 text-gray-400 text-xs">

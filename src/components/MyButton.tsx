@@ -1,8 +1,9 @@
 import { MyButtonProps } from '@/props/MyButtonProps'
 
-const MyButton = ({ isSubmitting, isDarkMode, children }: MyButtonProps) => {
+const MyButton = ({ isSubmitting, isDarkMode, children, testId = '' }: MyButtonProps) => {
     return (
         <button
+            data-testid={testId}
             type="submit"
             disabled={isSubmitting}
             className={`${isDarkMode ? 'bg-white text-black hover:bg-gray-400' : 'bg-indigo-600 text-white hover:bg-indigo-700'} w-full mt-4 py-3 px-4 rounded-3xl transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed`}
