@@ -1,7 +1,7 @@
 import { MyButtonPropsType } from '@/types/MyButtonPropsType'
 import clsx from 'clsx'
 
-const MyButton = ({ isSubmitting, isDarkMode, children }: MyButtonPropsType) => {
+const MyButton = ({ isSubmitting, isDarkMode, children, testId = '' }: MyButtonPropsType) => {
     return (
         <button
             data-testid={testId}

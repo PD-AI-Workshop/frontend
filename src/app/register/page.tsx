@@ -77,7 +77,7 @@ const Register = () => {
                                     'text-white': isDarkMode,
                                     'text-gray-800': !isDarkMode
                                 }
-                            )}>
+                            )}  data-testid="register-title">
                             Регистрация
                         </h1>
                         <h1 className="text-center mb-4 text-gray-400 text-base">

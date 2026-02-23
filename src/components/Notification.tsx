@@ -44,7 +44,7 @@ const Notification = ({ type, message, autoClose = 5000 }: NotificationType) => 
                 {type === 'success' ? <CircleCheckBig /> : <CirclePlus className="rotate-45" />}
             </div>
 
-            <div className="flex-1">{message}</div>
+            <div className="flex-1" data-testid="notification-message">{message}</div>
 
             <button
                 onClick={handleClose}

@@ -51,7 +51,7 @@ const Login = () => {
                                         'text-white': isDarkMode,
                                         'text-gray-800': !isDarkMode
                                     }
-                                )}>
+                                )} data-testid="login-title">
                                 Вход в аккаунт
                             </h1>
 
