@@ -2,10 +2,11 @@ import { MyFieldInputPropsType } from '@/types/MyFieldInputPropsType'
 import clsx from 'clsx'
 import { ErrorMessage, Field } from 'formik'
 
-const MyFieldInput = ({ value, type, placeholder, isTouched, error, isSmall = false, isMobile }: MyFieldInputPropsType) => {
+const MyFieldInput = ({ value, type, placeholder, isTouched, error, isSmall = false, isMobile, testId = '' }: MyFieldInputPropsType) => {
     return (
         <div className="mt-4">
             <Field
+                data-testid={testId}
                 id={value}
                 name={value}
                 type={type}

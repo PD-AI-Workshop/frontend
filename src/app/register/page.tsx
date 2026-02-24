@@ -77,7 +77,7 @@ const Register = () => {
                                     'text-white': isDarkMode,
                                     'text-gray-800': !isDarkMode
                                 }
-                            )}>
+                            )}  data-testid="register-title">
                             Регистрация
                         </h1>
                         <h1 className="text-center mb-4 text-gray-400 text-base">
@@ -95,6 +95,7 @@ const Register = () => {
                                     error={errors[field.name]}
                                     isMobile={isMobile}
                                     isSmall
+                                    testId={`register-input-${field.name}`}
                                 />
                             ))}
                         </div>
@@ -108,10 +109,11 @@ const Register = () => {
                                 isTouched={touched[field.name]}
                                 error={errors[field.name]}
                                 isMobile={isMobile}
+                                testId={`register-input-${field.name}`}
                             />
                         ))}
 
-                        <MyButton isDarkMode={isDarkMode} isSubmitting={isSubmitting}>
+                        <MyButton isDarkMode={isDarkMode} isSubmitting={isSubmitting} testId="register-submit-button">
                             Создать аккаунт
                         </MyButton>
                         <p className="text-center mt-4 text-gray-400 text-xs">

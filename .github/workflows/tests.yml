@@ -1,0 +1,150 @@
+name: Frontend UI Tests
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'src/**'
+      - 'package.json'
+      - 'tests/**'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'src/**'
+      - 'package.json'
+      - 'tests/**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout public deploy repo
+        uses: actions/checkout@v4
+        with:
+          repository: PD-AI-Workshop/deploy
+          ref: develop
+          path: deploy
+          submodules: recursive
+
+      - name: Checkout frontend (PR version)
+        uses: actions/checkout@v4
+        with:
+          path: deploy/frontend
+          fetch-depth: 0
+
+      - name: Verify project structure
+        run: |
+          echo "=== Deploy structure ==="
+          ls -la deploy/
+          echo "=== Backend service ==="
+          ls -la deploy/backend/ || echo "⚠️ Backend not found"
+          echo "=== Nginx service ==="
+          ls -la deploy/frontend/
+          echo "=== Tests directory ==="
+          ls -la deploy/frontend/tests/ || echo "⚠️ Tests directory not found"
+
+      - name: Cache node modules
+        uses: actions/cache@v4
+        id: cache-node
+        with:
+          path: deploy/frontend/tests/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('deploy/frontend/tests/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+            ${{ runner.os }}-
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: deploy/frontend/tests/package-lock.json
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        id: cache-playwright
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('deploy/frontend/tests/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
+            ${{ runner.os }}-
+
+      - name: Install dependencies
+        run: |
+          cd deploy/frontend/tests
+          npm ci
+          
+          if [ "${{ steps.cache-playwright.outputs.cache-hit }}" != 'true' ]; then
+            echo "📦 Installing Playwright browsers with dependencies..."
+            npx playwright install --with-deps chromium firefox webkit
+          else
+            echo "✅ Playwright browsers found in cache"
+            npx playwright install-deps || true
+          fi
+
+      - name: Create environment files
+        run: |
+          cat > deploy/frontend/tests/.env << EOF
+          BASE_URL=http://localhost
+          BASE_API_URL=http://localhost:8000/api
+          CI=true
+          EOF
+          
+          cat > deploy/frontend/.env << EOF
+          NEXT_PUBLIC_API_BASE_URL=/api
+          EOF
+
+      - name: Verify environment files
+        run: |
+          echo "=== Environment files ==="
+          echo "deploy/.env.test: $([ -f deploy/.env.test ] && echo '✅' || echo '❌')"
+          echo "deploy/frontend/.env: $([ -f deploy/frontend/.env ] && echo '✅' || echo '❌')"
+          echo "deploy/frontend/tests/.env: $([ -f deploy/frontend/tests/.env ] && echo '✅' || echo '❌')"
+          
+          echo -e "\n=== Tests .env content ==="
+          cat deploy/frontend/tests/.env || echo "No tests .env"
+
+      - name: Start all services
+        timeout-minutes: 5
+        run: |
+          cd deploy
+          chmod +x run_test_stage.sh
+          ./run_test_stage.sh --skip-cleanup
+          npx wait-on http://localhost
+
+      - name: Run UI tests
+        timeout-minutes: 10
+        run: |
+          cd deploy/frontend/tests
+          npm run test
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-${{ github.run_id }}
+          path: deploy/frontend/tests/playwright-report/
+          retention-days: 30
+
+      - name: Shutdown services
+        if: always()
+        run: |
+          cd deploy
+          docker compose -f docker-compose.test.yml down -v
+          docker system prune -f || true
+
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "::error::❌ UI Tests failed!"
+          echo "🔍 Check details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          
+          echo "=== Docker logs ==="
+          cd deploy
+          docker compose -f docker-compose.test.yml logs --tail=50 || true

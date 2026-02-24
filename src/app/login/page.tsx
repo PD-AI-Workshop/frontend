@@ -51,7 +51,7 @@ const Login = () => {
                                         'text-white': isDarkMode,
                                         'text-gray-800': !isDarkMode
                                     }
-                                )}>
+                                )} data-testid="login-title">
                                 Вход в аккаунт
                             </h1>
 
@@ -64,10 +64,11 @@ const Login = () => {
                                     isTouched={touched[field.name]}
                                     error={errors[field.name]}
                                     isMobile={isMobile}
+                                    testId={`login-input-${field.name}`}
                                 />
                             ))}
 
-                            <MyButton isDarkMode={isDarkMode} isSubmitting={isSubmitting}>
+                            <MyButton isDarkMode={isDarkMode} isSubmitting={isSubmitting} testId="login-submit-button">
                                 Войти
                             </MyButton>
                         </div>

@@ -6,4 +6,5 @@ export type MyFieldInputPropsType = {
     error: string | undefined
     isSmall?: boolean
     isMobile: boolean
+    testId?: string
 }

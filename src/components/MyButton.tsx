@@ -1,9 +1,10 @@
 import { MyButtonPropsType } from '@/types/MyButtonPropsType'
 import clsx from 'clsx'
 
-const MyButton = ({ isSubmitting, isDarkMode, children }: MyButtonPropsType) => {
+const MyButton = ({ isSubmitting, isDarkMode, children, testId = '' }: MyButtonPropsType) => {
     return (
         <button
+            data-testid={testId}
             type="submit"
             disabled={isSubmitting}
             className={clsx('w-full mt-4 py-3 px-4 rounded-3xl transition-colors',
