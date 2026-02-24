@@ -91,7 +91,7 @@ jobs:
       - name: Create environment files
         run: |
           cat > deploy/frontend/tests/.env << EOF
-          BASE_URL=http://localhost:3000
+          BASE_URL=http://localhost
           BASE_API_URL=http://localhost:8000/api
           CI=true
           EOF
