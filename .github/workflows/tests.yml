@@ -23,13 +23,12 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout deploy repo with all services
+      - name: Checkout public repo
         uses: actions/checkout@v4
         with:
-          repository: https://github.com/PD-AI-Workshop/deploy.git
+          repository: PD-AI-Workshop/deploy
           path: deploy
           submodules: recursive
-          fetch-depth: 0
 
       - name: Checkout frontend (PR version)
         uses: actions/checkout@v4
