@@ -23,10 +23,11 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout public repo
+      - name: Checkout public deploy repo
         uses: actions/checkout@v4
         with:
           repository: PD-AI-Workshop/deploy
+          ref: develop
           path: deploy
           submodules: recursive
 
